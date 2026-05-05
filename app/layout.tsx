@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from './components/LenisProvider'
 import { Cursor } from './components/Cursor'
+import { Analytics } from '@vercel/analytics/react'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -49,6 +50,7 @@ export default function RootLayout({
           <Cursor />
           {children}
         </LenisProvider>
+        <Analytics />
       </body>
     </html>
   )
