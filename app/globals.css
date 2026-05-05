@@ -40,3 +40,13 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+@keyframes marquee-ltr {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+@keyframes marquee-rtl {
+  from { transform: translateX(-33.333%); }
+  to { transform: translateX(0); }
+}
