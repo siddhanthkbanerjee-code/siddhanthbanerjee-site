@@ -30,3 +30,8 @@ body {
   color: #F4EFE6;
   overflow-x: hidden;
 }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
