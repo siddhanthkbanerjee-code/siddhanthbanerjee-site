@@ -88,7 +88,7 @@ export function Hero() {
           <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">
             <span
               className="inline-block w-2 h-2 rounded-full bg-gold"
-              style={{ animation: 'pulse 1.5s ease-in-out infinite' }}
+              style={{ animation: 'gold-pulse 1.5s ease-in-out infinite' }}
             />
             AVAILABLE
           </span>
