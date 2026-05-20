@@ -4,6 +4,7 @@ export type Writing = {
   date: string;
   abstract: string;
   body: string;
+  category?: 'essay' | 'note';
 };
 
 export const writingEntries: Writing[] = [];
