@@ -5,7 +5,6 @@ import { LoadingScreenClient } from './components/LoadingScreenClient'
 import { MorphClient } from './components/MorphClient'
 const Marquee = dynamic(() => import('./components/Marquee').then((m) => ({ default: m.Marquee })))
 const Grid = dynamic(() => import('./components/Grid').then((m) => ({ default: m.Grid })))
-const Bet = dynamic(() => import('./components/Bet').then((m) => ({ default: m.Bet })))
 const Work = dynamic(() => import('./components/Work').then((m) => ({ default: m.Work })))
 const Writing = dynamic(() => import('./components/Writing').then((m) => ({ default: m.Writing })))
 const Timeline = dynamic(() => import('./components/Timeline').then((m) => ({ default: m.Timeline })))
@@ -19,7 +18,6 @@ export default function Home() {
       <MorphClient />
       <Marquee />
       <Grid />
-      <Bet />
       <Work />
       <Writing />
       <Timeline />

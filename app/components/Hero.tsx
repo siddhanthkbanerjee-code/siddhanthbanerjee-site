@@ -84,14 +84,6 @@ export function Hero() {
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">OXFORD</span>
           <span className="font-mono text-[11px] text-cream-muted">|</span>
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">2026</span>
-          <span className="font-mono text-[11px] text-cream-muted">|</span>
-          <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim">
-            <span
-              className="inline-block w-2 h-2 rounded-full bg-gold"
-              style={{ animation: 'gold-pulse 1.5s ease-in-out infinite' }}
-            />
-            AVAILABLE
-          </span>
         </div>
 
         <div className="flex flex-col">
@@ -119,22 +111,12 @@ export function Hero() {
             Brand operator at Zomato. Now building AI products at Oxford.
           </p>
 
-          <div style={{ animation: 'bob 2s ease-in-out infinite' }}>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-cream-dim"
-            >
-              <path
-                d="M12 5v14M5 12l7 7 7-7"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div
+            style={{ animation: 'bob 2s ease-in-out infinite' }}
+            className="flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.2em] text-cream-dim"
+          >
+            who am I?
+            <span className="blink-cursor">|</span>
           </div>
         </div>
       </div>
