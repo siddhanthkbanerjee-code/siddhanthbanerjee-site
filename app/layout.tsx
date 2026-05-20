@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from './components/LenisProvider'
 import { Cursor } from './components/Cursor'
+import { ComeBackCursor } from './components/ComeBackCursor'
 import { Analytics } from '@vercel/analytics/react'
 
 const fraunces = Fraunces({
@@ -48,6 +49,7 @@ export default function RootLayout({
       <body>
         <LenisProvider>
           <Cursor />
+          <ComeBackCursor />
           {children}
         </LenisProvider>
         <Analytics />

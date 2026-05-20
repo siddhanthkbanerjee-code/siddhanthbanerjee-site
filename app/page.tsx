@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import { Hero } from './components/Hero'
-
+import { WritingTeaser } from './components/WritingTeaser'
+import { LoadingScreenClient } from './components/LoadingScreenClient'
 const Marquee = dynamic(() => import('./components/Marquee').then((m) => ({ default: m.Marquee })))
 const Grid = dynamic(() => import('./components/Grid').then((m) => ({ default: m.Grid })))
 const Bet = dynamic(() => import('./components/Bet').then((m) => ({ default: m.Bet })))
@@ -12,6 +13,7 @@ const Contact = dynamic(() => import('./components/Contact').then((m) => ({ defa
 export default function Home() {
   return (
     <main>
+      <LoadingScreenClient />
       <Hero />
       <Marquee />
       <Grid />
@@ -19,6 +21,7 @@ export default function Home() {
       <Work />
       <Writing />
       <Timeline />
+      <WritingTeaser />
       <Contact />
     </main>
   )
