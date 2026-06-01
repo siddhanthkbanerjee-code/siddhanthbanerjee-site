@@ -65,3 +65,46 @@ body {
     animation: none;
   }
 }
+
+/* Hero gradient drift -- ink base bleeding into violet and tangerine over 25s */
+@keyframes heroGradientDrift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Hero float element pulse -- gentle scale and opacity loop */
+@keyframes heroFloatPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.72; }
+  50%       { transform: scale(1.07); opacity: 1;    }
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    #0E0B12 0%,
+    #1a0824 18%,
+    #2a1148 35%,
+    #0E0B12 50%,
+    #2a0d06 68%,
+    #1a0520 82%,
+    #0E0B12 100%
+  );
+  background-size: 400% 400%;
+  animation: heroGradientDrift 25s ease infinite;
+}
+
+.hero-float-pulse {
+  animation: heroFloatPulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient {
+    animation: none;
+    background-position: 0% 50%;
+  }
+  .hero-float-pulse {
+    animation: none;
+    opacity: 0.72;
+  }
+}

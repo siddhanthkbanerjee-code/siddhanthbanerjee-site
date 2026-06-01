@@ -16,6 +16,8 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     })
     lenisRef.current = lenis
+    // Exposed so click handlers in child components can call lenis.scrollTo
+    ;(window as any).__lenis = lenis
 
     lenis.on('scroll', () => ScrollTrigger.update())
 

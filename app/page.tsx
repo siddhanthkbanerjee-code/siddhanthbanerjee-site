@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic'
-import { Hero } from './components/Hero'
 import { WritingTeaser } from './components/WritingTeaser'
 import { LoadingScreenClient } from './components/LoadingScreenClient'
-import { MorphClient } from './components/MorphClient'
+import { HeroTransitionClient } from './components/HeroTransitionClient'
+import { PathStub } from './components/PathStub'
 const Marquee = dynamic(() => import('./components/Marquee').then((m) => ({ default: m.Marquee })))
 const Grid = dynamic(() => import('./components/Grid').then((m) => ({ default: m.Grid })))
 const Work = dynamic(() => import('./components/Work').then((m) => ({ default: m.Work })))
@@ -14,8 +14,8 @@ export default function Home() {
   return (
     <main>
       <LoadingScreenClient />
-      <Hero />
-      <MorphClient />
+      <HeroTransitionClient />
+      <PathStub />
       <Marquee />
       <Grid />
       <Work />
