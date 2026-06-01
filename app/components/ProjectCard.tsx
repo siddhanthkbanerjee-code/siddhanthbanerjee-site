@@ -7,8 +7,7 @@ import type { Project } from '@/lib/content/projects'
 export function ProjectCard({ project }: { project: Project }) {
   const [hovered, setHovered] = useState(false)
 
-  const borderAlpha = hovered ? '50' : '28'
-  const isDark = project.theme.text === '#F4EFE6'
+  const borderAlpha = hovered ? '55' : '30'
 
   return (
     <Link
@@ -16,112 +15,80 @@ export function ProjectCard({ project }: { project: Project }) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        border: `1px solid ${project.theme.accent}${borderAlpha}`,
-        textDecoration: 'none',
-        transition: 'border-color 220ms ease, transform 180ms ease',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        overflow: 'hidden',
+        justifyContent: 'space-between',
         background: project.theme.bg,
+        border: `1px solid ${project.theme.accent}${borderAlpha}`,
+        padding: 'clamp(1.4rem, 2.8vw, 2.4rem)',
+        minHeight: 'clamp(200px, 22vw, 300px)',
+        textDecoration: 'none',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'transform 180ms ease, border-color 220ms ease',
+        overflow: 'hidden',
+        position: 'relative',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* placeholder block -- themed wash, project name watermark */}
-      <div
+      {/* kind badge -- top right */}
+      <span
         style={{
-          aspectRatio: '4 / 3',
-          background: project.theme.surface,
-          borderBottom: `1px solid ${project.theme.accent}18`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden',
+          alignSelf: 'flex-end',
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontSize: '0.52rem',
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: project.theme.accent,
+          opacity: 0.7,
         }}
       >
-        {/* subtle accent wash on hover */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: project.theme.accent,
-            opacity: hovered ? 0.06 : 0.03,
-            transition: 'opacity 220ms ease',
-          }}
-        />
-        <span
+        {project.kind}
+      </span>
+
+      {/* name + descriptor */}
+      <div style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
+        <h3
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
-            fontSize: 'clamp(1.1rem, 3vw, 2rem)',
+            fontSize: 'clamp(1.4rem, 3.2vw, 2.6rem)',
+            lineHeight: 0.95,
             letterSpacing: '-0.02em',
             color: project.theme.text,
-            opacity: isDark ? 0.18 : 0.15,
-            userSelect: 'none',
-            position: 'relative',
-            zIndex: 1,
+            margin: '0 0 0.75rem',
           }}
         >
           {project.name}
-        </span>
-        {/* kind badge */}
-        <span
-          style={{
-            position: 'absolute',
-            top: '0.75rem',
-            right: '0.75rem',
-            fontFamily: 'var(--font-jetbrains-mono), monospace',
-            fontSize: '0.52rem',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: project.theme.accent,
-            opacity: 0.7,
-          }}
-        >
-          {project.kind}
-        </span>
-      </div>
-
-      {/* card body */}
-      <div
-        style={{
-          padding: '1rem 1.1rem 1.1rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.85rem',
-          flex: 1,
-        }}
-      >
+        </h3>
         <p
           style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            fontSize: 'clamp(0.85rem, 1.4vw, 1rem)',
-            lineHeight: 1.5,
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: 'clamp(0.55rem, 0.85vw, 0.68rem)',
+            letterSpacing: '0.12em',
             color: project.theme.text,
-            opacity: 0.8,
-            margin: 0,
-            flex: 1,
+            opacity: 0.55,
+            lineHeight: 1.5,
+            margin: '0 0 1.25rem',
           }}
         >
           {project.oneLiner}
         </p>
 
+        {/* read more */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.35rem',
+            gap: '0.3rem',
             fontFamily: 'var(--font-jetbrains-mono), monospace',
-            fontSize: '0.58rem',
+            fontSize: '0.55rem',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: project.theme.accent,
+            opacity: hovered ? 1 : 0.65,
             transition: 'opacity 180ms ease',
-            opacity: hovered ? 1 : 0.7,
           }}
         >
-          <span>read more</span>
+          <span>view</span>
           <span>&#8594;</span>
         </div>
       </div>

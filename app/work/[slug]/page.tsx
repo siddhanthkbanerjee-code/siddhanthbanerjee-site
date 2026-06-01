@@ -270,6 +270,49 @@ export default async function WorkProjectPage({
             />
           )}
 
+          {/* foot: live site link */}
+          {project.liveUrl && (
+            <div
+              style={{
+                marginTop: 'clamp(3rem, 6vw, 5rem)',
+                paddingTop: 'clamp(2rem, 4vw, 3rem)',
+                borderTop: `1px solid ${theme.accent}20`,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-jetbrains-mono), monospace',
+                  fontSize: '0.58rem',
+                  letterSpacing: '0.22em',
+                  textTransform: 'uppercase',
+                  color: `${theme.text}60`,
+                  margin: '0 0 0.75rem',
+                }}
+              >
+                live site
+              </p>
+              <a
+                href={project.liveUrl.startsWith('http') ? project.liveUrl : `https://${project.liveUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-fraunces), serif',
+                  fontWeight: 300,
+                  fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
+                  color: theme.accent,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  minHeight: 44,
+                }}
+              >
+                <span>Visit the live site</span>
+                <span style={{ fontSize: '0.85em' }}>&#8599;</span>
+              </a>
+            </div>
+          )}
+
           {/* bottom breathing room */}
           <div style={{ height: 'clamp(4rem, 10vw, 8rem)' }} />
         </div>

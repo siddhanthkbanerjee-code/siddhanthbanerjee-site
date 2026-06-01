@@ -58,11 +58,11 @@ export const projects: Project[] = [
     },
     sections: {
       whatItIs:
-        'A swipe-style taste quiz builds a personalised event feed with match scores, each backed by an AI-generated explanation of why the event fits you.',
+        'AI-powered cultural event discovery platform for London, positioned as Spotify for live culture. A swipe-style taste quiz builds a personalised event feed with match scores, each backed by an AI-generated explanation of why the event fits.',
       whatIsUnique:
-        'The edge is the discovery intelligence layer, a three-layer taste engine (LLM event enrichment, a multi-dimensional taste vector, contextual ranking) plus a natural-language explanation on every recommendation, so it feels like a knowledgeable friend rather than a listings site.',
+        'The edge is the discovery intelligence layer, not inventory or ticketing. A three-layer taste engine: an LLM enriches each event with vibe tags and social context, a multi-dimensional taste vector is built from the quiz, and a transparent scoring formula ranks contextually. Every recommendation comes with a generated reason, which makes it feel less like a listings site and more like a knowledgeable friend with taste.',
       howItWasBuilt:
-        'Next.js, TypeScript, Tailwind, Pinecone vector search, OpenAI embeddings, Claude API for explanations, Ticketmaster data, deployed on Vercel.',
+        'Next.js, TypeScript, Tailwind. Pinecone vector search over roughly 800 events, OpenAI embeddings, Claude for the natural-language explanations. Event data enriched through an LLM pipeline. Deployed on Vercel.',
     },
   },
 
@@ -81,11 +81,11 @@ export const projects: Project[] = [
     },
     sections: {
       whatItIs:
-        'A guided journey across three stages, Being (who am I), Doing (where am I today), Becoming (where could I be tomorrow), grounded in Big Five, PERMA, positive psychology, and flow.',
+        'An AI-powered self-discovery platform. Not therapy, not a personality test. A structured mirror that helps people understand who they are, how they are currently living, and how to close the gap. Runs on a fixed three-phase arc: Being, Doing, Becoming.',
       whatIsUnique:
-        'The integration is the moat. Each phase consumes the prior phase\'s output, the AI leads the session adaptively rather than running a static question battery, and it mirrors rather than defines, reflecting patterns back to confirm or correct.',
+        'The integration is the point. Most tools do one of these jobs. Prizerv insists on the full arc, each phase consuming the prior phase\'s output. It is AI-led, not assessment-led: no static question battery, the AI drives the session and adapts in real time. It mirrors rather than defines, reflecting patterns back tentatively rather than scoring you. Surfaces frameworks including Big Five, PERMA, positive psychology, and flow.',
       howItWasBuilt:
-        'Next.js, TypeScript, Supabase, Anthropic API (Claude Sonnet), Vercel. Built with a two-agent workflow, Claude as planner and Claude Code as builder. Currently in closed alpha.',
+        'Next.js, TypeScript, Tailwind, Supabase, the Anthropic API, deployed on Vercel. Built with a two-agent workflow, Claude as planner and Claude Code as builder. Design language is Living Dark, a warm near-black base, two typographic voices, motion that feels like breath.',
     },
   },
 
@@ -104,11 +104,11 @@ export const projects: Project[] = [
     },
     sections: {
       whatItIs:
-        'A single-page diagnostic where a business owner answers 8 to 12 questions and gets a prioritised list of 5 to 8 AI integration opportunities tailored to them, with plain-language explanations, complexity ratings, and ROI ranges, plus an ROI calculator and a contact CTA.',
+        'A single-page diagnostic tool that helps UK mid-market business owners find where AI actually applies to their business. Answer eight to twelve questions, get a prioritised list of five to eight AI integration opportunities tailored to the business, each with a plain-language explanation, a complexity rating, and a typical ROI range. An ROI calculator and a contact step sit below.',
       whatIsUnique:
-        'It starts a step earlier than every other AI-adoption tool, at "what can AI even do for my business," the highest-value and least-served question, instead of assuming the buyer already knows enough to ask about build-versus-buy or vendors.',
+        'The entry point. Most AI-adoption tooling assumes the buyer already knows enough to ask build-versus-buy or which vendor. Lever starts a step earlier, at what AI can even do for this business, which is the highest-value, least-served gap. The tool never tries to give a final answer, it opens doors: the free tool surfaces opportunities, the ROI calculator creates urgency, the contact step captures qualified leads.',
       howItWasBuilt:
-        'A clean single-page web app, leading with the qualitative use-case-matching layer where wrong answers are not catastrophic, and keeping the fragile-numbers layers as the paid back end.',
+        'A clean single-page web app. The tonal job is credibility and clarity, output that reads like consulting work a business owner would trust enough to act on. Plain-language explanations over jargon, complexity and ROI presented soberly.',
     },
   },
 
@@ -128,11 +128,11 @@ export const projects: Project[] = [
     },
     sections: {
       context:
-        'A private, pro bono pitch built specifically for Slurrp Farm, written up before a call so there was somewhere real to start.',
+        'Slurrp Farm is a children\'s millet-food brand Siddhanth worked at early on. Two pro bono AI proposals, both built specifically for SF, both pitched to former colleagues.',
       theThinking:
-        'Two ideas. One, an AI co-pilot for the Q-commerce category manager, turning fragmented dashboards into plain-language intelligence for the most overworked role in Indian D2C. Two, AI-scaled customer listening, the abandoned-cart calls I used to run by hand rebuilt for 2026, AI for breadth and humans for depth.',
+        'Bet one is a Q-commerce co-pilot. The category manager is doing the job of three people across five-plus quick-commerce platforms, each with different rules, thin margins, and listing fees in the lakhs. Existing tools (agencies, analytics dashboards, AI listing tools) each miss the gap between the data and the Monday-morning decision. Bet two is a weekly listening system, a rebuild of the abandoned-cart customer calls Siddhanth used to do, scaled with AI. SF customers talk everywhere (hundreds of reviews per SKU, half a million Instagram followers, CS inbox, NPS, community groups) and nobody reads it systematically. The principle: AI for breadth, humans for depth.',
       whatIMade:
-        'A two-path proposal site that lets the reader pick whichever bet is more interesting and read the thinking behind each in three minutes.',
+        'For the co-pilot, a weekly digest built on SF\'s SKUs and competitors that tells the CM where they are losing share of search and why, what competitors changed, and what to do that week, with synthesis via Claude and judgment staying with the CM. For the listening system, a four-layer weekly loop (ingest customer voice from every surface, tag and cluster with Claude plus embeddings, synthesise a 500-word Friday brief, and surface twenty customers worth a real human call), anchored by a standing Friday-morning leadership ritual. Both scoped honestly as pro bono sprints with full handover and SF owning everything.',
     },
   },
 
@@ -151,11 +151,11 @@ export const projects: Project[] = [
     },
     sections: {
       context:
-        'A private, pro bono pitch for Share Our Strength India, an anti-hunger nonprofit working toward feeding a million more children over five years, whose mission depends on finding the next Indian donor with a small team against a very large prospect universe.',
+        'A pro bono AI tool proposed to Share Our Strength India, a children\'s-nutrition nonprofit. The mission rests on one thing, finding the next Indian donor, and the team doing that is small while the universe of prospects is large.',
       theThinking:
-        'The bottleneck is time, not intent. Researching one prospect by hand takes hours, donor signals are time-sensitive, and the relevant people sit across separate worlds (CSR corporates, HNIs, foundations, chefs and restaurateurs, diaspora). The system builds a watch list of around 500 high-fit prospects from Indian CSR filings, wealth and funding data, existing donor history, and the nonprofit\'s chef and foundation networks, scans business news, public filings, and LinkedIn every day for the right moment to reach out, and each Monday delivers the top eight to ten as one-page briefs with a fit score, warm-introduction paths, and a ready-to-send draft message.',
+        'Researching a single donor prospect manually takes hours, donor signals are time-sensitive, and the right people mostly never get reached, not for lack of intent but for lack of time. The system does the search work so the team keeps doing the human work.',
       whatIMade:
-        'A proposal site laying out the concept, the three-step mechanic, an illustrative weekly donor brief, the running-cost math against a single affluent gift, and fully pro bono terms where the nonprofit owns all code and accounts from day one.',
+        'A tool that delivers eight to ten fresh donor prospects every Monday, each researched, scored, and ready to act on in minutes. It builds a watch list of around 500 prospects from CSR filings, philanthropy data, funding databases, and existing donor history, scans business news and public signals every day, and lands the week\'s best moments in the inbox as one-page briefs with a draft outreach message. Pro bono, with Share Our Strength India owning all code and accounts from day one.',
     },
   },
 ];
