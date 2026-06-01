@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,8 +10,13 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
+    // Disable native browser scroll restoration so it does not fight Lenis on
+    // back/forward navigation. Every route lands at the top; see pathname effect below.
+    history.scrollRestoration = 'manual'
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -32,6 +38,16 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       lenis.destroy()
     }
   }, [])
+
+  // Reset scroll to top on every route change so incoming page ScrollTriggers
+  // always initialise from a clean zero position. immediate: true means no
+  // animation — the reset is instant and does not itself trigger GSAP scrubs.
+  // prefers-reduced-motion is satisfied because immediate bypasses Lenis easing.
+  useEffect(() => {
+    const lenis = lenisRef.current
+    if (!lenis) return
+    lenis.scrollTo(0, { immediate: true })
+  }, [pathname])
 
   return <>{children}</>
 }

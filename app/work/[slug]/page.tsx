@@ -220,32 +220,6 @@ export default async function WorkProjectPage({
             {project.oneLiner}
           </p>
 
-          {/* live link */}
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontFamily: 'var(--font-jetbrains-mono), monospace',
-                fontSize: '0.65rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: theme.bg,
-                background: theme.accent,
-                padding: '0.65rem 1.1rem',
-                textDecoration: 'none',
-                marginBottom: 'clamp(3rem, 6vw, 5rem)',
-              }}
-            >
-              <span>&#8599;</span>
-              <span>view live</span>
-            </a>
-          )}
-
           {/* divider */}
           <div
             style={{
