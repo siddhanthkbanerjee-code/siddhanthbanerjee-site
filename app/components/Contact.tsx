@@ -1,59 +1,125 @@
-'use client'
+import { pathPayoffLine } from '@/lib/content/path'
 
-import Image from 'next/image'
-import { images } from '@/lib/images'
+// pathPayoffLine is the placeholder paragraph copy for now.
+// SWAP: replace with a proper contact-section paragraph once that copy is written.
+const CONTACT_COPY = pathPayoffLine
 
 export function Contact() {
   return (
-    <section className="relative bg-ink min-h-screen flex flex-col items-center justify-center text-center px-8 overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={images.smile}
-          alt="Siddhanth smiling"
-          fill
-          className="object-cover opacity-30"
-          unoptimized
-        />
-      </div>
-      <div className="absolute inset-0 bg-ink/50 z-10" />
-      <div className="relative z-20 flex flex-col items-center">
+    <section
+      style={{
+        background: 'var(--color-ink)',
+        minHeight: '60vh',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        padding: 'clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 4rem) 5rem',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+      }}
+    >
+      <div style={{ maxWidth: 640, width: '100%' }}>
         <h2
-          className="font-display font-light text-cream leading-[0.9] mb-8"
-          style={{ fontSize: '14vw' }}
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            color: 'var(--color-cream)',
+            fontSize: 'clamp(3rem, 9vw, 8rem)',
+            lineHeight: 0.92,
+            letterSpacing: '-0.02em',
+            margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
+          }}
         >
           LET&apos;S TALK.
         </h2>
-        <a
-          href="mailto:siddhanth@siddhanthbanerjee.com"
-          className="font-display font-normal text-cream relative group mb-16"
-          style={{ fontSize: '4vw' }}
+
+        <p
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            color: 'rgba(244,239,230,0.6)',
+            fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+            lineHeight: 1.65,
+            margin: '0 0 clamp(2rem, 4vw, 3rem)',
+            maxWidth: 480,
+          }}
         >
-          siddhanth@siddhanthbanerjee.com
-          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cream group-hover:w-full transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
-        </a>
-        <div className="flex gap-8 mb-32">
-          {[
-            { label: 'LinkedIn', href: 'https://linkedin.com/in/siddhanthbanerjee' },
-            { label: 'GitHub', href: 'https://github.com/siddhanthbanerjee' },
-            { label: 'Twitter', href: 'https://twitter.com/siddhanthb' },
-          ].map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream-muted hover:text-tangerine transition-colors duration-[250ms]"
-            >
-              {label}
-            </a>
-          ))}
+          {CONTACT_COPY}
+        </p>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(0.75rem, 1.5vw, 1rem)',
+          }}
+        >
+          <a
+            href="mailto:siddhanth.kbanerjee@gmail.com"
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+              color: 'var(--color-cream)',
+              textDecoration: 'none',
+              display: 'inline-block',
+              minHeight: 44,
+              lineHeight: '44px',
+            }}
+            className="contact-link"
+          >
+            siddhanth.kbanerjee@gmail.com
+          </a>
+
+          <a
+            href="https://linkedin.com/in/siddhanthbanerjee"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: 'var(--font-jetbrains-mono), monospace',
+              fontSize: 'clamp(0.6rem, 1vw, 0.7rem)',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(244,239,230,0.45)',
+              textDecoration: 'none',
+              display: 'inline-block',
+              minHeight: 44,
+              lineHeight: '44px',
+              transition: 'color 200ms ease',
+            }}
+            className="contact-link-secondary"
+          >
+            linkedin.com/in/siddhanthbanerjee
+          </a>
         </div>
       </div>
-      <div className="absolute bottom-8 left-0 right-0 z-20 text-center">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-cream-muted">
-          © SIDDHANTH BANERJEE / 2026 / OXFORD
+
+      <div
+        style={{
+          position: 'absolute' as const,
+          bottom: '2rem',
+          left: 'clamp(1.5rem, 6vw, 4rem)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.55rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(244,239,230,0.22)',
+            margin: 0,
+          }}
+        >
+          &copy; Siddhanth Banerjee / 2026 / Oxford
         </p>
       </div>
+
+      <style>{`
+        .contact-link:hover { color: var(--color-tangerine) !important; }
+        .contact-link-secondary:hover { color: rgba(244,239,230,0.75) !important; }
+      `}</style>
     </section>
   )
 }
