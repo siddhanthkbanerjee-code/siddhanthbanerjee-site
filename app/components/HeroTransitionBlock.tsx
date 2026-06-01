@@ -197,7 +197,7 @@ export function HeroTransitionBlock() {
                   fontFamily: 'var(--font-jetbrains-mono), monospace',
                   fontSize: '0.65rem',
                   letterSpacing: '0.22em',
-                  color: 'rgba(244,239,230,0.72)',
+                  color: 'rgba(255,236,215,0.96)',
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -231,7 +231,7 @@ export function HeroTransitionBlock() {
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
               fontSize: '0.6rem',
-              color: 'rgba(244,239,230,0.45)',
+              color: 'rgba(255,236,215,0.82)',
               lineHeight: 1,
             }}
           >

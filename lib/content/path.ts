@@ -1,43 +1,54 @@
 export type PathStation = {
   company: string;
   role: string;
+  companyDescriptor: string;
+  did: string;
   learnt: string;
   gtmTie: string;
   tint: string;
 };
 
 export const pathThesis =
-  "AI GTM is not hard because the technology is hard. It is hard because of the distance between what a model can do in a demo and what a customer will actually buy, adopt, and keep paying for. Closing that distance takes four things: starting from the customer instead of the capability, reading the real need underneath the stated ask, walking into an unsold room and leaving with a yes, and owning the whole arc from positioning to adoption to growth. I did not pick these up in order or on purpose, but every role added one. Put together, they are the kit this job needs.";
+  "AI GTM is less about the technology and more about closing the gap between what a model can do in a demo and what a customer will buy, adopt, and keep paying for. Here is what closing that gap takes, and where each piece came from.";
 
 export const pathStations: PathStation[] = [
   {
     company: "Epigamia",
     role: "Marketing Associate",
-    learnt: "customer service",
-    gtmTie: "start from the customer, not the capability",
+    companyDescriptor: "A Mumbai D2C brand that built the Greek yogurt category in India.",
+    did: "Ran consumer service, digital, and new-product sampling for a challenger food brand.",
+    learnt: "How to start from the customer and hold a brand's tonality steady across every touchpoint.",
+    gtmTie: "AI GTM starts the same way, from the customer's problem, not the model's capability.",
     tint: "#9B7FD4", // soft violet -- carried from prior path.ts Epigamia entry; fresh D2C energy
   },
   {
     company: "Slurrp Farm",
     role: "Marketing Associate, Brand Delight",
-    learnt: "consumer insighting",
-    gtmTie: "read the real need underneath the stated ask",
+    companyDescriptor: "A children's food brand making millet-based food for Indian families.",
+    did: "Owned content planning and the end-to-end consumer experience.",
+    learnt: "Consumer insighting, reading the real need a parent has underneath what they actually say.",
+    gtmTie: "The same skill finds the job a customer is hiring an AI product to do, under the stated ask.",
     tint: "#6B9E6B", // muted sage -- carried from prior path.ts; organic, earthy, distinct from warm anchors
   },
   {
     company: "Schbang",
     role: "Strategist, then Associate Account Lead",
-    learnt: "client servicing, pitching, account management, B2B sales",
-    gtmTie: "walk into an unsold room and leave with a yes",
+    companyDescriptor: "One of India's largest independent creative and digital agencies.",
+    did: "Ran pitches at roughly a 50 percent conversion rate and led client accounts, including an award-winning tuberculosis-awareness campaign.",
+    learnt: "Client servicing, pitching, account management, and B2B sales under real pressure.",
+    gtmTie: "AI GTM is selling into unsold rooms, the exact muscle a pitch floor builds.",
     tint: "#E8703A", // warm amber -- carried from prior path.ts; creative agency heat, lighter than tangerine
   },
   {
     company: "Zomato",
     role: "Associate Brand Manager",
-    learnt: "B2B GTM strategy, brand management, product growth",
-    gtmTie: "own the whole arc, from positioning to adoption to growth",
+    companyDescriptor: "India's largest food-delivery and dining platform.",
+    did: "Ran omnichannel marketing and brand positioning for new businesses, including a Founder's-Award-winning AI-generated content campaign.",
+    learnt: "B2B GTM strategy, brand management, and product growth at platform scale.",
+    gtmTie: "Owning the whole arc, positioning to adoption to growth, is the actual job in AI GTM.",
     tint: "#E23744", // Zomato red -- brand-accurate; anchors this station immediately
   },
 ];
 
 export const pathPayoff = "AI Builder and GTM Strategist";
+export const pathPayoffLine = "Now building AI products and putting the whole kit to work.";

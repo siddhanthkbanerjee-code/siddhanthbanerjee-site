@@ -14,6 +14,10 @@ export function Cursor() {
     if (!dot) return
 
     const onMouseMove = (e: MouseEvent) => {
+      // Reveal on first mouse move -- keeps the dot off-screen until the user has a cursor
+      if (dot.style.visibility !== 'visible') {
+        dot.style.visibility = 'visible'
+      }
       let tx = e.clientX
       let ty = e.clientY
 
@@ -67,7 +71,7 @@ export function Cursor() {
     <div
       ref={dotRef}
       className="fixed top-0 left-0 rounded-full bg-cream pointer-events-none z-[9999] mix-blend-difference"
-      style={{ width: 8, height: 8 }}
+      style={{ width: 8, height: 8, visibility: 'hidden' }}
     />
   )
 }

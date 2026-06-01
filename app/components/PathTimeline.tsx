@@ -3,15 +3,58 @@
 import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { pathThesis, pathStations, pathPayoff, PathStation } from '@/lib/content/path'
+import { pathThesis, pathStations, pathPayoff, pathPayoffLine, PathStation } from '@/lib/content/path'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const NUM_PANELS = 6 // thesis + 4 stations + payoff
 
+// Vertical position of the timeline line, expressed as % of panel height
+const LINE_TOP = '70%'
+// Left offset where nodes sit -- matches station panel's left padding
+const NODE_LEFT = 'clamp(2rem, 7vw, 8rem)'
+
 type ContentRefSetter = (el: HTMLDivElement | null) => void
 
+// ---- Shared line + node elements ----
+function TimelineLineDesktop({ isPayoff }: { isPayoff?: boolean }) {
+  return (
+    <>
+      {/* Horizontal rule */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: LINE_TOP,
+          left: 0,
+          right: 0,
+          height: 1,
+          background: 'rgba(255,107,53,0.28)',
+          pointerEvents: 'none',
+        }}
+      />
+      {/* Node / terminus */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: `calc(${LINE_TOP} - ${isPayoff ? '6px' : '4px'})`,
+          left: NODE_LEFT,
+          width: isPayoff ? 12 : 8,
+          height: isPayoff ? 12 : 8,
+          borderRadius: '50%',
+          background: 'var(--color-tangerine)',
+          opacity: isPayoff ? 1 : 0.85,
+          boxShadow: isPayoff ? '0 0 10px var(--color-tangerine)' : 'none',
+          pointerEvents: 'none',
+        }}
+      />
+    </>
+  )
+}
+
 // ---- Panel: Thesis ----
+// Styled as setup / intro -- smaller and lighter than station panels
 function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
   return (
     <div
@@ -37,7 +80,7 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
           fontSize: '0.65rem',
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          color: 'rgba(244,239,230,0.35)',
+          color: 'rgba(244,239,230,0.3)',
         }}
       >
         01 / 06
@@ -51,7 +94,7 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'var(--color-tangerine)',
-            margin: '0 0 1.5rem',
+            margin: '0 0 1.25rem',
           }}
         >
           thesis
@@ -60,10 +103,11 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
-            fontSize: 'clamp(1.05rem, 1.6vw, 1.45rem)',
-            lineHeight: 1.65,
-            color: 'var(--color-cream)',
-            maxWidth: 'min(720px, 60vw)',
+            // Deliberately smaller and lighter than station panels -- this is setup, not the main event
+            fontSize: 'clamp(0.92rem, 1.25vw, 1.1rem)',
+            lineHeight: 1.7,
+            color: 'rgba(244,239,230,0.65)',
+            maxWidth: 'min(600px, 55vw)',
             margin: 0,
           }}
         >
@@ -99,6 +143,7 @@ function StationPanel({
         boxSizing: 'border-box',
       }}
     >
+      {/* panel number */}
       <span
         style={{
           position: 'absolute',
@@ -108,12 +153,16 @@ function StationPanel({
           fontSize: '0.65rem',
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          color: 'rgba(244,239,230,0.3)',
+          color: 'rgba(244,239,230,0.28)',
         }}
       >
         0{panelNum} / 06
       </span>
 
+      {/* timeline line + node */}
+      <TimelineLineDesktop />
+
+      {/* left column: identity */}
       <div ref={contentRef} style={{ paddingRight: '2rem' }}>
         <h3
           style={{
@@ -123,18 +172,31 @@ function StationPanel({
             lineHeight: 0.92,
             letterSpacing: '-0.02em',
             color: 'var(--color-cream)',
-            margin: '0 0 1rem',
+            margin: '0 0 0.6rem',
           }}
         >
           {station.company}
         </h3>
         <p
           style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            fontSize: 'clamp(0.75rem, 1vw, 0.9rem)',
+            lineHeight: 1.4,
+            color: 'rgba(244,239,230,0.5)',
+            margin: '0 0 0.5rem',
+          }}
+        >
+          {station.companyDescriptor}
+        </p>
+        <p
+          style={{
             fontFamily: 'var(--font-jetbrains-mono), monospace',
-            fontSize: 'clamp(0.6rem, 0.9vw, 0.75rem)',
+            fontSize: 'clamp(0.55rem, 0.8vw, 0.68rem)',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'rgba(244,239,230,0.5)',
+            color: 'rgba(244,239,230,0.45)',
             margin: 0,
           }}
         >
@@ -142,17 +204,45 @@ function StationPanel({
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      {/* right column: substance */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
         <div>
           <p
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.58rem',
+              fontSize: '0.55rem',
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
               color: station.tint,
-              margin: '0 0 0.5rem',
-              opacity: 0.9,
+              margin: '0 0 0.4rem',
+              opacity: 0.85,
+            }}
+          >
+            what i did
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              fontSize: 'clamp(0.85rem, 1.15vw, 1.05rem)',
+              lineHeight: 1.45,
+              color: 'var(--color-cream)',
+              margin: 0,
+            }}
+          >
+            {station.did}
+          </p>
+        </div>
+        <div>
+          <p
+            style={{
+              fontFamily: 'var(--font-jetbrains-mono), monospace',
+              fontSize: '0.55rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: station.tint,
+              margin: '0 0 0.4rem',
+              opacity: 0.85,
             }}
           >
             learnt
@@ -161,8 +251,8 @@ function StationPanel({
             style={{
               fontFamily: 'var(--font-fraunces), serif',
               fontWeight: 300,
-              fontSize: 'clamp(0.95rem, 1.3vw, 1.25rem)',
-              lineHeight: 1.4,
+              fontSize: 'clamp(0.85rem, 1.15vw, 1.05rem)',
+              lineHeight: 1.45,
               color: 'var(--color-cream)',
               margin: 0,
             }}
@@ -174,12 +264,12 @@ function StationPanel({
           <p
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.58rem',
+              fontSize: '0.55rem',
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
               color: station.tint,
-              margin: '0 0 0.5rem',
-              opacity: 0.9,
+              margin: '0 0 0.4rem',
+              opacity: 0.85,
             }}
           >
             gtm tie
@@ -188,9 +278,10 @@ function StationPanel({
             style={{
               fontFamily: 'var(--font-fraunces), serif',
               fontWeight: 300,
-              fontSize: 'clamp(0.95rem, 1.3vw, 1.25rem)',
-              lineHeight: 1.4,
-              color: 'rgba(244,239,230,0.8)',
+              fontStyle: 'italic',
+              fontSize: 'clamp(0.85rem, 1.15vw, 1.05rem)',
+              lineHeight: 1.45,
+              color: 'rgba(244,239,230,0.75)',
               margin: 0,
             }}
           >
@@ -214,7 +305,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
-        background: 'linear-gradient(150deg, #180800 0%, #0E0B12 60%)', // deep tangerine-dark base
+        background: 'linear-gradient(150deg, #180800 0%, #0E0B12 60%)',
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -228,11 +319,14 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
           fontSize: '0.65rem',
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          color: 'rgba(244,239,230,0.3)',
+          color: 'rgba(244,239,230,0.28)',
         }}
       >
         06 / 06
       </span>
+
+      {/* timeline line extends through payoff, with glowing terminus node */}
+      <TimelineLineDesktop isPayoff />
 
       <div ref={contentRef}>
         <p
@@ -242,7 +336,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'rgba(255,107,53,0.6)',
-            margin: '0 0 1.5rem',
+            margin: '0 0 1.25rem',
           }}
         >
           now
@@ -255,7 +349,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
             lineHeight: 0.92,
             letterSpacing: '-0.02em',
             color: 'var(--color-tangerine)',
-            margin: 0,
+            margin: '0 0 1.5rem',
           }}
         >
           {pathPayoff.split(' and ').map((part, i) => (
@@ -264,6 +358,20 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
             </span>
           ))}
         </h3>
+        <p
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            fontSize: 'clamp(0.9rem, 1.3vw, 1.1rem)',
+            lineHeight: 1.5,
+            color: 'rgba(244,239,230,0.55)',
+            margin: 0,
+            maxWidth: 480,
+          }}
+        >
+          {pathPayoffLine}
+        </p>
       </div>
     </div>
   )
@@ -283,18 +391,14 @@ function PathTimelineDesktop() {
     const init = () => {
       const vw = window.innerWidth
 
-      // Panel 0 always visible; panels 1-5 start hidden
       contentRefs.current.forEach((el, i) => {
         if (!el) return
         gsap.set(el, i === 0 ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 })
       })
 
       const tl = gsap.timeline()
-
-      // Horizontal track translation: 0 to -(NUM_PANELS-1)*vw
       tl.to(track, { x: -(NUM_PANELS - 1) * vw, ease: 'none', duration: NUM_PANELS - 1 })
 
-      // Per-panel content reveals: panel i shows when tl time reaches i - 0.3
       contentRefs.current.forEach((el, i) => {
         if (!el || i === 0) return
         tl.fromTo(
@@ -323,7 +427,6 @@ function PathTimelineDesktop() {
     return () => {
       cancelAnimationFrame(raf)
       if (st) st.kill()
-      // Also kill the timeline so GSAP doesn't hold stale refs
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])
@@ -332,11 +435,7 @@ function PathTimelineDesktop() {
     (el: HTMLDivElement | null) => { contentRefs.current[i] = el }
 
   return (
-    <div
-      ref={outerRef}
-      id="path-section"
-      style={{ height: `${NUM_PANELS * 100}vh` }}
-    >
+    <div ref={outerRef} id="path-section" style={{ height: `${NUM_PANELS * 100}vh` }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
         <div
           ref={trackRef}
@@ -374,7 +473,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
           observer.unobserve(entry.target)
         })
       },
-      { threshold: 0.15 },
+      { threshold: 0.12 },
     )
 
     panelRefs.current.forEach((el) => {
@@ -407,7 +506,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'var(--color-tangerine)',
-            margin: '0 0 1.25rem',
+            margin: '0 0 1.1rem',
           }}
         >
           thesis
@@ -416,9 +515,10 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
-            fontSize: 'clamp(1rem, 3.5vw, 1.2rem)',
-            lineHeight: 1.65,
-            color: 'var(--color-cream)',
+            // Lighter and smaller than stations on mobile too
+            fontSize: 'clamp(0.9rem, 3.2vw, 1.05rem)',
+            lineHeight: 1.7,
+            color: 'rgba(244,239,230,0.65)',
             margin: 0,
           }}
         >
@@ -426,25 +526,44 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
         </p>
       </div>
 
-      {/* Stations */}
+      {/* Stations -- vertical timeline line runs through all as a left border */}
       {pathStations.map((station, i) => (
         <div
           key={station.company}
           ref={setRef(i + 1)}
           style={{
-            padding: 'clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 5vw, 3rem)',
+            position: 'relative',
+            padding: 'clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 5vw, 3rem) clamp(2.5rem, 7vw, 4rem) clamp(2.5rem, 6vw, 4rem)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
             background: `linear-gradient(170deg, var(--color-ink) 70%, ${station.tint}12)`,
+            // Left border acts as the vertical timeline line
+            borderLeft: '1px solid rgba(255,107,53,0.28)',
+            marginLeft: 'clamp(1.5rem, 5vw, 3rem)',
           }}
         >
+          {/* Node on the vertical line */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: 'clamp(2.5rem, 7vw, 4rem)',
+              left: -5,
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: 'var(--color-tangerine)',
+              opacity: 0.85,
+            }}
+          />
+
           <p
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.58rem',
+              fontSize: '0.55rem',
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(244,239,230,0.28)',
-              margin: '0 0 0.75rem',
+              color: 'rgba(244,239,230,0.25)',
+              margin: '0 0 0.65rem',
             }}
           >
             0{i + 2} / 06
@@ -457,73 +576,58 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
               lineHeight: 0.95,
               letterSpacing: '-0.02em',
               color: 'var(--color-cream)',
-              margin: '0 0 0.5rem',
+              margin: '0 0 0.35rem',
             }}
           >
             {station.company}
           </h3>
           <p
             style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              fontStyle: 'italic',
+              fontSize: 'clamp(0.72rem, 2.5vw, 0.85rem)',
+              color: 'rgba(244,239,230,0.45)',
+              margin: '0 0 0.3rem',
+              lineHeight: 1.4,
+            }}
+          >
+            {station.companyDescriptor}
+          </p>
+          <p
+            style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.58rem',
+              fontSize: '0.55rem',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: 'rgba(244,239,230,0.45)',
+              color: 'rgba(244,239,230,0.4)',
               margin: '0 0 1.5rem',
             }}
           >
             {station.role}
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
             <div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-jetbrains-mono), monospace',
-                  fontSize: '0.55rem',
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
-                  color: station.tint,
-                  margin: '0 0 0.35rem',
-                }}
-              >
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
+                what i did
+              </p>
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'var(--color-cream)', margin: 0 }}>
+                {station.did}
+              </p>
+            </div>
+            <div>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
                 learnt
               </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-fraunces), serif',
-                  fontWeight: 300,
-                  fontSize: 'clamp(0.9rem, 3vw, 1.1rem)',
-                  lineHeight: 1.45,
-                  color: 'var(--color-cream)',
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'var(--color-cream)', margin: 0 }}>
                 {station.learnt}
               </p>
             </div>
             <div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-jetbrains-mono), monospace',
-                  fontSize: '0.55rem',
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
-                  color: station.tint,
-                  margin: '0 0 0.35rem',
-                }}
-              >
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
                 gtm tie
               </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-fraunces), serif',
-                  fontWeight: 300,
-                  fontSize: 'clamp(0.9rem, 3vw, 1.1rem)',
-                  lineHeight: 1.45,
-                  color: 'rgba(244,239,230,0.75)',
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'rgba(244,239,230,0.7)', margin: 0 }}>
                 {station.gtmTie}
               </p>
             </div>
@@ -535,10 +639,28 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
       <div
         ref={setRef(NUM_PANELS - 1)}
         style={{
-          padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
+          position: 'relative',
+          padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 8vw, 5rem) clamp(2.5rem, 6vw, 4rem)',
           background: 'linear-gradient(170deg, #180800 0%, #0E0B12 55%)',
+          // Terminus node: continues the border but ends here
+          borderLeft: '1px solid rgba(255,107,53,0.28)',
+          marginLeft: 'clamp(1.5rem, 5vw, 3rem)',
         }}
       >
+        {/* Terminus node -- larger and glowing */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: 'clamp(3rem, 8vw, 5rem)',
+            left: -7,
+            width: 12,
+            height: 12,
+            borderRadius: '50%',
+            background: 'var(--color-tangerine)',
+            boxShadow: '0 0 10px var(--color-tangerine)',
+          }}
+        />
         <p
           style={{
             fontFamily: 'var(--font-jetbrains-mono), monospace',
@@ -546,7 +668,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'rgba(255,107,53,0.6)',
-            margin: '0 0 1rem',
+            margin: '0 0 0.9rem',
           }}
         >
           now
@@ -559,11 +681,24 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             lineHeight: 0.95,
             letterSpacing: '-0.02em',
             color: 'var(--color-tangerine)',
-            margin: 0,
+            margin: '0 0 1rem',
           }}
         >
           {pathPayoff}
         </h3>
+        <p
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            fontSize: 'clamp(0.85rem, 3vw, 1rem)',
+            lineHeight: 1.5,
+            color: 'rgba(244,239,230,0.5)',
+            margin: 0,
+          }}
+        >
+          {pathPayoffLine}
+        </p>
       </div>
     </section>
   )
