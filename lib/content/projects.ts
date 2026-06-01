@@ -3,6 +3,7 @@ export type ProjectTheme = {
   surface: string;
   text: string;
   accent: string;
+  cardBg?: string; // optional CSS background for card and detail page (can be gradient); uses bg if absent
 };
 
 export type BuildSections = {
@@ -55,6 +56,7 @@ export const projects: Project[] = [
       surface: '#18102a', // elevated surface for Kairos dark mode
       text: '#F4EFE6',    // --color-cream
       accent: '#a855f7',  // purple-500 per brief (dark-background purple family)
+      cardBg: 'linear-gradient(160deg, #1a0535 0%, #0D0816 65%)', // purple-to-near-black gradient matching Kairos landing page
     },
     sections: {
       whatItIs:

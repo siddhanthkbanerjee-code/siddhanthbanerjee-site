@@ -110,6 +110,72 @@ function ConsultingSpine({
   )
 }
 
+// Per-project h1 treatment matching each product's visual identity
+function PageHeading({ slug, name, accent, text }: { slug: string; name: string; accent: string; text: string }) {
+  const base: React.CSSProperties = {
+    fontFamily: 'var(--font-fraunces), serif',
+    fontWeight: 300,
+    fontSize: 'clamp(2.8rem, 8vw, 7rem)',
+    lineHeight: 0.92,
+    letterSpacing: '-0.02em',
+    margin: '0 0 1.5rem',
+  }
+
+  switch (slug) {
+    case 'kairos':
+      return (
+        <h1
+          style={{
+            ...base,
+            backgroundImage: 'linear-gradient(90deg, #f472b6 0%, #a855f7 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          {name}
+        </h1>
+      )
+    case 'prizerv':
+      return (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontStyle: 'italic',
+              fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
+              color: '#e879f9',
+              margin: '0 0 0.5rem',
+              opacity: 0.85,
+            }}
+          >
+            a structured mirror
+          </p>
+          <h1 style={{ ...base, margin: 0, color: text }}>
+            {name}
+          </h1>
+        </div>
+      )
+    case 'lever':
+      return <h1 style={{ ...base, color: accent }}>{name}</h1>
+    case 'slurrp-farm':
+      return <h1 style={{ ...base, color: text }}>{name}</h1>
+    case 'share-our-strength': {
+      const words = name.split(' ')
+      const lastWord = words.pop()!
+      return (
+        <h1 style={{ ...base }}>
+          <span style={{ color: text }}>{words.join(' ')} </span>
+          <span style={{ color: accent }}>{lastWord}</span>
+        </h1>
+      )
+    }
+    default:
+      return <h1 style={{ ...base, color: text }}>{name}</h1>
+  }
+}
+
 export default async function WorkProjectPage({
   params,
 }: {
@@ -120,12 +186,16 @@ export default async function WorkProjectPage({
   if (!project) notFound()
 
   const { theme } = project
-  const isPrizerv = project.slug === 'prizerv'
+  const isPrizerv = slug === 'prizerv'
+  const isSlurrpFarm = slug === 'slurrp-farm'
   const textDim = `${theme.text}b0`
+
+  // Use cardBg gradient for the page background if defined (Kairos), else fall back to bg
+  const pageBackground = isPrizerv ? theme.bg : (theme.cardBg ?? theme.bg)
 
   return (
     <>
-      {/* Prizerv gradient drift + reduced-motion override */}
+      {/* Prizerv animated gradient drift */}
       {isPrizerv && (
         <style>{`
           @keyframes prizerevDrift {
@@ -150,12 +220,31 @@ export default async function WorkProjectPage({
       <main
         className={isPrizerv ? 'prizerv-bg' : undefined}
         style={{
-          background: isPrizerv ? theme.bg : theme.bg,
+          background: pageBackground,
           color: theme.text,
           minHeight: '100vh',
           padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 6vw, 4rem)',
         }}
       >
+        {/* Slurrp Farm earthy three-color rule at the very top, matching the card */}
+        {isSlurrpFarm && (
+          <div
+            aria-hidden="true"
+            style={{
+              display: 'flex',
+              height: 4,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <div style={{ flex: 1, background: '#F5CC5A' }} />
+            <div style={{ flex: 1, background: '#E85D3B' }} />
+            <div style={{ flex: 1, background: '#4A7C4E' }} />
+          </div>
+        )}
+
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
           {/* back */}
           <a
@@ -190,20 +279,13 @@ export default async function WorkProjectPage({
             {project.kind}
           </p>
 
-          {/* name */}
-          <h1
-            style={{
-              fontFamily: 'var(--font-fraunces), serif',
-              fontWeight: 300,
-              fontSize: 'clamp(2.8rem, 8vw, 7rem)',
-              lineHeight: 0.92,
-              letterSpacing: '-0.02em',
-              color: theme.text,
-              margin: '0 0 1.5rem',
-            }}
-          >
-            {project.name}
-          </h1>
+          {/* Per-project themed name */}
+          <PageHeading
+            slug={slug}
+            name={project.name}
+            accent={theme.accent}
+            text={theme.text}
+          />
 
           {/* one-liner */}
           <p
@@ -287,7 +369,6 @@ export default async function WorkProjectPage({
             </div>
           )}
 
-          {/* bottom breathing room */}
           <div style={{ height: 'clamp(4rem, 10vw, 8rem)' }} />
         </div>
       </main>

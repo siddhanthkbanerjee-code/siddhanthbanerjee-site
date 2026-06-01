@@ -77,10 +77,11 @@ export function HeroTransitionBlock() {
       tl.to(textPath, { opacity: 1, duration: 0.14 }, 0.70)
 
       // Single ScrollTrigger -- click handler drives the same trigger via lenis.scrollTo
+      // Before: end '+=300%' (300vh travel). After: '+=150%' (150vh) -- tighter without rushing the phases.
       ScrollTrigger.create({
         trigger: outer,
         start: 'top top',
-        end: '+=300%',
+        end: '+=150%',
         scrub: 1.5,
         animation: tl,
       })
@@ -94,8 +95,8 @@ export function HeroTransitionBlock() {
   }, [reduced])
 
   return (
-    // 400vh outer gives the pin zone 300vh of scroll travel; collapses to 100vh for reduced-motion
-    <div ref={outerRef} style={{ height: reduced ? '100vh' : '400vh' }}>
+    // 250vh outer (was 400vh): pins for 150vh of animation travel, then 100vh slide-off before Path section
+    <div ref={outerRef} style={{ height: reduced ? '100vh' : '250vh' }}>
       <div
         className="hero-gradient"
         style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}

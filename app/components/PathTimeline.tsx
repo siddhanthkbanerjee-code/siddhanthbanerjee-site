@@ -436,10 +436,42 @@ function PathTimelineDesktop() {
 
   return (
     <div ref={outerRef} id="path-section" style={{ height: `${NUM_PANELS * 100}vh` }}>
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Persistent header -- visible for the full duration of the Path section scroll */}
+        <div
+          style={{
+            flexShrink: 0,
+            padding: '1rem clamp(2rem, 7vw, 8rem)',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-jetbrains-mono), monospace',
+              fontSize: '0.65rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(244,239,230,0.35)',
+              margin: 0,
+            }}
+          >
+            my path
+          </p>
+        </div>
+
+        {/* Horizontal track -- fills remaining height below the header */}
         <div
           ref={trackRef}
-          style={{ display: 'flex', width: `${NUM_PANELS * 100}vw`, height: '100%' }}
+          style={{ display: 'flex', width: `${NUM_PANELS * 100}vw`, flex: 1, minHeight: 0 }}
         >
           <ThesisPanel contentRef={setRef(0)} />
           {pathStations.map((station, i) => (
@@ -491,6 +523,27 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
 
   return (
     <section id="path-section" style={{ background: 'var(--color-ink)' }}>
+      {/* Section header -- static in the stacked mobile/reduced-motion version */}
+      <div
+        style={{
+          padding: '1rem clamp(1.5rem, 5vw, 3rem)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.65rem',
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'rgba(244,239,230,0.35)',
+            margin: 0,
+          }}
+        >
+          my path
+        </p>
+      </div>
+
       {/* Thesis */}
       <div
         ref={setRef(0)}
