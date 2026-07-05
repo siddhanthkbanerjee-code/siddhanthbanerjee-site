@@ -1,113 +1,226 @@
-import { Reveal } from './Reveal'
-import { AmbientField } from './AmbientField'
+'use client'
 
-// DRAFT COPY (edit freely): real contact-section paragraph, replacing the placeholder.
+import { useState } from 'react'
+import { HeroFluidCanvas } from './HeroFluidCanvas'
+import { Reveal } from './Reveal'
+
+// DRAFT COPY (edit freely): real contact-section paragraph.
 const CONTACT_COPY =
   'If you are hiring for AI go-to-market, building something that needs to reach customers, or just want to compare notes on where this is heading, I would like to talk. Email is the fastest way to reach me.'
 
+// The closing section mirrors the opening: the same real-time aurora + constellation fluid
+// field and legibility scrim, full height, with the content anchored lower-left the way the
+// hero name is. The opening asks "who am i?" and points down to the path; the close answers
+// "what next?" and points back to the top.
 export function Contact() {
+  const [reduced] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+
+  const scrollToTop = () => {
+    const lenis = (window as { __lenis?: { scrollTo: (t: number | Element, o?: object) => void } }).__lenis
+    if (lenis) {
+      lenis.scrollTo(0, { duration: reduced ? 0 : 1.4 })
+    } else {
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
+    }
+  }
+
   return (
     <section
       style={{
-        background: 'radial-gradient(115% 125% at 16% 100%, #1c1030 0%, var(--color-ink) 58%)', // warm violet glow (1c1030) from lower-left where the text sits
-        minHeight: '60vh',
-        overflow: 'hidden',
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        padding: 'clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 4rem) 5rem',
+        minHeight: '100vh',
+        overflow: 'hidden',
+        background: 'var(--color-ink)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
-      <AmbientField opacity={0.4} />
-      <div style={{ maxWidth: 640, width: '100%', position: 'relative', zIndex: 1 }}>
-        <Reveal mask>
-          <h2
-            style={{
-              fontFamily: 'var(--font-fraunces), serif',
-              fontWeight: 300,
-              color: 'var(--color-cream)',
-              fontSize: 'clamp(3rem, 9vw, 8rem)',
-              lineHeight: 0.92,
-              letterSpacing: '-0.02em',
-              margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
-            }}
-          >
-            LET&apos;S TALK.
-          </h2>
-        </Reveal>
+      {/* same real-time fluid-light background as the hero */}
+      <HeroFluidCanvas variant="aurora-constellation" />
 
-        <Reveal delay={120}>
-          <p
-            style={{
-              fontFamily: 'var(--font-fraunces), serif',
-              fontWeight: 300,
-              color: 'rgba(244,239,230,0.6)',
-              fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
-              lineHeight: 1.65,
-              margin: '0 0 clamp(2rem, 4vw, 3rem)',
-              maxWidth: 480,
-            }}
-          >
-            {CONTACT_COPY}
-          </p>
-        </Reveal>
+      {/* legibility scrim, matched to the hero */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+          background:
+            'linear-gradient(to top, rgba(14,11,18,0.62) 0%, rgba(14,11,18,0.15) 38%, rgba(14,11,18,0) 62%)',
+        }}
+      />
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(0.75rem, 1.5vw, 1rem)',
-          }}
-        >
-          <a
-            href="mailto:siddhanth.kbanerjee@gmail.com"
-            style={{
-              fontFamily: 'var(--font-fraunces), serif',
-              fontWeight: 300,
-              fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-              color: 'var(--color-cream)',
-              textDecoration: 'none',
-              display: 'inline-block',
-              minHeight: 44,
-              lineHeight: '44px',
-            }}
-            className="contact-link"
-          >
-            siddhanth.kbanerjee@gmail.com
-          </a>
+      {/* top-left: mirrors the hero's "who am i?" */}
+      <span
+        style={{
+          position: 'absolute',
+          top: 'clamp(1.5rem, 4vw, 2.5rem)',
+          left: 'clamp(1.5rem, 6vw, 4rem)',
+          zIndex: 2,
+          pointerEvents: 'none',
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontSize: '0.7rem',
+          letterSpacing: '0.24em',
+          textTransform: 'uppercase',
+          color: 'var(--color-tangerine)',
+        }}
+      >
+        what next?
+      </span>
 
-          <a
-            href="https://linkedin.com/in/siddhanthbanerjee"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* lower-left: the answer, anchored like the hero name */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '0 clamp(1.5rem, 6vw, 4rem) clamp(5rem, 12vw, 8rem)',
+        }}
+      >
+        <div style={{ maxWidth: 640 }}>
+          <Reveal mask>
+            <h2
+              style={{
+                fontFamily: 'var(--font-fraunces), serif',
+                fontWeight: 300,
+                color: 'var(--color-cream)',
+                fontSize: 'clamp(3rem, 11vw, 10rem)',
+                lineHeight: 0.92,
+                letterSpacing: '-0.02em',
+                margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
+                textShadow: '0 2px 40px rgba(0,0,0,0.4)',
+              }}
+            >
+              LET&apos;S TALK.
+            </h2>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <p
+              style={{
+                fontFamily: 'var(--font-fraunces), serif',
+                fontWeight: 300,
+                color: 'rgba(244,239,230,0.82)',
+                fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+                lineHeight: 1.65,
+                margin: '0 0 clamp(1.75rem, 3vw, 2.5rem)',
+                maxWidth: 480,
+                textShadow: '0 2px 24px rgba(0,0,0,0.55)',
+              }}
+            >
+              {CONTACT_COPY}
+            </p>
+          </Reveal>
+
+          <div
             style={{
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: 'clamp(0.6rem, 1vw, 0.7rem)',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(244,239,230,0.45)',
-              textDecoration: 'none',
-              display: 'inline-block',
-              minHeight: 44,
-              lineHeight: '44px',
-              transition: 'color 200ms ease',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'clamp(0.5rem, 1.5vw, 0.85rem)',
+              pointerEvents: 'auto',
             }}
-            className="contact-link-secondary"
           >
-            linkedin.com/in/siddhanthbanerjee
-          </a>
+            <a
+              href="mailto:siddhanth.kbanerjee@gmail.com"
+              className="contact-link"
+              style={{
+                fontFamily: 'var(--font-fraunces), serif',
+                fontWeight: 300,
+                fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+                color: 'var(--color-cream)',
+                textDecoration: 'none',
+                display: 'inline-block',
+                minHeight: 44,
+                lineHeight: '44px',
+                textShadow: '0 2px 24px rgba(0,0,0,0.55)',
+              }}
+            >
+              siddhanth.kbanerjee@gmail.com
+            </a>
+
+            <a
+              href="https://linkedin.com/in/siddhanthbanerjee"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-link-secondary"
+              style={{
+                fontFamily: 'var(--font-jetbrains-mono), monospace',
+                fontSize: 'clamp(0.6rem, 1vw, 0.7rem)',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'rgba(244,239,230,0.5)',
+                textDecoration: 'none',
+                display: 'inline-block',
+                minHeight: 44,
+                lineHeight: '44px',
+                transition: 'color 200ms ease',
+              }}
+            >
+              linkedin.com/in/siddhanthbanerjee
+            </a>
+          </div>
         </div>
       </div>
 
+      {/* lower-right: mirrors the hero's "my path" cue, pointing back to the top */}
+      <button
+        type="button"
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        className={reduced ? undefined : 'hero-float-pulse'}
+        style={{
+          position: 'absolute',
+          bottom: 'clamp(1.5rem, 4vw, 2.5rem)',
+          right: 'clamp(1.5rem, 6vw, 4rem)',
+          zIndex: 10,
+          background: 'none',
+          border: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 8,
+          padding: 8,
+        }}
+      >
+        <span
+          aria-hidden="true"
+          style={{
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.7rem',
+            color: 'rgba(255,236,215,0.9)',
+            lineHeight: 1,
+          }}
+        >
+          &#8593;
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
+            color: 'var(--color-cream)',
+            letterSpacing: '-0.01em',
+            textShadow: '0 2px 16px rgba(0,0,0,0.5)',
+          }}
+        >
+          back to top
+        </span>
+      </button>
+
+      {/* copyright pinned at the very bottom-left, under the content padding */}
       <div
         style={{
-          position: 'absolute' as const,
-          zIndex: 1,
-          bottom: '2rem',
+          position: 'absolute',
+          zIndex: 2,
+          bottom: '1.75rem',
           left: 'clamp(1.5rem, 6vw, 4rem)',
+          pointerEvents: 'none',
         }}
       >
         <p
@@ -116,7 +229,7 @@ export function Contact() {
             fontSize: '0.55rem',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'rgba(244,239,230,0.22)',
+            color: 'rgba(244,239,230,0.28)',
             margin: 0,
           }}
         >
@@ -126,7 +239,7 @@ export function Contact() {
 
       <style>{`
         .contact-link:hover { color: var(--color-tangerine) !important; }
-        .contact-link-secondary:hover { color: rgba(244,239,230,0.75) !important; }
+        .contact-link-secondary:hover { color: rgba(244,239,230,0.8) !important; }
       `}</style>
     </section>
   )
