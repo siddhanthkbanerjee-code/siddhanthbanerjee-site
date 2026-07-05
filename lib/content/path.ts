@@ -8,8 +8,10 @@ export type PathStation = {
   tint: string;
 };
 
+// DRAFT COPY (from Siddhanth's brief -- edit freely): frames AI GTM as a dynamic,
+// evolving space that needs dynamic people, priming his path as the fit.
 export const pathThesis =
-  "AI GTM is less about the technology and more about closing the gap between what a model can do in a demo and what a customer will buy, adopt, and keep paying for. Here is what closing that gap takes, and where each piece came from.";
+  "AI go-to-market is a moving target. The models change every few months, buyers are still writing the rules, and the gap between a demo and a renewed contract never sits still. A dynamic space needs dynamic people: operators who can read a customer, build the thing, and sell it, often in the same week. That is the exact shape of my path, and here is where each piece came from.";
 
 export const pathStations: PathStation[] = [
   {

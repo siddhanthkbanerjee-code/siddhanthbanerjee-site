@@ -1,8 +1,6 @@
-import { pathPayoffLine } from '@/lib/content/path'
-
-// pathPayoffLine is the placeholder paragraph copy for now.
-// SWAP: replace with a proper contact-section paragraph once that copy is written.
-const CONTACT_COPY = pathPayoffLine
+// DRAFT COPY (edit freely): real contact-section paragraph, replacing the placeholder.
+const CONTACT_COPY =
+  'If you are hiring for AI go-to-market, building something that needs to reach customers, or just want to compare notes on where this is heading, I would like to talk. Email is the fastest way to reach me.'
 
 export function Contact() {
   return (
