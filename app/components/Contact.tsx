@@ -1,4 +1,5 @@
 import { Reveal } from './Reveal'
+import { AmbientField } from './AmbientField'
 
 // DRAFT COPY (edit freely): real contact-section paragraph, replacing the placeholder.
 const CONTACT_COPY =
@@ -10,6 +11,7 @@ export function Contact() {
       style={{
         background: 'radial-gradient(115% 125% at 16% 100%, #1c1030 0%, var(--color-ink) 58%)', // warm violet glow (1c1030) from lower-left where the text sits
         minHeight: '60vh',
+        overflow: 'hidden',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -19,7 +21,8 @@ export function Contact() {
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
-      <div style={{ maxWidth: 640, width: '100%' }}>
+      <AmbientField opacity={0.4} />
+      <div style={{ maxWidth: 640, width: '100%', position: 'relative', zIndex: 1 }}>
         <Reveal mask>
           <h2
             style={{
@@ -102,6 +105,7 @@ export function Contact() {
       <div
         style={{
           position: 'absolute' as const,
+          zIndex: 1,
           bottom: '2rem',
           left: 'clamp(1.5rem, 6vw, 4rem)',
         }}

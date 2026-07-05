@@ -1,6 +1,7 @@
 import { papers } from '@/lib/content/papers'
 import { writing } from '@/lib/writing'
 import { Reveal } from './Reveal'
+import { AmbientField } from './AmbientField'
 
 // #0D1929: deep Oxford navy. Justification: same bg as /writing and /papers routes,
 // so the home section reads as the entry point to that ecosystem rather than a new zone.
@@ -93,11 +94,14 @@ export function WritingSection() {
   return (
     <section
       style={{
+        position: 'relative',
+        overflow: 'hidden',
         background: SECTION_BG,
         padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3.5rem)',
       }}
     >
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <AmbientField opacity={0.35} />
+      <div style={{ maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <Reveal mask>
           <h2
             style={{
