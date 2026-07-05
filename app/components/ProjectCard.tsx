@@ -83,6 +83,23 @@ function CardName({ project }: { project: Project }) {
       )
     }
 
+    case 'fuel':
+      // Electric lime-to-emerald gradient text, matching Fuel's athletic dark identity
+      return (
+        <h3
+          style={{
+            ...nameBase,
+            backgroundImage: 'linear-gradient(90deg, #A3E635 0%, #4ADE80 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          {project.name}
+        </h3>
+      )
+
     default:
       return <h3 style={{ ...nameBase, color: project.theme.text }}>{project.name}</h3>
   }

@@ -171,6 +171,21 @@ function PageHeading({ slug, name, accent, text }: { slug: string; name: string;
         </h1>
       )
     }
+    case 'fuel':
+      return (
+        <h1
+          style={{
+            ...base,
+            backgroundImage: 'linear-gradient(90deg, #A3E635 0%, #4ADE80 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          {name}
+        </h1>
+      )
     default:
       return <h1 style={{ ...base, color: text }}>{name}</h1>
   }

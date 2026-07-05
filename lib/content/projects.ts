@@ -117,6 +117,30 @@ export const projects: Project[] = [
     },
   },
 
+  {
+    slug: 'fuel',
+    name: 'Fuel',
+    kind: 'build',
+    oneLiner: 'A mobile-first fitness tracker I built solo with AI. Real people use it daily.',
+    liveUrl: null, // TODO: add the deployed Vercel URL when ready -- a working link is the strongest proof
+    logo: null,
+    theme: {
+      bg: '#0A0E09',      // near-black with a faint green cast; athletic dark identity, new token for Fuel
+      surface: '#141A12', // elevated surface for Fuel dark mode; new token
+      text: '#F4EFE6',    // --color-cream
+      accent: '#A3E635',  // electric lime; energetic fitness accent, new token, distinct from Slurrp Farm earthy green and from Lever/Kairos
+      cardBg: 'linear-gradient(160deg, #16210F 0%, #0A0E09 62%)', // lime-tinted dark gradient (new tints) for the athletic identity, used by card and detail page
+    },
+    sections: {
+      whatItIs:
+        'A mobile-first fitness tracking web app, installable as a PWA, for logging food, weight, steps, and workouts. First run sets a profile and a goal (cut, maintain, or bulk) with a pace, then the Today tab shows calorie, macro, and fibre rings alongside the food log for that day and a morning weight entry. Food is logged three ways: rear-camera barcode scanning, manual barcode entry, or name search over Open Food Facts. A Train tab offers a structured push, pull, and legs split plus a free-log mode that surfaces your last session for each exercise so you can beat it, and Calendar, Trends, and an in-app diet Plan round it out. It is deliberately a tracker, not a coach: it logs and visualises, and you set and edit your own targets.',
+      whatIsUnique:
+        'It is a real multi-user product, not a personal script. Cloud sync runs on Supabase with Postgres, email magic-link auth, and row-level security, so each person only ever sees their own data, while the app still works fully offline on local storage and sync stays purely additive, never a dependency. Every target is transparent and editable rather than a black box: a Mifflin-St Jeor BMR, an activity factor for TDEE, a goal-and-pace adjustment, and macro targets set by grams per kilogram, each shown with its source. That is what turned it from a personal build into something real testers use daily, which generates the usage data to iterate on.',
+      howItWasBuilt:
+        'The entire app is a single index.html of vanilla JavaScript and inline CSS, with no framework and no build step, around 79KB in total. Supabase was added afterwards as a purely additive backend over an already-working offline-first localStorage app. Nutrition data comes from Open Food Facts, which is free, open, and carries no API cost. It installs to a phone home screen through a web manifest and service worker. It was built almost entirely through conversational AI-assisted development with Claude, by an MBA with no professional engineering background, which is part of the point.',
+    },
+  },
+
   // ---- Consulting ----
   {
     slug: 'slurrp-farm',
