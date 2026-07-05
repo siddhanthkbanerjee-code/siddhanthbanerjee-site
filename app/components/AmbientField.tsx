@@ -4,8 +4,10 @@ import { useEffect, useRef } from 'react'
 
 // A quiet, continuous undercurrent of the hero's fluid motif, for use behind any section
 // or page so the whole site feels like one holistic experience. Transparent (overlays the
-// section's own background), dim, non-interactive. Canvas2D only, so it is cheap; paused when
-// offscreen or when the tab is hidden, and a single static frame under prefers-reduced-motion.
+// section's own background), dim, and cursor-reactive: dots near the pointer are pulled toward
+// it and branch to it, echoing the hero constellation while staying a background whisper.
+// Canvas2D only, so it is cheap; paused when offscreen or when the tab is hidden, and a single
+// static frame under prefers-reduced-motion (no pointer reactivity then).
 export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -21,6 +23,10 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
     let W = 1
     let H = 1
+
+    // Pointer in canvas device px. on=0 until the pointer is over this field's box, so the
+    // branch effect only fires where the field actually sits.
+    const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, on: 0 }
 
     const size = () => {
       const r = wrap.getBoundingClientRect()
@@ -53,8 +59,24 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
     }
     size()
 
+    // Listen on window (works despite pointer-events:none) and map into this field's local
+    // space. Outside the box, on=0 so the field just drifts.
+    const onMove = (e: PointerEvent) => {
+      const r = wrap.getBoundingClientRect()
+      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom
+      if (!inside) { mouse.on = 0; return }
+      mouse.tx = (e.clientX - r.left) * dpr
+      mouse.ty = (e.clientY - r.top) * dpr
+      if (!mouse.on) { mouse.x = mouse.tx; mouse.y = mouse.ty } // avoid a sweep on first entry
+      mouse.on = 1
+    }
+    const onLeaveWin = () => { mouse.on = 0 }
+
     const draw = () => {
       const w = c.width, h = c.height
+      // ease the pointer for a fluid feel
+      mouse.x += (mouse.tx - mouse.x) * 0.12
+      mouse.y += (mouse.ty - mouse.y) * 0.12
       ctx.clearRect(0, 0, w, h)
       // faint drifting color glows -- the "liquid" undercurrent
       ctx.globalCompositeOperation = 'lighter'
@@ -71,13 +93,19 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
         ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, 6.29); ctx.fill()
       }
       ctx.globalCompositeOperation = 'source-over'
-      // dim drifting constellation
+      // dim drifting constellation, with a gentle pull toward the pointer
       const D = 130 * dpr
+      const R = 150 * dpr // pointer influence radius
       for (const a of parts) {
         a.x += a.vx; a.y += a.vy
         if (a.x < 0) a.x += w; if (a.x > w) a.x -= w
         if (a.y < 0) a.y += h; if (a.y > h) a.y -= h
+        if (mouse.on) {
+          const dx = mouse.x - a.x, dy = mouse.y - a.y, d = Math.hypot(dx, dy)
+          if (d < R && d > 0) { a.x += (dx / d) * 0.25; a.y += (dy / d) * 0.25 }
+        }
       }
+      // links between nearby dots
       for (let i = 0; i < parts.length; i++) {
         for (let j = i + 1; j < parts.length; j++) {
           const a = parts[i], b = parts[j]
@@ -89,9 +117,20 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
           }
         }
       }
+      // dots, plus faint branches from the pointer to nearby dots
       for (const a of parts) {
-        ctx.fillStyle = 'rgba(244,239,230,0.42)'
-        ctx.beginPath(); ctx.arc(a.x, a.y, 1.3 * dpr, 0, 6.29); ctx.fill()
+        let near = false
+        if (mouse.on) {
+          const d = Math.hypot(mouse.x - a.x, mouse.y - a.y)
+          if (d < R) {
+            near = true
+            ctx.strokeStyle = 'rgba(255,140,70,' + (0.38 * (1 - d / R)) + ')'
+            ctx.lineWidth = 1
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke()
+          }
+        }
+        ctx.fillStyle = near ? 'rgba(255,150,90,0.85)' : 'rgba(244,239,230,0.42)'
+        ctx.beginPath(); ctx.arc(a.x, a.y, near ? 1.7 * dpr : 1.3 * dpr, 0, 6.29); ctx.fill()
       }
     }
 
@@ -108,6 +147,9 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
       return () => window.removeEventListener('resize', size)
     }
 
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('blur', onLeaveWin)
+
     const io = new IntersectionObserver((es) => {
       visible = es[0].isIntersecting
       if (visible) start(); else stop()
@@ -121,6 +163,8 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
       stop()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('blur', onLeaveWin)
       window.removeEventListener('resize', size)
     }
   }, [])
