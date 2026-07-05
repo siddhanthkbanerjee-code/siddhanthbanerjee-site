@@ -108,3 +108,15 @@ body {
     opacity: 0.72;
   }
 }
+
+/* Hero entrance -- content rises in (plays under the loader on first load, immediately on return) */
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-rise {
+  animation: heroRise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise { animation: none; opacity: 1; transform: none; }
+}

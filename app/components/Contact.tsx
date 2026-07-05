@@ -1,3 +1,5 @@
+import { Reveal } from './Reveal'
+
 // DRAFT COPY (edit freely): real contact-section paragraph, replacing the placeholder.
 const CONTACT_COPY =
   'If you are hiring for AI go-to-market, building something that needs to reach customers, or just want to compare notes on where this is heading, I would like to talk. Email is the fastest way to reach me.'
@@ -18,33 +20,37 @@ export function Contact() {
       }}
     >
       <div style={{ maxWidth: 640, width: '100%' }}>
-        <h2
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: 'var(--color-cream)',
-            fontSize: 'clamp(3rem, 9vw, 8rem)',
-            lineHeight: 0.92,
-            letterSpacing: '-0.02em',
-            margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
-          }}
-        >
-          LET&apos;S TALK.
-        </h2>
+        <Reveal mask>
+          <h2
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: 'var(--color-cream)',
+              fontSize: 'clamp(3rem, 9vw, 8rem)',
+              lineHeight: 0.92,
+              letterSpacing: '-0.02em',
+              margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
+            }}
+          >
+            LET&apos;S TALK.
+          </h2>
+        </Reveal>
 
-        <p
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: 'rgba(244,239,230,0.6)',
-            fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
-            lineHeight: 1.65,
-            margin: '0 0 clamp(2rem, 4vw, 3rem)',
-            maxWidth: 480,
-          }}
-        >
-          {CONTACT_COPY}
-        </p>
+        <Reveal delay={120}>
+          <p
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: 'rgba(244,239,230,0.6)',
+              fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+              lineHeight: 1.65,
+              margin: '0 0 clamp(2rem, 4vw, 3rem)',
+              maxWidth: 480,
+            }}
+          >
+            {CONTACT_COPY}
+          </p>
+        </Reveal>
 
         <div
           style={{

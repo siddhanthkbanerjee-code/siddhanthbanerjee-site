@@ -1,5 +1,6 @@
 import { papers } from '@/lib/content/papers'
 import { writing } from '@/lib/writing'
+import { Reveal } from './Reveal'
 
 // #0D1929: deep Oxford navy. Justification: same bg as /writing and /papers routes,
 // so the home section reads as the entry point to that ecosystem rather than a new zone.
@@ -97,26 +98,30 @@ export function WritingSection() {
       }}
     >
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
-        <h2
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: '#F4EFE6',
-            fontSize: 'clamp(2.2rem, 5vw, 4.5rem)',
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-            margin: '0 0 clamp(2.5rem, 5vw, 4rem)',
-          }}
-        >
-          Writing and Papers.
-        </h2>
+        <Reveal mask>
+          <h2
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: '#F4EFE6',
+              fontSize: 'clamp(2.2rem, 5vw, 4.5rem)',
+              lineHeight: 0.95,
+              letterSpacing: '-0.02em',
+              margin: '0 0 clamp(2.5rem, 5vw, 4rem)',
+            }}
+          >
+            Writing and Papers.
+          </h2>
+        </Reveal>
 
         {/* Papers strand */}
         <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <p style={labelStyle}>papers</p>
           <div>
-            {papers.map((p) => (
-              <PaperRow key={p.slug} slug={p.slug} title={p.title} descriptor={p.descriptor} />
+            {papers.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 70}>
+                <PaperRow slug={p.slug} title={p.title} descriptor={p.descriptor} />
+              </Reveal>
             ))}
           </div>
         </div>

@@ -50,6 +50,7 @@ export function HeroTransitionBlock() {
 
       {/* top-left: poses the question this hero answers */}
       <span
+        className="hero-rise"
         style={{
           position: 'absolute',
           top: 'clamp(1.5rem, 4vw, 2.5rem)',
@@ -80,6 +81,7 @@ export function HeroTransitionBlock() {
         }}
       >
         <h1
+          className="hero-rise"
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
@@ -89,6 +91,7 @@ export function HeroTransitionBlock() {
             letterSpacing: '-0.02em',
             margin: '0 0 1.5rem',
             textShadow: '0 2px 40px rgba(0,0,0,0.4)',
+            animationDelay: '140ms',
           }}
         >
           Siddhanth
@@ -97,6 +100,7 @@ export function HeroTransitionBlock() {
         </h1>
         {/* DRAFT COPY (from Siddhanth's brief -- edit freely): the who-am-i answer */}
         <p
+          className="hero-rise"
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
@@ -106,6 +110,7 @@ export function HeroTransitionBlock() {
             maxWidth: '34ch',
             margin: 0,
             textShadow: '0 2px 24px rgba(0,0,0,0.55)',
+            animationDelay: '280ms',
           }}
         >
           Oxford MBA. Five years in marketing, product and strategy. Now moving into AI go-to-market.

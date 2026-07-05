@@ -1,5 +1,6 @@
 import { projects } from '@/lib/content/projects'
 import { ProjectCard } from './ProjectCard'
+import { Reveal } from './Reveal'
 
 const builds = projects.filter((p) => p.kind === 'build')
 const consulting = projects.filter((p) => p.kind === 'consulting')
@@ -23,24 +24,24 @@ export function WorkShowcase() {
       }}
     >
       {/* Builds */}
-      <div style={{ marginBottom: 'clamp(3rem, 6vw, 5rem)' }}>
+      <Reveal style={{ marginBottom: 'clamp(3rem, 6vw, 5rem)' }}>
         <p style={sectionLabel}>builds</p>
         <div className="showcase-builds-grid">
           {builds.map((p) => (
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
-      </div>
+      </Reveal>
 
       {/* Consulting */}
-      <div>
+      <Reveal delay={120}>
         <p style={sectionLabel}>consulting</p>
         <div className="showcase-consulting-grid">
           {consulting.map((p) => (
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
-      </div>
+      </Reveal>
 
       <style>{`
         .showcase-builds-grid {

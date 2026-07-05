@@ -112,8 +112,9 @@ export function ProjectCard({ project }: { project: Project }) {
         paddingRight: 'clamp(1.4rem, 2.8vw, 2.4rem)',
         minHeight: 'clamp(200px, 22vw, 300px)',
         textDecoration: 'none',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'transform 180ms ease, border-color 220ms ease',
+        transform: hovered ? 'translateY(-6px) scale(1.012)' : 'translateY(0) scale(1)',
+        transition: 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease',
+        boxShadow: hovered ? '0 20px 55px -24px rgba(0,0,0,0.65)' : '0 0 0 rgba(0,0,0,0)',
         overflow: 'hidden',
         position: 'relative',
       }}
