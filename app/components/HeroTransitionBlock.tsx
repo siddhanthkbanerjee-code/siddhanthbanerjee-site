@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { HeroFluidCanvas } from './HeroFluidCanvas'
 
-// Rebuilt Sprint 10: the old version pinned for 250vh and ran a scrubbed GSAP timeline that
-// travelled "who am i?" to the top and morphed it into "my path". It read as janky (the name
-// snapped back mid-transition) and cost ~2.5 screens of scroll plus a 100vh dead gap before Path.
-// This version is a single 100vh hero that answers "who am i?" legibly, with a plain scroll cue.
+// Sprint 10 hero: a single 100vh opener. Background is the real-time aurora + constellation
+// fluid field (HeroFluidCanvas). The old 250vh scrubbed transition and 100vh dead gap are gone;
+// a plain scroll cue hands off to the Path section.
 export function HeroTransitionBlock() {
   const [reduced] = useState<boolean>(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -24,35 +24,29 @@ export function HeroTransitionBlock() {
 
   return (
     <section
-      className="hero-gradient"
       style={{
         position: 'relative',
         height: '100vh',
         minHeight: 560,
         overflow: 'hidden',
+        background: 'var(--color-ink)',
       }}
     >
-      {/* subtle grain overlay */}
-      <svg
+      {/* real-time fluid-light background */}
+      <HeroFluidCanvas variant="aurora-constellation" />
+
+      {/* legibility scrim: keeps the name and line readable over the moving field */}
+      <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0.04,
-          pointerEvents: 'none',
           zIndex: 1,
+          pointerEvents: 'none',
+          background:
+            'linear-gradient(to top, rgba(14,11,18,0.62) 0%, rgba(14,11,18,0.15) 38%, rgba(14,11,18,0) 62%)',
         }}
-      >
-        <defs>
-          <filter id="hero-grain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-          </filter>
-        </defs>
-        <rect width="100%" height="100%" filter="url(#hero-grain)" />
-      </svg>
+      />
 
       {/* top-left: poses the question this hero answers */}
       <span
@@ -61,6 +55,7 @@ export function HeroTransitionBlock() {
           top: 'clamp(1.5rem, 4vw, 2.5rem)',
           left: 'clamp(1.5rem, 6vw, 4rem)',
           zIndex: 2,
+          pointerEvents: 'none',
           fontFamily: 'var(--font-jetbrains-mono), monospace',
           fontSize: '0.7rem',
           letterSpacing: '0.24em',
@@ -71,12 +66,13 @@ export function HeroTransitionBlock() {
         who am i?
       </span>
 
-      {/* lower-left: the name and the answer, made legible */}
+      {/* lower-left: the name and the answer */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 2,
+          pointerEvents: 'none',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
@@ -92,29 +88,31 @@ export function HeroTransitionBlock() {
             fontSize: 'clamp(3rem, 11vw, 10rem)',
             letterSpacing: '-0.02em',
             margin: '0 0 1.5rem',
+            textShadow: '0 2px 40px rgba(0,0,0,0.4)',
           }}
         >
           Siddhanth
           <br />
           Banerjee
         </h1>
-        {/* DRAFT COPY (from Siddhanth's brief -- edit freely): the who-am-i answer, now readable */}
+        {/* DRAFT COPY (from Siddhanth's brief -- edit freely): the who-am-i answer */}
         <p
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
             fontSize: 'clamp(1.05rem, 2.2vw, 1.6rem)',
             lineHeight: 1.5,
-            color: 'rgba(244,239,230,0.86)',
+            color: 'rgba(244,239,230,0.92)',
             maxWidth: '34ch',
             margin: 0,
+            textShadow: '0 2px 24px rgba(0,0,0,0.55)',
           }}
         >
           Oxford MBA. Five years in marketing, product and strategy. Now moving into AI go-to-market.
         </p>
       </div>
 
-      {/* lower-right: plain scroll cue to the Path section */}
+      {/* lower-right: scroll cue to the Path section */}
       <button
         type="button"
         onClick={scrollToPath}
@@ -141,6 +139,7 @@ export function HeroTransitionBlock() {
             fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
             color: 'var(--color-cream)',
             letterSpacing: '-0.01em',
+            textShadow: '0 2px 16px rgba(0,0,0,0.5)',
           }}
         >
           my path
@@ -150,7 +149,7 @@ export function HeroTransitionBlock() {
           style={{
             fontFamily: 'var(--font-jetbrains-mono), monospace',
             fontSize: '0.7rem',
-            color: 'rgba(255,236,215,0.82)',
+            color: 'rgba(255,236,215,0.9)',
             lineHeight: 1,
           }}
         >

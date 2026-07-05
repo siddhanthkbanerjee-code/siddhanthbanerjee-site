@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from 'react'
 
-export type HeroVariant = 'molten' | 'aurora' | 'constellation' | 'nebula'
+export type HeroVariant = 'molten' | 'aurora' | 'constellation' | 'nebula' | 'aurora-constellation'
 
-// Real-time fluid-light background for the hero. GPU shader for molten/aurora,
-// canvas2D for constellation/nebula. Perf-guarded: DPR capped, paused when
-// offscreen or tab hidden, static single frame under prefers-reduced-motion.
-export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
+// Real-time fluid-light hero background. WebGL shader for the aurora/molten field,
+// canvas2D for the constellation/nebula. 'aurora-constellation' is constellation-forward:
+// a fine cursor-reactive network over a heavily dimmed, slow aurora that reads as a quiet
+// tonal wash, not a loud gradient. Perf-guarded: DPR capped, paused offscreen or when the
+// tab is hidden, single static frame under prefers-reduced-motion.
+export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?: HeroVariant }) {
   const glRef = useRef<HTMLCanvasElement | null>(null)
   const c2Ref = useRef<HTMLCanvasElement | null>(null)
   const wrapRef = useRef<HTMLDivElement | null>(null)
@@ -23,6 +25,12 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
     const mouse = { x: 0.5, y: 0.5, on: 0, tx: 0.5, ty: 0.5 }
     let W = 1
     let H = 1
+
+    const combined = variant === 'aurora-constellation'
+    const useGL = variant === 'molten' || variant === 'aurora' || combined
+    const useConst = variant === 'constellation' || combined
+    const useNebula = variant === 'nebula'
+    const use2D = useConst || useNebula
 
     const size = () => {
       const r = wrap.getBoundingClientRect()
@@ -44,21 +52,20 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
     const onLeave = () => { mouse.on = 0 }
     wrap.addEventListener('pointermove', onMove)
     wrap.addEventListener('pointerleave', onLeave)
-    window.addEventListener('resize', size)
 
-    const useGL = variant === 'molten' || variant === 'aurora'
     glc.style.opacity = useGL ? '1' : '0'
-    c2.style.opacity = useGL ? '0' : '1'
+    c2.style.opacity = use2D ? '1' : '0'
 
-    let draw: ((tm: number) => void) | null = null
+    const draws: Array<(tm: number) => void> = []
 
-    // ---------------- WebGL molten / aurora ----------------
+    // ---------------- WebGL molten / aurora (dimmed backdrop when combined) ----------------
     if (useGL) {
       const gl = (glc.getContext('webgl', { antialias: true, alpha: false }) ||
         glc.getContext('experimental-webgl')) as WebGLRenderingContext | null
+      let ok = false
       if (gl) {
         const vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}'
-        const fs = `precision highp float;uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uMouseOn;uniform int uMode;
+        const fs = `precision highp float;uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uMouseOn;uniform int uMode;uniform float uDim;
         float hash(vec2 p){p=fract(p*vec2(123.34,345.45));p+=dot(p,p+34.345);return fract(p.x*p.y);}
         float vn(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);float a=hash(i),b=hash(i+vec2(1.,0.)),c=hash(i+vec2(0.,1.)),d=hash(i+vec2(1.,1.));return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}
         float fbm(vec2 p){float s=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){s+=a*vn(p);p=m*p;a*=.5;}return s;}
@@ -76,7 +83,7 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
           else col=rmp(v,vec3(.05,.06,.11),vec3(.05,.10,.16),vec3(.36,.16,.62),vec3(.71,.20,.48),vec3(1.,.42,.21),vec3(.96,.94,.90));
           col+=mInf*vec3(1.,.5,.25)*.45;
           vec2 vc=uv-vec2(.5,.45);float vig=smoothstep(1.1,.2,length(vc*vec2(1.1,1.3)));col*=mix(.5,1.08,vig);
-          col+=hash(uv*uRes.xy*.5+uTime)*.05-.025;gl_FragColor=vec4(col,1.);}`
+          col+=hash(uv*uRes.xy*.5+uTime)*.05-.025;col*=uDim;gl_FragColor=vec4(col,1.);}`
         const compile = (type: number, src: string): WebGLShader | null => {
           const s = gl.createShader(type)
           if (!s) return null
@@ -104,52 +111,68 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
             const uMouse = gl.getUniformLocation(prog, 'uMouse')
             const uMouseOn = gl.getUniformLocation(prog, 'uMouseOn')
             const uMode = gl.getUniformLocation(prog, 'uMode')
-            draw = (tm: number) => {
+            const uDim = gl.getUniformLocation(prog, 'uDim')
+            const modeVal = variant === 'molten' ? 0 : 1
+            // Combined mode: dim, slow, and calm the field so the constellation leads.
+            const dimVal = combined ? 0.34 : 1.0
+            const timeScale = combined ? 0.00065 : 0.001
+            const mouseGain = combined ? 0.4 : 1.0
+            ok = true
+            draws.push((tm: number) => {
               gl.viewport(0, 0, glc.width, glc.height)
               gl.uniform2f(uRes, glc.width, glc.height)
-              gl.uniform1f(uTime, tm * 0.001)
+              gl.uniform1f(uTime, tm * timeScale)
               gl.uniform2f(uMouse, mouse.x, 1 - mouse.y)
-              gl.uniform1f(uMouseOn, mouse.on)
-              gl.uniform1i(uMode, variant === 'aurora' ? 1 : 0)
+              gl.uniform1f(uMouseOn, mouse.on * mouseGain)
+              gl.uniform1i(uMode, modeVal)
+              gl.uniform1f(uDim, dimVal)
               gl.drawArrays(gl.TRIANGLES, 0, 3)
-            }
+            })
           }
         }
       }
-      if (!draw) {
-        // WebGL unavailable: static branded gradient fallback
-        wrap.style.background = variant === 'aurora'
-          ? 'linear-gradient(135deg,#0E0B12,#0D1929,#5B2A9E,#B4327A,#FF6B35)'
-          : 'linear-gradient(135deg,#0E0B12,#241033,#7A2A12,#FF6B35,#C9A961)'
+      if (!ok) {
+        glc.style.opacity = '0'
+        wrap.style.background = variant === 'molten'
+          ? 'linear-gradient(135deg,#0E0B12,#241033,#7A2A12,#FF6B35,#C9A961)'
+          : combined
+            ? 'radial-gradient(120% 90% at 70% 20%, #1a1030 0%, #0E0B12 60%)'
+            : 'linear-gradient(135deg,#0E0B12,#0D1929,#5B2A9E,#B4327A,#FF6B35)'
       }
     }
 
-    // ---------------- constellation ----------------
-    if (variant === 'constellation') {
+    // ---------------- constellation (opaque, or transparent overlay when combined) ----------------
+    if (useConst) {
       const ctx = c2.getContext('2d')
       if (ctx) {
         type P = { x: number; y: number; vx: number; vy: number }
         let parts: P[] = []
         const initParts = () => {
-          const n = Math.round(Math.min(110, (W * H) / 14000))
+          const n = Math.round(Math.min(130, (c2.width * c2.height) / (14000 * dpr)))
           parts = []
           for (let i = 0; i < n; i++) {
             parts.push({ x: Math.random() * c2.width, y: Math.random() * c2.height, vx: (Math.random() - 0.5) * 0.35 * dpr, vy: (Math.random() - 0.5) * 0.35 * dpr })
           }
         }
         initParts()
-        draw = () => {
+        const lineRGB = combined ? '228,224,244' : '244,239,230'
+        const lineMax = combined ? 0.36 : 0.42
+        draws.push(() => {
           const w = c2.width, h = c2.height, mx = mouse.x * w, my = mouse.y * h
-          ctx.fillStyle = '#0E0B12'
-          ctx.fillRect(0, 0, w, h)
-          if (mouse.on) {
-            const g = ctx.createRadialGradient(mx, my, 0, mx, my, 220 * dpr)
-            g.addColorStop(0, 'rgba(255,107,53,0.16)')
-            g.addColorStop(1, 'rgba(255,107,53,0)')
-            ctx.fillStyle = g
+          if (combined) {
+            ctx.clearRect(0, 0, w, h)
+          } else {
+            ctx.fillStyle = '#0E0B12'
             ctx.fillRect(0, 0, w, h)
+            if (mouse.on) {
+              const g = ctx.createRadialGradient(mx, my, 0, mx, my, 240 * dpr)
+              g.addColorStop(0, 'rgba(255,107,53,0.16)')
+              g.addColorStop(1, 'rgba(255,107,53,0)')
+              ctx.fillStyle = g
+              ctx.fillRect(0, 0, w, h)
+            }
           }
-          const D = 125 * dpr
+          const D = 132 * dpr
           for (let i = 0; i < parts.length; i++) {
             const a = parts[i]
             a.x += a.vx; a.y += a.vy
@@ -157,7 +180,7 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
             if (a.y < 0) a.y += h; if (a.y > h) a.y -= h
             if (mouse.on) {
               const dx = mx - a.x, dy = my - a.y, d = Math.hypot(dx, dy)
-              if (d < 160 * dpr && d > 0) { a.x += (dx / d) * 0.4; a.y += (dy / d) * 0.4 }
+              if (d < 170 * dpr && d > 0) { a.x += (dx / d) * 0.4; a.y += (dy / d) * 0.4 }
             }
           }
           for (let i = 0; i < parts.length; i++) {
@@ -165,7 +188,7 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
               const a = parts[i], b = parts[j]
               const dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy)
               if (d < D) {
-                ctx.strokeStyle = 'rgba(244,239,230,' + (0.42 * (1 - d / D)) + ')'
+                ctx.strokeStyle = 'rgba(' + lineRGB + ',' + (lineMax * (1 - d / D)) + ')'
                 ctx.lineWidth = 1
                 ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke()
               }
@@ -173,36 +196,32 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
           }
           for (const a of parts) {
             let near = false
-            if (mouse.on && Math.hypot(mx - a.x, my - a.y) < 160 * dpr) {
+            if (mouse.on && Math.hypot(mx - a.x, my - a.y) < 170 * dpr) {
               near = true
-              ctx.strokeStyle = 'rgba(255,107,53,0.5)'
+              ctx.strokeStyle = 'rgba(255,140,70,0.6)'
               ctx.lineWidth = 1
               ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mx, my); ctx.stroke()
             }
-            ctx.fillStyle = near ? '#FF6B35' : 'rgba(244,239,230,0.9)'
-            ctx.beginPath(); ctx.arc(a.x, a.y, near ? 2.4 * dpr : 1.5 * dpr, 0, 6.29); ctx.fill()
+            ctx.fillStyle = near ? '#FF6B35' : 'rgba(248,244,236,0.95)'
+            ctx.beginPath(); ctx.arc(a.x, a.y, near ? 2.5 * dpr : 1.6 * dpr, 0, 6.29); ctx.fill()
           }
-        }
+        })
       }
     }
 
     // ---------------- nebula ----------------
-    if (variant === 'nebula') {
+    if (useNebula) {
       const ctx = c2.getContext('2d')
       if (ctx) {
         type B = { x: number; y: number; vx: number; vy: number; r: number; c: number[] }
         const cols = [[255, 107, 53], [123, 58, 180], [201, 169, 97], [180, 50, 122], [40, 20, 90]]
-        let blobs: B[] = []
-        const initBlobs = () => {
-          const base = Math.min(c2.width, c2.height)
-          blobs = cols.map((c) => ({
-            x: Math.random() * c2.width, y: Math.random() * c2.height,
-            vx: (Math.random() - 0.5) * 0.25 * dpr, vy: (Math.random() - 0.5) * 0.25 * dpr,
-            r: base * (0.55 + Math.random() * 0.35), c,
-          }))
-        }
-        initBlobs()
-        draw = () => {
+        const base = Math.min(c2.width, c2.height)
+        const blobs: B[] = cols.map((c) => ({
+          x: Math.random() * c2.width, y: Math.random() * c2.height,
+          vx: (Math.random() - 0.5) * 0.25 * dpr, vy: (Math.random() - 0.5) * 0.25 * dpr,
+          r: base * (0.55 + Math.random() * 0.35), c,
+        }))
+        draws.push(() => {
           const w = c2.width, h = c2.height, mx = mouse.x * w, my = mouse.y * h
           ctx.globalCompositeOperation = 'source-over'
           ctx.fillStyle = '#0B0810'
@@ -216,8 +235,8 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
               const dx = b.x - mx, dy = b.y - my, d = Math.hypot(dx, dy)
               if (d < b.r) { b.x += (dx / (d + 1)) * 1.2; b.y += (dy / (d + 1)) * 1.2 }
             }
-            const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r)
             const rgb = b.c[0] + ',' + b.c[1] + ',' + b.c[2]
+            const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r)
             g.addColorStop(0, 'rgba(' + rgb + ',0.42)')
             g.addColorStop(0.5, 'rgba(' + rgb + ',0.12)')
             g.addColorStop(1, 'rgba(' + rgb + ',0)')
@@ -230,47 +249,47 @@ export function HeroFluidCanvas({ variant }: { variant: HeroVariant }) {
           vg.addColorStop(1, 'rgba(11,8,16,0.6)')
           ctx.fillStyle = vg
           ctx.fillRect(0, 0, w, h)
-        }
+        })
       }
     }
 
     // ---------------- loop + guards ----------------
     let raf = 0
     let visible = true
+    const render = (tm: number) => { for (const d of draws) d(tm) }
     const frame = (tm: number) => {
       mouse.x += (mouse.tx - mouse.x) * 0.08
       mouse.y += (mouse.ty - mouse.y) * 0.08
-      if (draw) draw(tm)
+      render(tm)
       raf = requestAnimationFrame(frame)
     }
     const start = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame) }
     const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0 } }
 
-    if (reduced) {
-      // Static single frame, no animation.
-      if (draw) draw(0)
-    } else {
-      const io = new IntersectionObserver((es) => {
-        visible = es[0].isIntersecting
-        if (visible) start(); else stop()
-      }, { threshold: 0.01 })
-      io.observe(wrap)
-      const onVis = () => { if (document.hidden) stop(); else start() }
-      document.addEventListener('visibilitychange', onVis)
-      start()
+    window.addEventListener('resize', size)
 
+    if (reduced) {
+      render(0)
       return () => {
-        stop()
-        io.disconnect()
-        document.removeEventListener('visibilitychange', onVis)
         wrap.removeEventListener('pointermove', onMove)
         wrap.removeEventListener('pointerleave', onLeave)
         window.removeEventListener('resize', size)
       }
     }
 
+    const io = new IntersectionObserver((es) => {
+      visible = es[0].isIntersecting
+      if (visible) start(); else stop()
+    }, { threshold: 0.01 })
+    io.observe(wrap)
+    const onVis = () => { if (document.hidden) stop(); else start() }
+    document.addEventListener('visibilitychange', onVis)
+    start()
+
     return () => {
       stop()
+      io.disconnect()
+      document.removeEventListener('visibilitychange', onVis)
       wrap.removeEventListener('pointermove', onMove)
       wrap.removeEventListener('pointerleave', onLeave)
       window.removeEventListener('resize', size)

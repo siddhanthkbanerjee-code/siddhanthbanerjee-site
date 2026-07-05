@@ -5,14 +5,15 @@ import { HeroFluidCanvas } from '../components/HeroFluidCanvas'
 import type { HeroVariant } from '../components/HeroFluidCanvas'
 
 const VARIANTS: { id: HeroVariant; label: string }[] = [
-  { id: 'molten', label: '01 molten' },
-  { id: 'aurora', label: '02 aurora' },
-  { id: 'constellation', label: '03 constellation' },
+  { id: 'aurora-constellation', label: '00 constellation + flow' },
+  { id: 'constellation', label: '01 constellation only' },
+  { id: 'aurora', label: '02 aurora (full)' },
+  { id: 'molten', label: '03 molten' },
   { id: 'nebula', label: '04 nebula' },
 ]
 
 export default function Lab() {
-  const [variant, setVariant] = useState<HeroVariant>('molten')
+  const [variant, setVariant] = useState<HeroVariant>('aurora-constellation')
 
   return (
     <main
