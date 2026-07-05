@@ -80,7 +80,7 @@ export function Contact() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
-          padding: '0 clamp(1.5rem, 6vw, 4rem) clamp(5rem, 12vw, 8rem)',
+          padding: 'clamp(5rem, 13vw, 8rem) clamp(1.5rem, 6vw, 4rem) clamp(4rem, 9vw, 6rem)',
         }}
       >
         <div style={{ maxWidth: 640 }}>
@@ -90,8 +90,8 @@ export function Contact() {
                 fontFamily: 'var(--font-fraunces), serif',
                 fontWeight: 300,
                 color: 'var(--color-cream)',
-                fontSize: 'clamp(3rem, 11vw, 10rem)',
-                lineHeight: 0.92,
+                fontSize: 'clamp(2.5rem, 7.5vw, 6.5rem)',
+                lineHeight: 0.95,
                 letterSpacing: '-0.02em',
                 margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
                 textShadow: '0 2px 40px rgba(0,0,0,0.4)',
