@@ -92,8 +92,8 @@ export function ProjectCard({ project }: { project: Project }) {
   const [hovered, setHovered] = useState(false)
 
   const borderAlpha = hovered ? '55' : '30'
-  // Use cardBg gradient if defined, otherwise fall back to solid bg
-  const background = project.theme.cardBg ?? project.theme.bg
+  // Tile-only background if defined (keeps detail page untouched), else cardBg, else solid bg
+  const background = project.theme.tileBg ?? project.theme.cardBg ?? project.theme.bg
   // Top padding accounts for Slurrp Farm's decorative rule
   const paddingTop = project.slug === 'slurrp-farm' ? 0 : 'clamp(1.4rem, 2.8vw, 2.4rem)'
 

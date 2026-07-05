@@ -4,6 +4,7 @@ export type ProjectTheme = {
   text: string;
   accent: string;
   cardBg?: string; // optional CSS background for card and detail page (can be gradient); uses bg if absent
+  tileBg?: string; // optional CSS background for the home tile ONLY (not the detail page); lets a tile carry more brand color
 };
 
 export type BuildSections = {
@@ -80,6 +81,7 @@ export const projects: Project[] = [
       surface: '#FFFFFF',
       text: '#0E0B12',    // --color-ink
       accent: '#e879f9',  // fuchsia-400; bright enough on light bg for Prizerv gradient world
+    tileBg: 'radial-gradient(120% 110% at 12% 0%, #f6cdee 0%, #fbe6f6 42%, #FAF6F0 78%)', // fuchsia bloom (new tints) so the tile reads clearly as Prizerv; stays light so ink text is legible
     },
     sections: {
       whatItIs:
@@ -103,6 +105,7 @@ export const projects: Project[] = [
       surface: '#FFFFFF',
       text: '#0E0B12',    // --color-ink
       accent: '#1d4ed8',  // blue-700; restrained professional accent per brief
+    tileBg: 'linear-gradient(160deg, #dce6fb 0%, #eef3fb 46%, #F5F2ED 100%)', // cool blue document tint (new tints); leans into Lever's professional blue, ink text stays legible
     },
     sections: {
       whatItIs:
@@ -127,6 +130,7 @@ export const projects: Project[] = [
       surface: '#FFFFFF',
       text: '#0E0B12',    // --color-ink
       accent: '#4A7C4E',  // earthy green; distinct from all palette anchors; suits organic D2C
+    tileBg: 'linear-gradient(160deg, #e2efdd 0%, #eef2e4 50%, #F5F0E8 100%)', // earthy green wash (new tints) to separate SF from Share Our Strength; ink text legible
     },
     sections: {
       context:
@@ -150,6 +154,7 @@ export const projects: Project[] = [
       surface: '#FFFFFF',
       text: '#0E0B12',    // --color-ink
       accent: '#E05C2A',  // red-orange; distinct from tangerine (#FF6B35); warmer, more charitable
+    tileBg: 'linear-gradient(160deg, #fbd9c8 0%, #fde8dd 50%, #FDF4EE 100%)', // warm coral/red wash (new tints) to separate SOS from Slurrp Farm's green; ink text legible
     },
     sections: {
       context:
