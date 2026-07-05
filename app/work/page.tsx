@@ -1,4 +1,6 @@
 import { projects } from '@/lib/content/projects'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 // Background: #18140C -- deep warm amber, same hue family as gold (#C9A961) pulled to near-black
 const SECTION_BG = '#18140C'
@@ -8,20 +10,23 @@ export default function WorkPage() {
   const consulting = projects.filter((p) => p.kind === 'consulting')
 
   return (
-    <main style={{ background: SECTION_BG, minHeight: '100vh' }} className="px-5 py-24 md:px-12">
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <h1
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: '#F4EFE6',
-            fontSize: 'clamp(48px, 8vw, 80px)',
-            lineHeight: 1,
-            marginBottom: 16,
-          }}
-        >
-          Work.
-        </h1>
+    <main style={{ background: SECTION_BG, minHeight: '100vh', position: 'relative', overflow: 'hidden' }} className="px-5 py-24 md:px-12">
+      <AmbientField opacity={0.4} />
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <Reveal mask>
+          <h1
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: '#F4EFE6',
+              fontSize: 'clamp(48px, 8vw, 80px)',
+              lineHeight: 1,
+              marginBottom: 16,
+            }}
+          >
+            Work.
+          </h1>
+        </Reveal>
         <p
           style={{
             fontFamily: 'var(--font-jetbrains-mono), monospace',

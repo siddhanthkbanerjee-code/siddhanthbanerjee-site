@@ -1,5 +1,7 @@
 import { papers } from '@/lib/content/papers'
 import { notFound } from 'next/navigation'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 const SECTION_BG = '#0D1929'
 
@@ -18,10 +20,11 @@ export default async function PaperPage({
 
   return (
     <main
-      style={{ background: SECTION_BG, minHeight: '100vh' }}
+      style={{ background: SECTION_BG, minHeight: '100vh', position: 'relative', overflow: 'hidden' }}
       className="px-5 py-24 md:px-12"
     >
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+      <AmbientField opacity={0.32} />
+      <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <a
           href="/"
           style={{
@@ -53,18 +56,20 @@ export default async function PaperPage({
           {paper.module}
         </p>
 
-        <h1
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: '#F4EFE6',
-            fontSize: 'clamp(32px, 5.5vw, 68px)',
-            lineHeight: 1.05,
-            marginBottom: 24,
-          }}
-        >
-          {paper.title}
-        </h1>
+        <Reveal mask>
+          <h1
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: '#F4EFE6',
+              fontSize: 'clamp(32px, 5.5vw, 68px)',
+              lineHeight: 1.05,
+              marginBottom: 24,
+            }}
+          >
+            {paper.title}
+          </h1>
+        </Reveal>
 
         <p
           style={{

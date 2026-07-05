@@ -1,24 +1,29 @@
 import { writing } from '@/lib/writing'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 // Deep Oxford navy -- matches WritingSection home bg for ecosystem continuity
 const SECTION_BG = '#0D1929'
 
 export default function WritingPage() {
   return (
-    <main style={{ background: SECTION_BG, minHeight: '100vh' }} className="px-5 py-24 md:px-12">
-      <div style={{ maxWidth: 800, margin: '0 auto' }}>
-        <h1
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: '#F4EFE6',
-            fontSize: 'clamp(48px, 8vw, 80px)',
-            lineHeight: 1,
-            marginBottom: 16,
-          }}
-        >
-          Writing.
-        </h1>
+    <main style={{ background: SECTION_BG, minHeight: '100vh', position: 'relative', overflow: 'hidden' }} className="px-5 py-24 md:px-12">
+      <AmbientField opacity={0.32} />
+      <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <Reveal mask>
+          <h1
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: '#F4EFE6',
+              fontSize: 'clamp(48px, 8vw, 80px)',
+              lineHeight: 1,
+              marginBottom: 16,
+            }}
+          >
+            Writing.
+          </h1>
+        </Reveal>
 
         <p
           style={{

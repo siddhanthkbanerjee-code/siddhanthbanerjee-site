@@ -1,5 +1,7 @@
 import { writing } from '@/lib/writing'
 import { notFound } from 'next/navigation'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 const SECTION_BG = '#0D1929'
 
@@ -15,8 +17,9 @@ export default async function WritingDetailPage({ params }: Props) {
   if (!entry) notFound()
 
   return (
-    <main style={{ background: SECTION_BG, minHeight: '100vh' }} className="px-5 py-24 md:px-12">
-      <div style={{ maxWidth: 680, margin: '0 auto' }}>
+    <main style={{ background: SECTION_BG, minHeight: '100vh', position: 'relative', overflow: 'hidden' }} className="px-5 py-24 md:px-12">
+      <AmbientField opacity={0.32} />
+      <div style={{ maxWidth: 680, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <a
           href="/writing"
           style={{
@@ -48,18 +51,20 @@ export default async function WritingDetailPage({ params }: Props) {
           {entry.category} &middot; {entry.readTime}
         </p>
 
-        <h1
-          style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            color: '#F4EFE6',
-            fontSize: 'clamp(32px, 5.5vw, 64px)',
-            lineHeight: 1.05,
-            marginBottom: 32,
-          }}
-        >
-          {entry.title}
-        </h1>
+        <Reveal mask>
+          <h1
+            style={{
+              fontFamily: 'var(--font-fraunces), serif',
+              fontWeight: 300,
+              color: '#F4EFE6',
+              fontSize: 'clamp(32px, 5.5vw, 64px)',
+              lineHeight: 1.05,
+              marginBottom: 32,
+            }}
+          >
+            {entry.title}
+          </h1>
+        </Reveal>
 
         <div
           style={{
