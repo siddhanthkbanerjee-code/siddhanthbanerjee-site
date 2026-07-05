@@ -24,18 +24,33 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Siddhanth Banerjee',
-  description: 'Brand operator at Zomato. Now building AI products at Oxford.',
+  // TODO: switch metadataBase to https://siddhanthbanerjee.com once the domain is connected.
+  metadataBase: new URL('https://siddhanthbanerjee-site.vercel.app'),
+  title: 'Siddhanth Banerjee | AI Builder and GTM Strategist',
+  description:
+    'Oxford MBA and operator (Zomato, Epigamia). Five years across marketing, product and strategy, now building in AI go-to-market.',
   openGraph: {
-    title: 'Siddhanth Banerjee',
-    description: 'Brand operator at Zomato. Now building AI products at Oxford.',
+    title: 'Siddhanth Banerjee | AI Builder and GTM Strategist',
+    description:
+      'Oxford MBA and operator. Five years in marketing, product and strategy, now building in AI go-to-market.',
+    url: '/',
+    siteName: 'Siddhanth Banerjee',
+    type: 'website',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?w=1200&q=85',
+        url: '/og.png',
         width: 1200,
         height: 630,
+        alt: 'Siddhanth Banerjee, AI Builder and GTM Strategist',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Siddhanth Banerjee | AI Builder and GTM Strategist',
+    description:
+      'Oxford MBA and operator. Five years in marketing, product and strategy, now building in AI go-to-market.',
+    images: ['/og.png'],
   },
 }
 
