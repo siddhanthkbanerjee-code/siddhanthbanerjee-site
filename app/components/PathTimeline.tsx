@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pathThesis, pathStations, pathPayoff, pathPayoffLine, PathStation } from '@/lib/content/path'
+import { AmbientField } from './AmbientField'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -66,7 +67,7 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
-        background: 'radial-gradient(130% 120% at 12% 28%, rgba(255,107,53,0.12) 0%, rgba(122,58,180,0.12) 34%, var(--color-ink) 64%)', // warm intro glow, not flat black; violet 122,58,180 from hero palette
+        background: 'radial-gradient(130% 120% at 12% 28%, rgba(255,107,53,0.12) 0%, rgba(122,58,180,0.12) 34%, transparent 64%)', // warm intro glow, not flat black; violet 122,58,180 from hero palette
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -138,7 +139,7 @@ function StationPanel({
         gridTemplateColumns: '55% 45%',
         alignItems: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 7vw, 8rem)',
-        background: `radial-gradient(135% 115% at 10% 35%, ${station.tint}33 0%, ${station.tint}12 30%, var(--color-ink) 62%)`,
+        background: `radial-gradient(135% 115% at 10% 35%, ${station.tint}33 0%, ${station.tint}12 30%, transparent 62%)`,
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -305,7 +306,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
-        background: 'radial-gradient(120% 120% at 14% 42%, rgba(255,107,53,0.16) 0%, #180800 34%, var(--color-ink) 72%)',
+        background: 'radial-gradient(120% 120% at 14% 42%, rgba(255,107,53,0.16) 0%, rgba(24,8,0,0.55) 34%, transparent 72%)',
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -444,14 +445,19 @@ function PathTimelineDesktop() {
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
+          background: 'var(--color-ink)',
         }}
       >
+        {/* subtle cursor-reactive constellation carried behind the whole path scroll */}
+        <AmbientField opacity={0.3} />
         {/* Persistent header -- visible for the full duration of the Path section scroll */}
         <div
           style={{
             flexShrink: 0,
             padding: '1rem clamp(2rem, 7vw, 8rem)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           <p
@@ -471,7 +477,7 @@ function PathTimelineDesktop() {
         {/* Horizontal track -- fills remaining height below the header */}
         <div
           ref={trackRef}
-          style={{ display: 'flex', width: `${NUM_PANELS * 100}vw`, flex: 1, minHeight: 0 }}
+          style={{ display: 'flex', width: `${NUM_PANELS * 100}vw`, flex: 1, minHeight: 0, position: 'relative', zIndex: 1 }}
         >
           <ThesisPanel contentRef={setRef(0)} />
           {pathStations.map((station, i) => (
@@ -522,7 +528,9 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
   const setRef = (i: number) => (el: HTMLDivElement | null) => { panelRefs.current[i] = el }
 
   return (
-    <section id="path-section" style={{ background: 'var(--color-ink)' }}>
+    <section id="path-section" style={{ background: 'var(--color-ink)', position: 'relative' }}>
+      <AmbientField opacity={0.28} />
+      <div style={{ position: 'relative', zIndex: 1 }}>
       {/* Section header -- static in the stacked mobile/reduced-motion version */}
       <div
         style={{
@@ -588,7 +596,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             position: 'relative',
             padding: 'clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 5vw, 3rem) clamp(2.5rem, 7vw, 4rem) clamp(2.5rem, 6vw, 4rem)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
-            background: `radial-gradient(150% 120% at 0% 0%, ${station.tint}2A 0%, var(--color-ink) 60%)`,
+            background: `radial-gradient(150% 120% at 0% 0%, ${station.tint}2A 0%, transparent 60%)`,
             // Left border acts as the vertical timeline line
             borderLeft: '1px solid rgba(255,107,53,0.28)',
             marginLeft: 'clamp(1.5rem, 5vw, 3rem)',
@@ -694,7 +702,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
         style={{
           position: 'relative',
           padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 8vw, 5rem) clamp(2.5rem, 6vw, 4rem)',
-          background: 'radial-gradient(130% 120% at 6% 8%, rgba(255,107,53,0.16) 0%, #180800 38%, var(--color-ink) 74%)',
+          background: 'radial-gradient(130% 120% at 6% 8%, rgba(255,107,53,0.16) 0%, rgba(24,8,0,0.55) 38%, transparent 74%)',
           // Terminus node: continues the border but ends here
           borderLeft: '1px solid rgba(255,107,53,0.28)',
           marginLeft: 'clamp(1.5rem, 5vw, 3rem)',
@@ -752,6 +760,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
         >
           {pathPayoffLine}
         </p>
+      </div>
       </div>
     </section>
   )
