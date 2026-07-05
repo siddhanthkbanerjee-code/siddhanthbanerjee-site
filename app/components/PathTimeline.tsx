@@ -66,7 +66,7 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
-        background: 'var(--color-ink)',
+        background: 'radial-gradient(130% 120% at 12% 28%, rgba(255,107,53,0.12) 0%, rgba(122,58,180,0.12) 34%, var(--color-ink) 64%)', // warm intro glow, not flat black; violet 122,58,180 from hero palette
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -106,7 +106,7 @@ function ThesisPanel({ contentRef }: { contentRef: ContentRefSetter }) {
             // Deliberately smaller and lighter than station panels -- this is setup, not the main event
             fontSize: 'clamp(0.92rem, 1.25vw, 1.1rem)',
             lineHeight: 1.7,
-            color: 'rgba(244,239,230,0.65)',
+            color: 'rgba(244,239,230,0.82)',
             maxWidth: 'min(600px, 55vw)',
             margin: 0,
           }}
@@ -138,7 +138,7 @@ function StationPanel({
         gridTemplateColumns: '55% 45%',
         alignItems: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 7vw, 8rem)',
-        background: `linear-gradient(150deg, var(--color-ink) 55%, ${station.tint}14)`,
+        background: `radial-gradient(135% 115% at 10% 35%, ${station.tint}33 0%, ${station.tint}12 30%, var(--color-ink) 62%)`,
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -305,7 +305,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
-        background: 'linear-gradient(150deg, #180800 0%, #0E0B12 60%)',
+        background: 'radial-gradient(120% 120% at 14% 42%, rgba(255,107,53,0.16) 0%, #180800 34%, var(--color-ink) 72%)',
         position: 'relative',
         boxSizing: 'border-box',
       }}
@@ -571,7 +571,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             // Lighter and smaller than stations on mobile too
             fontSize: 'clamp(0.9rem, 3.2vw, 1.05rem)',
             lineHeight: 1.7,
-            color: 'rgba(244,239,230,0.65)',
+            color: 'rgba(244,239,230,0.82)',
             margin: 0,
           }}
         >
@@ -588,7 +588,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
             position: 'relative',
             padding: 'clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 5vw, 3rem) clamp(2.5rem, 7vw, 4rem) clamp(2.5rem, 6vw, 4rem)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
-            background: `linear-gradient(170deg, var(--color-ink) 70%, ${station.tint}12)`,
+            background: `radial-gradient(150% 120% at 0% 0%, ${station.tint}2A 0%, var(--color-ink) 60%)`,
             // Left border acts as the vertical timeline line
             borderLeft: '1px solid rgba(255,107,53,0.28)',
             marginLeft: 'clamp(1.5rem, 5vw, 3rem)',
@@ -694,7 +694,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
         style={{
           position: 'relative',
           padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 8vw, 5rem) clamp(2.5rem, 6vw, 4rem)',
-          background: 'linear-gradient(170deg, #180800 0%, #0E0B12 55%)',
+          background: 'radial-gradient(130% 120% at 6% 8%, rgba(255,107,53,0.16) 0%, #180800 38%, var(--color-ink) 74%)',
           // Terminus node: continues the border but ends here
           borderLeft: '1px solid rgba(255,107,53,0.28)',
           marginLeft: 'clamp(1.5rem, 5vw, 3rem)',

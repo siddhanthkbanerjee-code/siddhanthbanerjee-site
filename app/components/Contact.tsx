@@ -6,7 +6,7 @@ export function Contact() {
   return (
     <section
       style={{
-        background: 'var(--color-ink)',
+        background: 'radial-gradient(115% 125% at 16% 100%, #1c1030 0%, var(--color-ink) 58%)', // warm violet glow (1c1030) from lower-left where the text sits
         minHeight: '60vh',
         position: 'relative',
         display: 'flex',

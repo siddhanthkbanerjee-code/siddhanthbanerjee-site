@@ -17,7 +17,7 @@ export function WorkShowcase() {
   return (
     <section
       style={{
-        background: 'var(--color-ink)',
+        background: 'linear-gradient(180deg, #15111f 0%, var(--color-ink) 40%)', // subtle violet lift (15111f) so the section is not flat black behind the cards
         padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3.5rem)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}

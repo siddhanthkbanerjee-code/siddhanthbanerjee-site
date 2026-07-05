@@ -3,7 +3,7 @@ import { writing } from '@/lib/writing'
 
 // #0D1929: deep Oxford navy. Justification: same bg as /writing and /papers routes,
 // so the home section reads as the entry point to that ecosystem rather than a new zone.
-const SECTION_BG = '#0D1929'
+const SECTION_BG = 'linear-gradient(180deg, #10203A 0%, #0D1929 55%)' // lifted navy (10203A) into deep Oxford navy for depth
 
 const labelStyle: React.CSSProperties = {
   fontFamily: 'var(--font-jetbrains-mono), monospace',
@@ -42,7 +42,7 @@ function PaperRow({ slug, title, descriptor }: { slug: string; title: string; de
       <p
         style={{
           fontFamily: 'var(--font-inter), sans-serif',
-          color: 'rgba(244,239,230,0.45)',
+          color: 'rgba(244,239,230,0.55)',
           fontSize: 'clamp(12px, 1.4vw, 14px)',
           lineHeight: 1.5,
           margin: 0,
@@ -75,7 +75,7 @@ function WritingRow({ slug, title, excerpt }: { slug: string; title: string; exc
       <p
         style={{
           fontFamily: 'var(--font-inter), sans-serif',
-          color: 'rgba(244,239,230,0.45)',
+          color: 'rgba(244,239,230,0.55)',
           fontSize: 'clamp(12px, 1.4vw, 14px)',
           lineHeight: 1.5,
           margin: 0,
@@ -121,15 +121,17 @@ export function WritingSection() {
           </div>
         </div>
 
-        {/* Writing strand */}
-        <div>
-          <p style={labelStyle}>writing</p>
+        {/* Writing strand -- only rendered once real pieces exist, so no empty label shows */}
+        {writing.length > 0 && (
           <div>
-            {writing.map((e) => (
-              <WritingRow key={e.slug} slug={e.slug} title={e.title} excerpt={e.excerpt} />
-            ))}
+            <p style={labelStyle}>writing</p>
+            <div>
+              {writing.map((e) => (
+                <WritingRow key={e.slug} slug={e.slug} title={e.title} excerpt={e.excerpt} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style>{`
