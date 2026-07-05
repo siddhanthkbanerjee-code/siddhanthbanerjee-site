@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 
 const URL_TEXT = 'siddhanthbanerjee.com'
 const SESSION_KEY = 'siddhanth_loaded_v2'
-const FULL_DURATION_MS = 5000
-const REDUCED_DURATION_MS = 2000
-const TYPEWRITER_END_MS = 3000
-const DISSOLVE_MS = 600
+// Shortened from 5000/3000: the loader is a flourish, not a gate. Front-load the site, not the wait.
+const FULL_DURATION_MS = 1500
+const REDUCED_DURATION_MS = 900
+const TYPEWRITER_END_MS = 1000
+const DISSOLVE_MS = 550
 
 export function LoadingScreen() {
   // Lazy initializer: check sessionStorage synchronously on first client render.
@@ -33,7 +34,20 @@ export function LoadingScreen() {
 
     const duration = reducedMotion.current ? REDUCED_DURATION_MS : FULL_DURATION_MS
     const start = performance.now()
-    let raf: number
+    let raf = 0
+    let finished = false
+
+    // Single completion path, shared by the natural timeout and the skip-on-interaction handlers.
+    const finish = () => {
+      if (finished) return
+      finished = true
+      cancelAnimationFrame(raf)
+      setPercent(100)
+      setTyped(URL_TEXT.length)
+      sessionStorage.setItem(SESSION_KEY, '1')
+      setDissolving(true)
+      window.setTimeout(() => setGone(true), DISSOLVE_MS)
+    }
 
     const tick = (now: number) => {
       const elapsed = now - start
@@ -49,16 +63,26 @@ export function LoadingScreen() {
       if (progress < 1) {
         raf = requestAnimationFrame(tick)
       } else {
-        setPercent(100)
-        setTyped(URL_TEXT.length)
-        sessionStorage.setItem(SESSION_KEY, '1')
-        setDissolving(true)
-        setTimeout(() => setGone(true), DISSOLVE_MS)
+        finish()
       }
     }
 
     raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+
+    // Any intent to engage (scroll, tap, key, click) dismisses the loader immediately.
+    const onIntent = () => finish()
+    window.addEventListener('wheel', onIntent, { passive: true })
+    window.addEventListener('touchstart', onIntent, { passive: true })
+    window.addEventListener('keydown', onIntent)
+    window.addEventListener('pointerdown', onIntent)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('wheel', onIntent)
+      window.removeEventListener('touchstart', onIntent)
+      window.removeEventListener('keydown', onIntent)
+      window.removeEventListener('pointerdown', onIntent)
+    }
   }, [skipped])
 
   if (skipped || gone) return null

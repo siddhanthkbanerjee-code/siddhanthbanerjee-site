@@ -1,248 +1,164 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useState } from 'react'
 
-gsap.registerPlugin(ScrollTrigger)
-
+// Rebuilt Sprint 10: the old version pinned for 250vh and ran a scrubbed GSAP timeline that
+// travelled "who am i?" to the top and morphed it into "my path". It read as janky (the name
+// snapped back mid-transition) and cost ~2.5 screens of scroll plus a 100vh dead gap before Path.
+// This version is a single 100vh hero that answers "who am i?" legibly, with a plain scroll cue.
 export function HeroTransitionBlock() {
   const [reduced] = useState<boolean>(() =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
 
-  const outerRef = useRef<HTMLDivElement>(null)
-  const heroContentRef = useRef<HTMLDivElement>(null)
-  const floatRef = useRef<HTMLDivElement>(null)
-  const textWhoRef = useRef<HTMLSpanElement>(null)
-  const textPathRef = useRef<HTMLSpanElement>(null)
-  const arrowRef = useRef<HTMLSpanElement>(null)
-
   const scrollToPath = () => {
-    const lenis = (window as any).__lenis
-    if (reduced) {
-      const pathEl = document.getElementById('path-section')
-      if (!pathEl) return
-      if (lenis) {
-        lenis.scrollTo(pathEl)
-      } else {
-        pathEl.scrollIntoView({ behavior: 'smooth' })
-      }
-      return
-    }
-    const outer = outerRef.current
-    if (!outer) return
-    // Scroll to pin-end so the full animation plays via the shared ScrollTrigger
-    const targetY = outer.offsetTop + outer.offsetHeight - window.innerHeight
+    const pathEl = document.getElementById('path-section')
+    if (!pathEl) return
+    const lenis = (window as { __lenis?: { scrollTo: (t: Element, o?: object) => void } }).__lenis
     if (lenis) {
-      lenis.scrollTo(targetY, { duration: 2.5 })
+      lenis.scrollTo(pathEl, { duration: reduced ? 0 : 1.4 })
     } else {
-      window.scrollTo({ top: targetY, behavior: 'smooth' })
+      pathEl.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
     }
   }
 
-  useEffect(() => {
-    if (reduced) return
-
-    const outer = outerRef.current
-    const heroContent = heroContentRef.current
-    const floatEl = floatRef.current
-    const textWho = textWhoRef.current
-    const textPath = textPathRef.current
-    const arrow = arrowRef.current
-    if (!outer || !heroContent || !floatEl || !textWho || !textPath || !arrow) return
-
-    const init = () => {
-      // Measure current screen position of float element and compute travel delta
-      const floatRect = floatEl.getBoundingClientRect()
-      const endLeft = (window.innerWidth - floatEl.offsetWidth) / 2
-      const endTop = 56
-      const dx = endLeft - floatRect.left
-      const dy = endTop - floatRect.top
-
-      gsap.set(floatEl, { x: 0, y: 0 })
-      gsap.set(textPath, { opacity: 0 })
-
-      const tl = gsap.timeline()
-
-      // 40-65%: hero name and subtitle fade out
-      tl.to(heroContent, { opacity: 0, y: -24, ease: 'power2.in', duration: 0.25 }, 0.4)
-
-      // 55-90%: float element travels from bottom-right to center-top
-      tl.to(floatEl, { x: dx, y: dy, ease: 'power2.inOut', duration: 0.35 }, 0.55)
-
-      // 63-75%: text crossfade -- "who am i?" out, "my path" in
-      tl.to(textWho, { opacity: 0, duration: 0.12 }, 0.63)
-      tl.to(arrow, { opacity: 0, duration: 0.12 }, 0.63)
-      tl.to(textPath, { opacity: 1, duration: 0.14 }, 0.70)
-
-      // Single ScrollTrigger -- click handler drives the same trigger via lenis.scrollTo
-      // Before: end '+=300%' (300vh travel). After: '+=150%' (150vh) -- tighter without rushing the phases.
-      ScrollTrigger.create({
-        trigger: outer,
-        start: 'top top',
-        end: '+=150%',
-        scrub: 1.5,
-        animation: tl,
-      })
-    }
-
-    const raf = requestAnimationFrame(init)
-    return () => {
-      cancelAnimationFrame(raf)
-      ScrollTrigger.getAll().forEach((t) => t.kill())
-    }
-  }, [reduced])
-
   return (
-    // 250vh outer (was 400vh): pins for 150vh of animation travel, then 100vh slide-off before Path section
-    <div ref={outerRef} style={{ height: reduced ? '100vh' : '250vh' }}>
-      <div
-        className="hero-gradient"
-        style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}
+    <section
+      className="hero-gradient"
+      style={{
+        position: 'relative',
+        height: '100vh',
+        minHeight: 560,
+        overflow: 'hidden',
+      }}
+    >
+      {/* subtle grain overlay */}
+      <svg
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.04,
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
       >
-        {/* subtle grain overlay */}
-        <svg
+        <defs>
+          <filter id="hero-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+        </defs>
+        <rect width="100%" height="100%" filter="url(#hero-grain)" />
+      </svg>
+
+      {/* top-left: poses the question this hero answers */}
+      <span
+        style={{
+          position: 'absolute',
+          top: 'clamp(1.5rem, 4vw, 2.5rem)',
+          left: 'clamp(1.5rem, 6vw, 4rem)',
+          zIndex: 2,
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontSize: '0.7rem',
+          letterSpacing: '0.24em',
+          textTransform: 'uppercase',
+          color: 'var(--color-tangerine)',
+        }}
+      >
+        who am i?
+      </span>
+
+      {/* lower-left: the name and the answer, made legible */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '0 clamp(1.5rem, 6vw, 4rem) clamp(3.5rem, 10vw, 6rem)',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            color: 'var(--color-cream)',
+            lineHeight: 0.92,
+            fontSize: 'clamp(3rem, 11vw, 10rem)',
+            letterSpacing: '-0.02em',
+            margin: '0 0 1.5rem',
+          }}
+        >
+          Siddhanth
+          <br />
+          Banerjee
+        </h1>
+        {/* DRAFT COPY (from Siddhanth's brief -- edit freely): the who-am-i answer, now readable */}
+        <p
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontSize: 'clamp(1.05rem, 2.2vw, 1.6rem)',
+            lineHeight: 1.5,
+            color: 'rgba(244,239,230,0.86)',
+            maxWidth: '34ch',
+            margin: 0,
+          }}
+        >
+          Oxford MBA. Five years in marketing, product and strategy. Now moving into AI go-to-market.
+        </p>
+      </div>
+
+      {/* lower-right: plain scroll cue to the Path section */}
+      <button
+        type="button"
+        onClick={scrollToPath}
+        aria-label="Scroll to my path"
+        className={reduced ? undefined : 'hero-float-pulse'}
+        style={{
+          position: 'absolute',
+          bottom: 'clamp(1.5rem, 4vw, 2.5rem)',
+          right: 'clamp(1.5rem, 6vw, 4rem)',
+          zIndex: 10,
+          background: 'none',
+          border: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 8,
+          padding: 8,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-fraunces), serif',
+            fontWeight: 300,
+            fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
+            color: 'var(--color-cream)',
+            letterSpacing: '-0.01em',
+          }}
+        >
+          my path
+        </span>
+        <span
           aria-hidden="true"
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0.04,
-            pointerEvents: 'none',
-            zIndex: 1,
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.7rem',
+            color: 'rgba(255,236,215,0.82)',
+            lineHeight: 1,
           }}
         >
-          <defs>
-            <filter id="hero-grain">
-              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-              <feColorMatrix type="saturate" values="0" />
-            </filter>
-          </defs>
-          <rect width="100%" height="100%" filter="url(#hero-grain)" />
-        </svg>
+          &#8595;
+        </span>
+      </button>
 
-        {/* hero content: fades out during the transition */}
-        <div
-          ref={heroContentRef}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: '0 2rem 5rem',
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: 'var(--font-fraunces), serif',
-              fontWeight: 300,
-              color: 'var(--color-cream)',
-              lineHeight: 0.92,
-              fontSize: 'clamp(3rem, 11vw, 10rem)',
-              letterSpacing: '-0.02em',
-              margin: '0 0 1.25rem',
-            }}
-          >
-            Siddhanth
-            <br />
-            Banerjee
-          </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: 'clamp(0.6rem, 1.05vw, 0.75rem)',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(244,239,230,0.5)',
-              margin: 0,
-            }}
-          >
-            Oxford MBA, AI Builder and GTM Strategist
-          </p>
-        </div>
-
-        {/* floating element: pulsing "who am i?" that travels to become "my path" heading */}
-        <div
-          ref={floatRef}
-          role="button"
-          aria-label="Scroll to my path"
-          tabIndex={0}
-          onClick={scrollToPath}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') scrollToPath()
-          }}
-          style={{
-            position: 'absolute',
-            bottom: 32,
-            right: 32,
-            zIndex: 10,
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 8,
-            userSelect: 'none',
-          }}
-        >
-          {/* inner pulse wrapper -- CSS animation here; outer div is GSAP x/y only */}
-          <div className={reduced ? undefined : 'hero-float-pulse'}>
-            <div style={{ position: 'relative' }}>
-              <span
-                ref={textWhoRef}
-                style={{
-                  display: 'block',
-                  fontFamily: 'var(--font-jetbrains-mono), monospace',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.22em',
-                  color: 'rgba(255,236,215,0.96)',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                who am i?
-              </span>
-              {/* "my path" fades in over "who am i?" during the scroll crossfade */}
-              <span
-                ref={textPathRef}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  opacity: 0,
-                  fontFamily: 'var(--font-fraunces), serif',
-                  fontWeight: 300,
-                  fontSize: 'clamp(1.1rem, 2.5vw, 2rem)',
-                  letterSpacing: '-0.01em',
-                  color: 'var(--color-cream)',
-                  whiteSpace: 'nowrap',
-                  pointerEvents: 'none',
-                }}
-              >
-                my path
-              </span>
-            </div>
-          </div>
-          <span
-            ref={arrowRef}
-            aria-hidden="true"
-            style={{
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.6rem',
-              color: 'rgba(255,236,215,0.82)',
-              lineHeight: 1,
-            }}
-          >
-            &#8595;
-          </span>
-        </div>
-
-        {/* reduced-motion: static "my path" accessible label */}
-        {reduced && <p className="sr-only">Scroll down for my path section</p>}
-      </div>
-    </div>
+      {reduced && <p className="sr-only">Scroll down for my path section</p>}
+    </section>
   )
 }
