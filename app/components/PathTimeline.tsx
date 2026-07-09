@@ -295,6 +295,32 @@ function StationPanel({
 }
 
 
+
+// ---- Payoff sheen: one-shot light sweep on the climax heading when it enters view ----
+function usePayoffSheen() {
+  const ref = useRef<HTMLHeadingElement | null>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.classList.add('payoff-lit') // reduced-motion CSS renders this as static tangerine
+      return
+    }
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es[0].isIntersecting) {
+          el.classList.add('payoff-lit')
+          io.disconnect()
+        }
+      },
+      { threshold: 0.5 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return ref
+}
+
 // ---- Payoff cue: hands the story off to the proof, mirroring the hero and contact cues ----
 function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
   const go = () => {
@@ -365,6 +391,7 @@ function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
 
 // ---- Panel: Payoff ----
 function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
+  const sheenRef = usePayoffSheen()
   return (
     <div
       style={{
@@ -412,6 +439,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
           now
         </p>
         <h3
+          ref={sheenRef}
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
@@ -568,6 +596,7 @@ function PathTimelineDesktop() {
 
 // ---- Mobile / reduced-motion vertical stack ----
 function PathTimelineStacked({ reduced }: { reduced: boolean }) {
+  const sheenRef = usePayoffSheen()
   const panelRefs = useRef<(HTMLDivElement | null)[]>(Array.from({ length: NUM_PANELS }, () => null))
 
   useEffect(() => {
@@ -806,6 +835,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
           now
         </p>
         <h3
+          ref={sheenRef}
           style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontWeight: 300,
