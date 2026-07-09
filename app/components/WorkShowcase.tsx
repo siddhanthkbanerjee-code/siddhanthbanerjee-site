@@ -18,6 +18,7 @@ const sectionLabel: React.CSSProperties = {
 export function WorkShowcase() {
   return (
     <section
+      id="work-section"
       style={{
         position: 'relative',
         overflow: 'hidden',
@@ -52,7 +53,8 @@ export function WorkShowcase() {
       <style>{`
         .showcase-builds-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          /* Four builds read as a balanced 2x2, not a 3+1 orphan row */
+          grid-template-columns: repeat(2, 1fr);
           gap: clamp(0.75rem, 1.5vw, 1.25rem);
         }
         .showcase-consulting-grid {

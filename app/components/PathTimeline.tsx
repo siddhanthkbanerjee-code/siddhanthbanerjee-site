@@ -294,6 +294,75 @@ function StationPanel({
   )
 }
 
+
+// ---- Payoff cue: hands the story off to the proof, mirroring the hero and contact cues ----
+function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
+  const go = () => {
+    const el = document.getElementById('work-section')
+    if (!el) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = (window as { __lenis?: { scrollTo: (t: Element, o?: object) => void } }).__lenis
+    if (lenis) {
+      lenis.scrollTo(el, { duration: reduced ? 0 : 1.4 })
+    } else {
+      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+    }
+  }
+  const pulse =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? undefined
+      : 'hero-float-pulse'
+  return (
+    <button
+      type="button"
+      onClick={go}
+      aria-label="Scroll to the work section"
+      className={pulse}
+      style={{
+        background: 'none',
+        border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: variant === 'panel' ? 'center' : 'flex-start',
+        gap: 8,
+        padding: 8,
+        ...(variant === 'panel'
+          ? {
+              position: 'absolute' as const,
+              bottom: 'clamp(1.5rem, 4vw, 2.5rem)',
+              right: 'clamp(1.5rem, 6vw, 4rem)',
+              zIndex: 2,
+            }
+          : { margin: '2rem 0 0 -8px' }),
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-fraunces), serif',
+          fontWeight: 300,
+          fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
+          color: 'var(--color-cream)',
+          letterSpacing: '-0.01em',
+          textShadow: '0 2px 16px rgba(0,0,0,0.5)',
+        }}
+      >
+        the work
+      </span>
+      <span
+        aria-hidden="true"
+        style={{
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontSize: '0.7rem',
+          color: 'rgba(255,236,215,0.9)',
+          lineHeight: 1,
+        }}
+      >
+        &#8595;
+      </span>
+    </button>
+  )
+}
+
 // ---- Panel: Payoff ----
 function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
   return (
@@ -374,6 +443,8 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
           {pathPayoffLine}
         </p>
       </div>
+
+      <PayoffCue variant="panel" />
     </div>
   )
 }
@@ -760,6 +831,8 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
         >
           {pathPayoffLine}
         </p>
+
+        <PayoffCue variant="stack" />
       </div>
       </div>
     </section>
