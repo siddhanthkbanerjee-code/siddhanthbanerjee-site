@@ -98,7 +98,7 @@ export function HeroTransitionBlock() {
           <br />
           Banerjee
         </h1>
-        {/* DRAFT COPY (from Siddhanth's brief -- edit freely): the who-am-i answer */}
+        {/* Copy applied 2026-07-09 (recruiter-POV pass in his paper register). His to veto. */}
         <p
           className="hero-rise"
           style={{
@@ -113,7 +113,7 @@ export function HeroTransitionBlock() {
             animationDelay: '280ms',
           }}
         >
-          Oxford MBA. Five years in marketing, product and strategy. Now moving into AI go-to-market.
+          I build AI products and take them to market. Oxford MBA, five years across brand, product and strategy before that.
         </p>
       </div>
 

@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { HeroFluidCanvas } from './HeroFluidCanvas'
 import { Reveal } from './Reveal'
 
-// DRAFT COPY (edit freely): real contact-section paragraph.
+// Copy applied 2026-07-09 (recruiter-POV pass in his paper register). His to veto.
 const CONTACT_COPY =
-  'If you are hiring for AI go-to-market, building something that needs to reach customers, or just want to compare notes on where this is heading, I would like to talk. Email is the fastest way to reach me.'
+  'If you are hiring for AI go-to-market, building something that needs customers, or want to compare notes, I would like to talk. Email reaches me fastest.'
 
 // The closing section mirrors the opening: the same real-time aurora + constellation fluid
 // field and legibility scrim, full height, with the content anchored lower-left the way the

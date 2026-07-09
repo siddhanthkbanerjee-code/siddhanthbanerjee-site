@@ -8,10 +8,11 @@ export type PathStation = {
   tint: string;
 };
 
-// DRAFT COPY (from Siddhanth's brief -- edit freely): frames AI GTM as a dynamic,
-// evolving space that needs dynamic people, priming his path as the fit.
+// Copy applied 2026-07-09 (recruiter-POV pass in his paper register). His to veto.
+// Frames AI GTM as a dynamic space needing dynamic people, and closes the
+// not-a-leap argument: he was doing the pieces before the label existed.
 export const pathThesis =
-  "AI go-to-market is a moving target. The models change every few months, buyers are still writing the rules, and the gap between a demo and a renewed contract never sits still. A dynamic space needs dynamic people: operators who can read a customer, build the thing, and sell it, often in the same week. That is the exact shape of my path, and here is where each piece came from.";
+  "AI go-to-market is a moving target. The models change every few months, buyers are still writing the rules, and the gap between a demo and a renewed contract never sits still. A dynamic space needs dynamic people: operators who can read a customer, build the thing, and sell it, often in the same week. That is the exact shape of my path. None of it was a leap into AI: I had been doing the pieces for five years. Here is where each one came from.";
 
 export const pathStations: PathStation[] = [
   {
@@ -53,4 +54,4 @@ export const pathStations: PathStation[] = [
 ];
 
 export const pathPayoff = "AI Builder and GTM Strategist";
-export const pathPayoffLine = "Now building AI products and putting the whole kit to work.";
+export const pathPayoffLine = "Four AI products built. Real people using them. The whole path, put to work.";
