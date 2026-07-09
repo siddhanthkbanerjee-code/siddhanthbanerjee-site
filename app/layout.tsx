@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from './components/LenisProvider'
@@ -22,6 +22,10 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500'],
   variable: '--font-jetbrains-mono',
 })
+
+export const viewport: Viewport = {
+  themeColor: '#0E0B12',
+}
 
 export const metadata: Metadata = {
   // TODO: switch metadataBase to https://siddhanthbanerjee.com once the domain is connected.
@@ -62,6 +66,24 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Siddhanth Banerjee',
+              url: 'https://siddhanthbanerjee-site.vercel.app',
+              image: 'https://siddhanthbanerjee-site.vercel.app/og.png',
+              jobTitle: 'AI Builder and GTM Strategist',
+              alumniOf: {
+                '@type': 'CollegeOrUniversity',
+                name: 'University of Oxford, Said Business School',
+              },
+              sameAs: ['https://linkedin.com/in/siddhanthbanerjee'],
+            }),
+          }}
+        />
         <LenisProvider>
           <Cursor />
           <ComeBackCursor />
