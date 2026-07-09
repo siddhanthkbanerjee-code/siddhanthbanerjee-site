@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { writing } from '@/lib/writing'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 export const metadata: Metadata = {
   title: 'Writing | Siddhanth Banerjee',
   description: 'Essays and notes on AI go-to-market.',
 }
-import { AmbientField } from '@/app/components/AmbientField'
-import { Reveal } from '@/app/components/Reveal'
 
 // Deep Oxford navy -- matches WritingSection home bg for ecosystem continuity
 const SECTION_BG = '#0D1929'

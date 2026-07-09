@@ -113,7 +113,7 @@ export function HeroTransitionBlock() {
             animationDelay: '280ms',
           }}
         >
-          I build AI products and take them to market. Oxford MBA, five years across brand, product and strategy before that.
+          I build AI products and put them in front of real people. Oxford MBA, five years across marketing, product and strategy before that.
         </p>
       </div>
 

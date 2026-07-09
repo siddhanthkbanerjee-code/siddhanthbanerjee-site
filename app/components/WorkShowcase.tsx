@@ -62,11 +62,6 @@ export function WorkShowcase() {
           grid-template-columns: repeat(2, 1fr);
           gap: clamp(0.75rem, 1.5vw, 1.25rem);
         }
-        @media (max-width: 768px) {
-          .showcase-builds-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
         @media (max-width: 480px) {
           .showcase-builds-grid,
           .showcase-consulting-grid {

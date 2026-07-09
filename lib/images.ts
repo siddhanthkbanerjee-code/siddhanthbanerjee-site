@@ -1,3 +1,6 @@
+// NOTE: these Unsplash URLs render only through Grid.tsx, which passes `unoptimized`
+// to next/image. The images.remotePatterns allowance was removed from next.config.ts,
+// so if Grid is ever mounted without `unoptimized`, add the allowance back.
 export const images = {
   hero: 'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?w=1920&q=85',
   drumming: 'https://images.unsplash.com/photo-1571974599782-87624638275e?w=800&q=85',

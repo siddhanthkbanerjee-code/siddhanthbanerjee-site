@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import { projects } from '@/lib/content/projects'
+import { AmbientField } from '@/app/components/AmbientField'
+import { Reveal } from '@/app/components/Reveal'
 
 export const metadata: Metadata = {
   title: 'Work | Siddhanth Banerjee',
   description:
-    'AI products built and shipped (Kairos, Prizerv, Lever, Fuel) and pro bono AI consulting (Slurrp Farm, Share Our Strength).',
+    'AI products built and in front of real users (Kairos, Prizerv, Lever, Fuel) and pro bono AI consulting (Slurrp Farm, Share Our Strength).',
 }
-import { AmbientField } from '@/app/components/AmbientField'
-import { Reveal } from '@/app/components/Reveal'
 
 // Background: #18140C -- deep warm amber, same hue family as gold (#C9A961) pulled to near-black
 const SECTION_BG = '#18140C'
