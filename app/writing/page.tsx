@@ -43,6 +43,41 @@ export default function WritingPage() {
           essays and notes
         </p>
 
+        {writing.length === 0 && (
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 32 }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-fraunces), serif',
+                fontWeight: 300,
+                color: 'rgba(244,239,230,0.7)',
+                fontSize: 'clamp(17px, 1.8vw, 20px)',
+                lineHeight: 1.6,
+                maxWidth: 520,
+                margin: '0 0 28px',
+              }}
+            >
+              No essays published yet. The strategy papers are live on the home
+              page, and the first essays will land here.
+            </p>
+            <a
+              href="/"
+              style={{
+                fontFamily: 'var(--font-jetbrains-mono), monospace',
+                fontSize: 12,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: '#F4EFE6',
+                textDecoration: 'none',
+                borderBottom: '1px solid rgba(255,107,53,0.5)',
+                paddingBottom: 4,
+                display: 'inline-block',
+                minHeight: 44,
+              }}
+            >
+              &#8592; to the papers
+            </a>
+          </div>
+        )}
         <div>
           {writing.map((entry) => (
             <a
