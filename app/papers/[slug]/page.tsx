@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { papers } from '@/lib/content/papers'
 import { notFound } from 'next/navigation'
 import { AmbientField } from '@/app/components/AmbientField'
@@ -7,6 +8,34 @@ const SECTION_BG = '#0D1929'
 
 export function generateStaticParams() {
   return papers.map((p) => ({ slug: p.slug }))
+}
+
+// Per-paper metadata so a shared link previews as the paper, not the homepage.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const paper = papers.find((p) => p.slug === slug)
+  if (!paper) return {}
+  const title = `${paper.title} | Siddhanth Banerjee`
+  return {
+    title,
+    description: paper.descriptor,
+    openGraph: {
+      title: paper.title,
+      description: paper.descriptor,
+      type: 'article',
+      images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Siddhanth Banerjee, AI Builder and GTM Strategist' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: paper.title,
+      description: paper.descriptor,
+      images: ['/og.png'],
+    },
+  }
 }
 
 export default async function PaperPage({

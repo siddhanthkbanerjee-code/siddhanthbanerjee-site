@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { projects } from '@/lib/content/projects'
+
+export const metadata: Metadata = {
+  title: 'Work | Siddhanth Banerjee',
+  description:
+    'AI products built and shipped (Kairos, Prizerv, Lever, Fuel) and pro bono AI consulting (Slurrp Farm, Share Our Strength).',
+}
 import { AmbientField } from '@/app/components/AmbientField'
 import { Reveal } from '@/app/components/Reveal'
 

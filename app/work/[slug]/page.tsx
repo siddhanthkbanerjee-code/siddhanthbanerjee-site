@@ -1,8 +1,37 @@
+import type { Metadata } from 'next'
 import { projects, type BuildSections, type ConsultingSections } from '@/lib/content/projects'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
+}
+
+// Per-project metadata so a shared link previews as the project, not the homepage.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const project = projects.find((p) => p.slug === slug)
+  if (!project) return {}
+  const title = `${project.name} | Siddhanth Banerjee`
+  return {
+    title,
+    description: project.oneLiner,
+    openGraph: {
+      title: project.name,
+      description: project.oneLiner,
+      type: 'website',
+      images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Siddhanth Banerjee, AI Builder and GTM Strategist' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: project.name,
+      description: project.oneLiner,
+      images: ['/og.png'],
+    },
+  }
 }
 
 // [draft in progress] treatment: italic muted mono label

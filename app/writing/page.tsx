@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { writing } from '@/lib/writing'
+
+export const metadata: Metadata = {
+  title: 'Writing | Siddhanth Banerjee',
+  description: 'Essays and notes on AI go-to-market.',
+}
 import { AmbientField } from '@/app/components/AmbientField'
 import { Reveal } from '@/app/components/Reveal'
 
