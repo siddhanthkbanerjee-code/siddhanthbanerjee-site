@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import type { Project } from '@/lib/content/projects'
 
-// Shared heading base — applied inside each per-project name renderer
+// Shared heading base, applied inside each per-project name renderer
 const nameBase: React.CSSProperties = {
   fontFamily: 'var(--font-fraunces), serif',
   fontWeight: 300,
@@ -56,7 +56,7 @@ function CardName({ project }: { project: Project }) {
       )
 
     case 'lever':
-      // Full name in deep navy per brief ("deep navy accent on one word" — Lever is one word)
+      // Full name in deep navy per brief ("deep navy accent on one word": Lever is one word)
       return (
         <h3 style={{ ...nameBase, color: project.theme.accent }}>
           {project.name}
@@ -72,7 +72,7 @@ function CardName({ project }: { project: Project }) {
       )
 
     case 'share-our-strength': {
-      // "Strength" in terracotta accent, rest in near-black — matching the landing page split-type treatment
+      // "Strength" in terracotta accent, rest in near-black, matching the landing page split-type treatment
       const words = project.name.split(' ')
       const lastWord = words.pop()!
       return (

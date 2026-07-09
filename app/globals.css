@@ -11,7 +11,7 @@
   --color-surface: rgba(255, 255, 255, 0.04);
   --color-border-subtle: rgba(255, 255, 255, 0.08);
 
-  /* Font families — CSS variables injected by next/font at runtime */
+  /* Font families: CSS variables injected by next/font at runtime */
   --font-display: var(--font-fraunces), serif;
   --font-sans: var(--font-inter), sans-serif;
   --font-mono: var(--font-jetbrains-mono), monospace;

@@ -41,7 +41,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
 
   // Reset scroll to top on every route change so incoming page ScrollTriggers
   // always initialise from a clean zero position. immediate: true means no
-  // animation — the reset is instant and does not itself trigger GSAP scrubs.
+  // animation: the reset is instant and does not itself trigger GSAP scrubs.
   // prefers-reduced-motion is satisfied because immediate bypasses Lenis easing.
   useEffect(() => {
     const lenis = lenisRef.current
