@@ -114,13 +114,13 @@ export function WritingSection() {
               margin: '0 0 clamp(2.5rem, 5vw, 4rem)',
             }}
           >
-            Writing and Papers.
+            Writing.
           </h2>
         </Reveal>
 
         {/* Papers strand */}
         <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
-          <p style={labelStyle}>papers</p>
+          <p style={labelStyle}>strategy essays</p>
           <div>
             {papers.map((p, i) => (
               <Reveal key={p.slug} delay={i * 70}>

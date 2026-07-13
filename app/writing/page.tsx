@@ -56,7 +56,7 @@ export default function WritingPage() {
                 margin: '0 0 28px',
               }}
             >
-              No essays published yet. The strategy papers are live on the home
+              No essays published yet. The strategy essays are live on the home
               page, and the first essays will land here.
             </p>
             <a
@@ -74,7 +74,7 @@ export default function WritingPage() {
                 minHeight: 44,
               }}
             >
-              &#8592; to the papers
+              &#8592; to the essays
             </a>
           </div>
         )}

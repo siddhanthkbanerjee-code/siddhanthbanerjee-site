@@ -39,9 +39,9 @@ export function WorkShowcase() {
         </div>
       </Reveal>
 
-      {/* Consulting */}
+      {/* AI GTM Work (pro bono engagements) */}
       <Reveal delay={120}>
-        <p style={sectionLabel}>consulting</p>
+        <p style={sectionLabel}>ai gtm work</p>
         <div className="showcase-consulting-grid">
           {consulting.map((p) => (
             <ProjectCard key={p.slug} project={p} />

@@ -6,7 +6,7 @@ import { Reveal } from '@/app/components/Reveal'
 export const metadata: Metadata = {
   title: 'Work | Siddhanth Banerjee',
   description:
-    'AI products built and in front of real users (Kairos, Prizerv, Lever, Fuel) and pro bono AI consulting (Slurrp Farm, Share Our Strength).',
+    'AI products built and in front of real users (Kairos, Prizerv, Lever, Fuel) and pro bono AI go-to-market work (Slurrp Farm, Share Our Strength).',
 }
 
 // Background: #18140C -- deep warm amber, same hue family as gold (#C9A961) pulled to near-black
@@ -60,7 +60,7 @@ export default function WorkPage() {
                   marginBottom: 20,
                 }}
               >
-                {kind}
+                {kind === 'consulting' ? 'ai gtm work' : kind}
               </p>
               <div className="work-grid">
                 {list.map((p) => (
