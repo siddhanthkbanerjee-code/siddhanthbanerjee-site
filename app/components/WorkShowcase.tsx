@@ -40,6 +40,7 @@ export function WorkShowcase() {
       </Reveal>
 
       {/* AI GTM Work (pro bono engagements) */}
+      <div id="ai-gtm-work">
       <Reveal delay={120}>
         <p style={sectionLabel}>ai gtm work</p>
         <div className="showcase-consulting-grid">
@@ -48,6 +49,7 @@ export function WorkShowcase() {
           ))}
         </div>
       </Reveal>
+      </div>
       </div>
 
       <style>{`

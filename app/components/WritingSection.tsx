@@ -93,6 +93,7 @@ function WritingRow({ slug, title, excerpt }: { slug: string; title: string; exc
 export function WritingSection() {
   return (
     <section
+      id="writing-section"
       style={{
         position: 'relative',
         overflow: 'hidden',

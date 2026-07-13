@@ -3,22 +3,29 @@
 import { useState } from 'react'
 import { HeroFluidCanvas } from './HeroFluidCanvas'
 
-// Sprint 10 hero: a single 100vh opener. Background is the real-time aurora + constellation
-// fluid field (HeroFluidCanvas). The old 250vh scrubbed transition and 100vh dead gap are gone;
-// a plain scroll cue hands off to the Path section.
+// Sprint 10 hero: a single 100vh opener over the real-time aurora + constellation field
+// (HeroFluidCanvas). A quiet quick-nav lets a time-poor visitor jump straight to the section
+// they care about; a plain scroll cue hands off to the first section below. Labels only, no claims.
+const NAV: { label: string; target: string }[] = [
+  { label: 'profile', target: 'path-section' },
+  { label: 'ai gtm work', target: 'ai-gtm-work' },
+  { label: 'builds', target: 'work-section' },
+  { label: 'writing', target: 'writing-section' },
+]
+
 export function HeroTransitionBlock() {
   const [reduced] = useState<boolean>(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
 
-  const scrollToPath = () => {
-    const pathEl = document.getElementById('path-section')
-    if (!pathEl) return
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
     const lenis = (window as { __lenis?: { scrollTo: (t: Element, o?: object) => void } }).__lenis
     if (lenis) {
-      lenis.scrollTo(pathEl, { duration: reduced ? 0 : 1.4 })
+      lenis.scrollTo(el, { duration: reduced ? 0 : 1.4 })
     } else {
-      pathEl.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
     }
   }
 
@@ -67,7 +74,7 @@ export function HeroTransitionBlock() {
         who am i?
       </span>
 
-      {/* lower-left: the name and the answer */}
+      {/* lower-left: the name, the answer, and quick-nav */}
       <div
         style={{
           position: 'absolute',
@@ -115,13 +122,50 @@ export function HeroTransitionBlock() {
         >
           I build AI products and put them in front of real people. Oxford MBA, five years across marketing, product and strategy before that.
         </p>
+
+        {/* quick-nav: quiet wayfinding for a time-poor visitor */}
+        <nav
+          aria-label="Jump to a section"
+          className="hero-rise hero-quicknav"
+          style={{
+            marginTop: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 'clamp(0.75rem, 2.5vw, 1.75rem)',
+            pointerEvents: 'auto',
+            animationDelay: '420ms',
+          }}
+        >
+          {NAV.map((item) => (
+            <button
+              key={item.target}
+              type="button"
+              onClick={() => scrollToId(item.target)}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: '6px 0',
+                minHeight: 44,
+                cursor: 'pointer',
+                fontFamily: 'var(--font-jetbrains-mono), monospace',
+                fontSize: '0.7rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--color-cream-muted)',
+                transition: 'color 200ms ease',
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
       </div>
 
-      {/* lower-right: scroll cue to the Path section */}
+      {/* lower-right: quiet scroll cue to the first section below */}
       <button
         type="button"
-        onClick={scrollToPath}
-        aria-label="Scroll to my path"
+        onClick={() => scrollToId('path-section')}
+        aria-label="Scroll down"
         className={reduced ? undefined : 'hero-float-pulse'}
         style={{
           position: 'absolute',
@@ -130,6 +174,7 @@ export function HeroTransitionBlock() {
           zIndex: 10,
           background: 'none',
           border: 'none',
+          cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -139,15 +184,15 @@ export function HeroTransitionBlock() {
       >
         <span
           style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
-            color: 'var(--color-cream)',
-            letterSpacing: '-0.01em',
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.7rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'var(--color-cream-muted)',
             textShadow: '0 2px 16px rgba(0,0,0,0.5)',
           }}
         >
-          my path
+          scroll
         </span>
         <span
           aria-hidden="true"
@@ -162,7 +207,14 @@ export function HeroTransitionBlock() {
         </span>
       </button>
 
-      {reduced && <p className="sr-only">Scroll down for my path section</p>}
+      {reduced && <p className="sr-only">Scroll down to the rest of the page</p>}
+
+      <style>{`
+        .hero-quicknav button:hover,
+        .hero-quicknav button:focus-visible {
+          color: var(--color-tangerine);
+        }
+      `}</style>
     </section>
   )
 }
