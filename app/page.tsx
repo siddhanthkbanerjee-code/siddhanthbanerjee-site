@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import { LoadingScreenClient } from './components/LoadingScreenClient'
 import { HeroTransitionClient } from './components/HeroTransitionClient'
-import { PathTimelineClient } from './components/PathTimelineClient'
+import { ProfileConvergence } from './components/ProfileConvergence'
 import { WorkShowcase } from './components/WorkShowcase'
 import { WritingSection } from './components/WritingSection'
 // Grid.tsx parked -- no current home for photos, Sprint 4+ decision
@@ -12,7 +12,7 @@ export default function Home() {
     <main>
       <LoadingScreenClient />
       <HeroTransitionClient />
-      <PathTimelineClient />
+      <ProfileConvergence />
       <WorkShowcase />
       <WritingSection />
       <Contact />

@@ -7,7 +7,7 @@ import { HeroFluidCanvas } from './HeroFluidCanvas'
 // (HeroFluidCanvas). A quiet quick-nav lets a time-poor visitor jump straight to the section
 // they care about; a plain scroll cue hands off to the first section below. Labels only, no claims.
 const NAV: { label: string; target: string }[] = [
-  { label: 'profile', target: 'path-section' },
+  { label: 'profile', target: 'profile-section' },
   { label: 'ai gtm work', target: 'ai-gtm-work' },
   { label: 'builds', target: 'work-section' },
   { label: 'writing', target: 'writing-section' },
@@ -164,7 +164,7 @@ export function HeroTransitionBlock() {
       {/* lower-right: quiet scroll cue to the first section below */}
       <button
         type="button"
-        onClick={() => scrollToId('path-section')}
+        onClick={() => scrollToId('profile-section')}
         aria-label="Scroll down"
         className={reduced ? undefined : 'hero-float-pulse'}
         style={{

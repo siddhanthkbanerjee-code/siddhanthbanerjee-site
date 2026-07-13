@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: BASE, lastModified: now, priority: 1 },
     { url: `${BASE}/work`, lastModified: now, priority: 0.8 },
+    { url: `${BASE}/profile`, lastModified: now, priority: 0.8 },
     ...projects.map((p) => ({
       url: `${BASE}/work/${p.slug}`,
       lastModified: now,
