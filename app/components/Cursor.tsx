@@ -69,7 +69,7 @@ export function Cursor() {
         targetPos.current = { x: tx, y: ty }
       }
 
-      const lerp = 0.15
+      const lerp = 0.35
       currentPos.current.x += (targetPos.current.x - currentPos.current.x) * lerp
       currentPos.current.y += (targetPos.current.y - currentPos.current.y) * lerp
 
