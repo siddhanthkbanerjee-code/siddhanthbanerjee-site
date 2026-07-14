@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { HeroFluidCanvas } from './HeroFluidCanvas'
 
 // Profile "convergence": five proven capabilities fly in and coalesce on a gold-ringed AI GTM hub.
-// Ported from the reviewed alt-preview (validated across viewports). Plays once on scroll-in, then
+// Ported from the reviewed alt-preview (validated across viewports). Replays on each scroll-in, then
 // drifts gently; reduced-motion and returning visitors get the settled map instantly. Labels are DOM
 // (crisp, selectable, readable by crawlers); the canvas draws only the particle field, connectors and hub.
 // Every claim below sits inside the verified fact base. Copy is Siddhanth's to adjust.
@@ -90,9 +91,8 @@ export function ProfileConvergence() {
     }
 
     const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    let played = false
-    try { played = sessionStorage.getItem('sb-convergence-played') === '1' } catch { played = false }
-    const canAutoplay = motionOK && played === false
+    // canAutoplay: motion allowed. The entrance replays on every scroll-in (see the observer).
+    const canAutoplay = motionOK
 
     let W = 0, H = 0, DPR = 1
     let layout: Layout | null = null
@@ -141,18 +141,18 @@ export function ProfileConvergence() {
       const satsPerNode = mobile ? 9 : 12
       const dustCount = mobile ? 14 : 22
       layout.nodes.forEach((n, ni) => {
-        dots.push({ kind: 'core', node: ni, hx: n.x, hy: n.y, from: scatterFrom(n.x, n.y), r: 3.4, a: 0.95, delay: rand(0.05, 0.3), dur: rand(1.0, 1.3), dAmp: 0.7, dW: rand(0.18, 0.32), dP: rand(0, 6.3), tW: 0, tP: 0 })
+        dots.push({ kind: 'core', node: ni, hx: n.x, hy: n.y, from: scatterFrom(n.x, n.y), r: 3.4, a: 0.95, delay: rand(0.05, 0.3), dur: rand(1.0, 1.3), dAmp: 1.6, dW: rand(0.18, 0.32), dP: rand(0, 6.3), tW: 0, tP: 0 })
         for (let s = 0; s < satsPerNode; s++) {
           const ang = rand(0, Math.PI * 2), rr = rand(7, 24)
           const hx = n.x + Math.cos(ang) * rr, hy = n.y + Math.sin(ang) * rr
-          dots.push({ kind: 'sat', node: ni, hx, hy, from: scatterFrom(hx, hy), r: rand(0.9, 2.1), a: rand(0.24, 0.55), delay: rand(0, 0.45), dur: rand(0.95, 1.35), dAmp: rand(1.0, 2.6), dW: rand(0.2, 0.5), dP: rand(0, 6.3), tW: rand(0, 1) < 0.35 ? rand(0.6, 1.4) : 0, tP: rand(0, 6.3) })
+          dots.push({ kind: 'sat', node: ni, hx, hy, from: scatterFrom(hx, hy), r: rand(0.9, 2.1), a: rand(0.24, 0.55), delay: rand(0, 0.45), dur: rand(0.95, 1.35), dAmp: rand(3.5, 7.5), dW: rand(0.18, 0.5), dP: rand(0, 6.3), tW: rand(0, 1) < 0.35 ? rand(0.6, 1.4) : 0, tP: rand(0, 6.3) })
         }
       })
       for (let d2 = 0; d2 < dustCount; d2++) {
         const da = rand(0, Math.PI * 2), ds = rand(0.55, 1.2)
         const dhx = layout.cx + Math.cos(da) * layout.rx * ds
         const dhy = layout.cy + Math.sin(da) * layout.ry * ds
-        dots.push({ kind: 'dust', node: -2, hx: dhx, hy: dhy, from: scatterFrom(dhx, dhy), r: rand(0.7, 1.3), a: rand(0.08, 0.16), delay: rand(0, 0.4), dur: rand(1.0, 1.4), dAmp: rand(2.5, 5), dW: rand(0.1, 0.25), dP: rand(0, 6.3), tW: 0, tP: 0 })
+        dots.push({ kind: 'dust', node: -2, hx: dhx, hy: dhy, from: scatterFrom(dhx, dhy), r: rand(0.7, 1.3), a: rand(0.08, 0.16), delay: rand(0, 0.4), dur: rand(1.0, 1.4), dAmp: rand(3, 7), dW: rand(0.1, 0.25), dP: rand(0, 6.3), tW: 0, tP: 0 })
       }
     }
 
@@ -250,7 +250,7 @@ export function ProfileConvergence() {
       const t = elapsed()
       if (phase === 'playing') {
         draw(t, t); revealByClock(t)
-        if (t >= PLAY_LEN) { phase = 'settled'; showLabels(); try { sessionStorage.setItem('sb-convergence-played', '1') } catch { /* ignore */ } }
+        if (t >= PLAY_LEN) { phase = 'settled'; showLabels() }
       } else {
         draw(t, PLAY_LEN)
         if (!motionOK) { running = false; return }
@@ -283,19 +283,22 @@ export function ProfileConvergence() {
       DPR = Math.min(window.devicePixelRatio || 1, 2)
       canvas!.width = W * DPR; canvas!.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
       placeLabels(); buildDots()
-      if (phase === 'playing') { phase = 'settled'; showLabels(true); try { sessionStorage.setItem('sb-convergence-played', '1') } catch { /* ignore */ } }
+      if (phase === 'playing') { phase = 'settled'; showLabels(true) }
       paintStatic()
     }
 
     resize()
     if (!canAutoplay) settleInstantly()
 
+    // Replay the entrance every time the section scrolls back into view. armed flips true once the
+    // section fully leaves, so a scroll-past replays exactly once, not on every ratio wobble.
+    let armed = true
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         inView = en.isIntersecting
-        if (phase === 'idle') { if (canAutoplay && en.isIntersecting && en.intersectionRatio >= 0.3) play() }
-        else if (en.isIntersecting && !document.hidden) start()
-        else stop()
+        if (!en.isIntersecting) { armed = true; stop(); return }
+        if (armed && motionOK && en.intersectionRatio >= 0.3) { armed = false; play(); return }
+        if (phase === 'settled' && !document.hidden) start()
       })
     }, { threshold: [0, 0.3] })
     io.observe(field)
@@ -326,9 +329,11 @@ export function ProfileConvergence() {
         // faint gold lift (echoing the hub) so the section is not flat black; ink token elsewhere
         background: 'radial-gradient(120% 100% at 50% 46%, rgba(201,169,97,0.05) 0%, var(--color-ink) 62%)',
         padding: 'clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 3.5rem) clamp(2.5rem, 5vw, 4rem)',
-        borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
+      <div className="pc-fluid" aria-hidden="true">
+        <HeroFluidCanvas variant="aurora" />
+      </div>
       <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
         <p
           style={{
@@ -387,8 +392,10 @@ export function ProfileConvergence() {
       </div>
 
       <style>{`
+        .pc-fluid { position: absolute; inset: 0; z-index: 0; opacity: 0.16; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 32%, rgba(0,0,0,0.28) 68%, rgba(0,0,0,0.12) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 32%, rgba(0,0,0,0.28) 68%, rgba(0,0,0,0.12) 100%); }
         .pc-field {
           position: relative;
+          z-index: 1;
           width: 100%;
           max-width: 1240px;
           height: clamp(460px, 72vh, 760px);
