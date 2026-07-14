@@ -9,7 +9,7 @@ import { HeroFluidCanvas } from './HeroFluidCanvas'
 const NAV: { label: string; target: string }[] = [
   { label: 'profile', target: 'profile-section' },
   { label: 'ai gtm work', target: 'ai-gtm-work' },
-  { label: 'builds', target: 'work-section' },
+  { label: 'builds', target: 'builds' },
   { label: 'writing', target: 'writing-section' },
 ]
 

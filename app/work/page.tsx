@@ -46,7 +46,7 @@ export default function WorkPage() {
           things i&apos;ve built and shipped
         </p>
 
-        {(['build', 'consulting'] as const).map((kind) => {
+        {(['consulting', 'build'] as const).map((kind) => {
           const list = kind === 'build' ? builds : consulting
           return (
             <div key={kind} style={{ marginBottom: 56 }}>

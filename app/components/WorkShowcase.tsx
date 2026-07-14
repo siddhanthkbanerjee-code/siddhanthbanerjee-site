@@ -29,22 +29,24 @@ export function WorkShowcase() {
     >
       <AmbientField opacity={0.4} />
       <div style={{ position: 'relative', zIndex: 1 }}>
-      {/* Builds */}
+      {/* AI GTM Work leads: matches the nav order and front-loads the go-to-market positioning */}
+      <div id="ai-gtm-work">
       <Reveal style={{ marginBottom: 'clamp(3rem, 6vw, 5rem)' }}>
-        <p style={sectionLabel}>builds</p>
-        <div className="showcase-builds-grid">
-          {builds.map((p) => (
+        <p style={sectionLabel}>ai gtm work</p>
+        <div className="showcase-consulting-grid">
+          {consulting.map((p) => (
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
       </Reveal>
+      </div>
 
-      {/* AI GTM Work (pro bono engagements) */}
-      <div id="ai-gtm-work">
+      {/* Builds */}
+      <div id="builds">
       <Reveal delay={120}>
-        <p style={sectionLabel}>ai gtm work</p>
-        <div className="showcase-consulting-grid">
-          {consulting.map((p) => (
+        <p style={sectionLabel}>builds</p>
+        <div className="showcase-builds-grid">
+          {builds.map((p) => (
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
