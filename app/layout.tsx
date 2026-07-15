@@ -4,6 +4,7 @@ import './globals.css'
 import { LenisProvider } from './components/LenisProvider'
 import { Cursor } from './components/Cursor'
 import { ComeBackCursor } from './components/ComeBackCursor'
+import { NavHistoryMark } from './components/NavHistoryMark'
 import { Analytics } from '@vercel/analytics/react'
 
 const fraunces = Fraunces({
@@ -84,6 +85,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <NavHistoryMark />
         <LenisProvider>
           <Cursor />
           <ComeBackCursor />

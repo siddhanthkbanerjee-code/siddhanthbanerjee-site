@@ -321,18 +321,25 @@ function usePayoffSheen() {
   return ref
 }
 
-// ---- Payoff cue: hands the story off to the proof, mirroring the hero and contact cues ----
+// ---- Payoff cue: hands the story back to the convergence proof on home, mirroring
+// the hero and contact cues. This panel renders on the standalone /profile page (no
+// #profile-section there), so it must navigate to the home page's convergence section
+// rather than silently no-op looking for an id that only exists on /.
 function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
   const go = () => {
-    const el = document.getElementById('work-section')
-    if (!el) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const lenis = (window as { __lenis?: { scrollTo: (t: Element, o?: object) => void } }).__lenis
-    if (lenis) {
-      lenis.scrollTo(el, { duration: reduced ? 0 : 1.4 })
-    } else {
-      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+    const el = document.getElementById('profile-section')
+    if (el) {
+      const lenis = (window as { __lenis?: { scrollTo: (t: Element, o?: object) => void } }).__lenis
+      if (lenis) {
+        lenis.scrollTo(el, { duration: reduced ? 0 : 1.4 })
+      } else {
+        el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+      }
+      return
     }
+    // Not on the home page: navigate there, targeted at the convergence section.
+    window.location.href = '/#profile-section'
   }
   const pulse =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -342,7 +349,7 @@ function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
     <button
       type="button"
       onClick={go}
-      aria-label="Scroll to the work section"
+      aria-label="Back to the convergence on the home page"
       className={pulse}
       style={{
         background: 'none',
@@ -372,7 +379,7 @@ function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
           textShadow: '0 2px 16px rgba(0,0,0,0.5)',
         }}
       >
-        the work
+        back to the work
       </span>
       <span
         aria-hidden="true"
@@ -383,7 +390,7 @@ function PayoffCue({ variant }: { variant: 'panel' | 'stack' }) {
           lineHeight: 1,
         }}
       >
-        &#8595;
+        &#8593;
       </span>
     </button>
   )

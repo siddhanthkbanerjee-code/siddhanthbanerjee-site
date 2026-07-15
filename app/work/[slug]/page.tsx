@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { projects, type BuildSections, type ConsultingSections } from '@/lib/content/projects'
 import { notFound } from 'next/navigation'
+import { BackLink } from '@/app/components/BackLink'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -290,23 +291,8 @@ export default async function WorkProjectPage({
         )}
 
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
-          {/* back */}
-          <a
-            href="/work"
-            style={{
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.6rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: theme.accent,
-              textDecoration: 'none',
-              display: 'inline-block',
-              marginBottom: '3rem',
-              opacity: 0.7,
-            }}
-          >
-            &#8592; back
-          </a>
+          {/* back: history-aware, returns to wherever the visitor came from (home or /work) */}
+          <BackLink fallbackHref="/work" label="back" accent={theme.accent} />
 
           {/* kind badge */}
           <p
