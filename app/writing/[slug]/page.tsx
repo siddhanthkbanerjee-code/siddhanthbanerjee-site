@@ -2,6 +2,7 @@ import { writing } from '@/lib/writing'
 import { notFound } from 'next/navigation'
 import { AmbientField } from '@/app/components/AmbientField'
 import { Reveal } from '@/app/components/Reveal'
+import { ExpandableBody } from '@/app/components/ExpandableBody'
 
 const SECTION_BG = '#0D1929'
 
@@ -87,10 +88,9 @@ export default async function WritingDetailPage({ params }: Props) {
           </p>
         </div>
 
-        <div
-          className="writing-body"
-          dangerouslySetInnerHTML={{ __html: entry.body }}
-        />
+        {/* Excerpt above is always visible; the full piece is collapsed behind
+            this button so arrival is not a commitment to the whole read. */}
+        <ExpandableBody html={entry.body} accent="#FF6B35" label="Read the full piece" bodyClassName="writing-body" />
       </div>
 
       <style>{`

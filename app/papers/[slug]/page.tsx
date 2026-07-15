@@ -3,6 +3,7 @@ import { papers } from '@/lib/content/papers'
 import { notFound } from 'next/navigation'
 import { AmbientField } from '@/app/components/AmbientField'
 import { Reveal } from '@/app/components/Reveal'
+import { ExpandableBody } from '@/app/components/ExpandableBody'
 
 const SECTION_BG = '#0D1929'
 
@@ -134,10 +135,9 @@ export default async function PaperPage({
           </p>
         </div>
 
-        <div
-          className="paper-body"
-          dangerouslySetInnerHTML={{ __html: paper.body }}
-        />
+        {/* Abstract above is always visible; the full assignment is collapsed
+            behind this button so arrival is not a commitment to the whole read. */}
+        <ExpandableBody html={paper.body} accent="#FF6B35" label="Read the full assignment" bodyClassName="paper-body" />
       </div>
 
       <style>{`
