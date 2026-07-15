@@ -205,18 +205,19 @@ function StationPanel({
         </p>
       </div>
 
-      {/* right column: substance */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
+      {/* right column: substance. "gtm tie" label removed (read as cliche per his note);
+          its content stays as a recolored closer in the station's own tint, no header. */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
           <p
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.55rem',
-              letterSpacing: '0.22em',
+              fontSize: 'clamp(0.7rem, 0.95vw, 0.82rem)',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               color: station.tint,
-              margin: '0 0 0.4rem',
-              opacity: 0.85,
+              margin: '0 0 0.5rem',
+              opacity: 0.9,
             }}
           >
             what i did
@@ -238,12 +239,12 @@ function StationPanel({
           <p
             style={{
               fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.55rem',
-              letterSpacing: '0.22em',
+              fontSize: 'clamp(0.7rem, 0.95vw, 0.82rem)',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               color: station.tint,
-              margin: '0 0 0.4rem',
-              opacity: 0.85,
+              margin: '0 0 0.5rem',
+              opacity: 0.9,
             }}
           >
             learnt
@@ -264,25 +265,12 @@ function StationPanel({
         <div>
           <p
             style={{
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-              fontSize: '0.55rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: station.tint,
-              margin: '0 0 0.4rem',
-              opacity: 0.85,
-            }}
-          >
-            gtm tie
-          </p>
-          <p
-            style={{
               fontFamily: 'var(--font-fraunces), serif',
               fontWeight: 300,
               fontStyle: 'italic',
               fontSize: 'clamp(0.85rem, 1.15vw, 1.05rem)',
               lineHeight: 1.45,
-              color: 'rgba(244,239,230,0.75)',
+              color: station.tint,
               margin: 0,
             }}
           >
@@ -774,9 +762,9 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
           >
             {station.role}
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.3rem' }}>
             <div>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: 'clamp(0.68rem, 2.4vw, 0.78rem)', letterSpacing: '0.16em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.4rem' }}>
                 what i did
               </p>
               <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'var(--color-cream)', margin: 0 }}>
@@ -784,7 +772,7 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
               </p>
             </div>
             <div>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: 'clamp(0.68rem, 2.4vw, 0.78rem)', letterSpacing: '0.16em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.4rem' }}>
                 learnt
               </p>
               <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'var(--color-cream)', margin: 0 }}>
@@ -792,10 +780,8 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
               </p>
             </div>
             <div>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: station.tint, margin: '0 0 0.3rem' }}>
-                gtm tie
-              </p>
-              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: 'rgba(244,239,230,0.7)', margin: 0 }}>
+              {/* gtm tie: label removed per his note (cliche), content kept as a recolored closer */}
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(0.88rem, 3vw, 1rem)', lineHeight: 1.45, color: station.tint, margin: 0 }}>
                 {station.gtmTie}
               </p>
             </div>
