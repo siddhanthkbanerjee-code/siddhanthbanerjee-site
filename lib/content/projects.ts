@@ -50,7 +50,7 @@ export const projects: Project[] = [
     name: 'Kairos',
     kind: 'build',
     oneLiner: 'AI cultural event discovery for London. Spotify for live culture.',
-    liveUrl: 'https://kairos-deploy-sigma.vercel.app',
+    liveUrl: 'https://kairos-psi.vercel.app/',
     logo: null,
     theme: {
       bg: '#0D0816',      // near-black with violet tint; deeper than ink for Kairos dark mode
@@ -122,7 +122,7 @@ export const projects: Project[] = [
     name: 'Fuel',
     kind: 'build',
     oneLiner: 'A mobile-first fitness tracker I built solo with AI. Real people use it daily.',
-    liveUrl: null, // TODO: add the deployed Vercel URL when ready -- a working link is the strongest proof
+    liveUrl: 'https://fuel-hazel-eight.vercel.app/',
     logo: null,
     theme: {
       bg: '#0A0E09',      // near-black with a faint green cast; athletic dark identity, new token for Fuel
@@ -171,7 +171,7 @@ export const projects: Project[] = [
     name: 'Share Our Strength',
     kind: 'consulting',
     oneLiner: 'A pro bono AI tool that surfaces a children\'s nutrition nonprofit\'s next donor every week.',
-    liveUrl: 'https://share-our-strength-proposal.vercel.app/',
+    liveUrl: 'https://sos-intelligence-mvp.vercel.app/',
     logo: null,
     theme: {
       bg: '#FDF4EE',      // warm light; optimistic and open for a nonprofit
