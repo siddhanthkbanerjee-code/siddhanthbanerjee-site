@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 // Shared wayfinding nav for the home page. Renders once, in one fixed layer, and
 // morphs between two states as you scroll:
-//   - "docked": horizontal, tucked top-left above the hero name, small and quiet.
+//   - "docked": horizontal, sitting below the hero name and paragraph, small and quiet.
 //   - "rail": a tight vertical index on the left, active section lit, click to jump.
 // Flips to rail the instant section 2 begins (not partway through it), and flies
 // back to docked the moment you're back at the very top of the hero.
@@ -113,7 +113,9 @@ export function SectionNav() {
             className="section-nav-item"
             aria-current={isActive ? 'true' : undefined}
             style={{
-              color: isActive ? 'var(--color-tangerine)' : 'var(--color-cream-muted)',
+              // Softened from the full-saturation accent: a muted tangerine reads as "you
+              // are here" without competing with the page for attention.
+              color: isActive ? 'rgba(255,107,53,0.75)' : 'var(--color-cream-muted)',
             }}
           >
             {!docked && (
@@ -123,8 +125,8 @@ export function SectionNav() {
                 style={{
                   width: isActive ? 5 : 4,
                   height: isActive ? 5 : 4,
-                  background: isActive ? 'var(--color-tangerine)' : 'rgba(244,239,230,0.32)',
-                  boxShadow: isActive ? '0 0 6px var(--color-tangerine)' : 'none',
+                  background: isActive ? 'rgba(255,107,53,0.75)' : 'rgba(244,239,230,0.32)',
+                  boxShadow: 'none',
                 }}
               />
             )}
@@ -155,17 +157,18 @@ export function SectionNav() {
           text-transform: uppercase;
           transition: color 200ms ease;
         }
-        .section-nav-item:hover, .section-nav-item:focus-visible { color: var(--color-tangerine) !important; }
+        .section-nav-item:hover, .section-nav-item:focus-visible { color: rgba(255,107,53,0.85) !important; }
         .section-nav-dot { border-radius: 50%; flex-shrink: 0; transition: all 200ms ease; }
 
-        /* Docked: horizontal row, tucked into the top-left corner above the name, clear
-           of the hero paragraph's own bottom padding so the two never collide. Small
-           and quiet, not a second headline competing with the hero. */
+        /* Docked: horizontal row, sitting below the hero name and paragraph (which is
+           itself bottom-anchored at padding-bottom clamp(3.5rem, 10vw, 6rem)). A smaller
+           bottom offset than that puts the nav lower on screen, i.e. under the paragraph,
+           not sharing its baseline. */
         .section-nav-docked {
           flex-direction: row;
           flex-wrap: wrap;
-          top: clamp(1.5rem, 4vw, 2.5rem);
-          bottom: auto;
+          top: auto;
+          bottom: calc(clamp(3.5rem, 10vw, 6rem) - 2.75rem);
           left: clamp(1.5rem, 6vw, 4rem);
           right: auto;
           gap: clamp(0.6rem, 1.2vw, 1rem);
@@ -183,7 +186,8 @@ export function SectionNav() {
         .section-nav-docked .section-nav-item:hover,
         .section-nav-docked .section-nav-item:focus-visible { opacity: 1; }
 
-        /* Rail: small, tight, quiet vertical index pinned to the left edge. */
+        /* Rail: small, tight, quiet vertical index pinned to the left edge. Active state
+           uses a muted tangerine, not the full-saturation accent, to stay subtle. */
         .section-nav-rail {
           flex-direction: column;
           top: 50%;
@@ -210,11 +214,12 @@ export function SectionNav() {
 
         .section-nav-reduced { transition: none; }
 
-        /* The rail needs the AI GTM Work / Builds section to leave it a little room on
-           the left. Now that the rail itself is much narrower, a small clearance suffices. */
-        #ai-gtm-work, #builds { padding-left: clamp(1.75rem, 6vw, 2.25rem); }
+        /* Profile, AI GTM Work, and Builds all need to leave the rail room on the left.
+           Shifts the section content right rather than shrinking the rail, which stays
+           at its current size and position. */
+        #profile-section, #ai-gtm-work, #builds { padding-left: clamp(2.5rem, 7vw, 3.5rem); }
         @media (min-width: 721px) {
-          #ai-gtm-work, #builds { padding-left: clamp(1.5rem, 3vw, 2.25rem); }
+          #profile-section, #ai-gtm-work, #builds { padding-left: clamp(2.75rem, 5vw, 3.75rem); }
         }
       `}</style>
     </nav>
