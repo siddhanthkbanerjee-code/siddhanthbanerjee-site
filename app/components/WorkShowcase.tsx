@@ -6,13 +6,14 @@ import { AmbientField } from './AmbientField'
 const builds = projects.filter((p) => p.kind === 'build')
 const consulting = projects.filter((p) => p.kind === 'consulting')
 
-const sectionLabel: React.CSSProperties = {
-  fontFamily: 'var(--font-jetbrains-mono), monospace',
-  fontSize: '0.6rem',
-  letterSpacing: '0.22em',
-  textTransform: 'uppercase',
-  color: 'rgba(244,239,230,0.35)',
-  margin: '0 0 1.25rem',
+const sectionHeading: React.CSSProperties = {
+  fontFamily: 'var(--font-fraunces), serif',
+  fontWeight: 300,
+  color: 'var(--color-cream)',
+  fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
+  lineHeight: 0.98,
+  letterSpacing: '-0.02em',
+  margin: '0 0 clamp(1.75rem, 3.5vw, 2.5rem)',
 }
 
 export function WorkShowcase() {
@@ -32,7 +33,7 @@ export function WorkShowcase() {
       {/* AI GTM Work leads: matches the nav order and front-loads the go-to-market positioning */}
       <div id="ai-gtm-work">
       <Reveal style={{ marginBottom: 'clamp(3rem, 6vw, 5rem)' }}>
-        <p style={sectionLabel}>ai gtm work</p>
+        <h2 style={sectionHeading}>AI GTM Work.</h2>
         <div className="showcase-consulting-grid">
           {consulting.map((p) => (
             <ProjectCard key={p.slug} project={p} />
@@ -44,7 +45,7 @@ export function WorkShowcase() {
       {/* Builds */}
       <div id="builds">
       <Reveal delay={120}>
-        <p style={sectionLabel}>builds</p>
+        <h2 style={sectionHeading}>Builds.</h2>
         <div className="showcase-builds-grid">
           {builds.map((p) => (
             <ProjectCard key={p.slug} project={p} />
