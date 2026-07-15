@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react'
 
 // Shared wayfinding nav for the home page. Renders once, in one fixed layer, and
 // morphs between two states as you scroll:
-//   - "docked": horizontal, sitting where the hero's quick-nav used to be, under the name.
-//   - "rail": a quiet vertical index on the left, active section lit, click to jump.
-// Crossing back to the very top flies it back into the horizontal docked row (CSS
-// transition on position/transform handles the "fly into formation" motion).
+//   - "docked": horizontal, tucked top-left above the hero name, small and quiet.
+//   - "rail": a tight vertical index on the left, active section lit, click to jump.
+// Flips to rail the instant section 2 begins (not partway through it), and flies
+// back to docked the moment you're back at the very top of the hero.
 // The rail hides entirely once Contact is reached, "back to top" is enough there.
 // Mobile collapses the rail to unlabeled dots that show their label briefly on tap
 // or while active.
@@ -40,8 +40,9 @@ export function SectionNav() {
     modeRef.current = mode
   }, [mode])
 
-  // Determine mode + active section from scroll position. Docked while the hero
-  // is still mostly in view, rail once past it, hidden once Contact is close.
+  // Determine mode + active section from scroll position. Docked only while section 1
+  // (the hero) is on screen, flips to rail the moment section 2 starts entering the
+  // viewport, hidden once Contact is close.
   useEffect(() => {
     const heroEl = document.querySelector('main > section') as HTMLElement | null
     const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
@@ -49,11 +50,13 @@ export function SectionNav() {
 
     const evaluate = () => {
       const y = window.scrollY
+      // Flip to rail as soon as the hero's own bottom edge reaches the top of the
+      // viewport, i.e. the instant section 2 starts, not halfway through it.
       const heroBottom = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : window.innerHeight
       const contactTop = contactEl ? contactEl.offsetTop : Infinity
 
       let next: Mode = 'rail'
-      if (y < heroBottom - window.innerHeight * 0.5) next = 'docked'
+      if (y < heroBottom - 1) next = 'docked'
       else if (y > contactTop - window.innerHeight * 0.6) next = 'hidden'
 
       if (next !== modeRef.current) setMode(next)
@@ -118,10 +121,10 @@ export function SectionNav() {
                 aria-hidden="true"
                 className="section-nav-dot"
                 style={{
-                  width: isActive ? 7 : 5,
-                  height: isActive ? 7 : 5,
-                  background: isActive ? 'var(--color-tangerine)' : 'rgba(244,239,230,0.35)',
-                  boxShadow: isActive ? '0 0 8px var(--color-tangerine)' : 'none',
+                  width: isActive ? 5 : 4,
+                  height: isActive ? 5 : 4,
+                  background: isActive ? 'var(--color-tangerine)' : 'rgba(244,239,230,0.32)',
+                  boxShadow: isActive ? '0 0 6px var(--color-tangerine)' : 'none',
                 }}
               />
             )}
@@ -155,49 +158,63 @@ export function SectionNav() {
         .section-nav-item:hover, .section-nav-item:focus-visible { color: var(--color-tangerine) !important; }
         .section-nav-dot { border-radius: 50%; flex-shrink: 0; transition: all 200ms ease; }
 
-        /* Docked: horizontal row, positioned exactly where the old hero quick-nav sat.
-           Real horizontal padding here (not just min-height) so each label is a proper
-           tap target on touch, not just a bare glyph width. */
+        /* Docked: horizontal row, tucked into the top-left corner above the name, clear
+           of the hero paragraph's own bottom padding so the two never collide. Small
+           and quiet, not a second headline competing with the hero. */
         .section-nav-docked {
           flex-direction: row;
           flex-wrap: wrap;
-          top: auto;
-          bottom: clamp(3.5rem, 10vw, 6rem);
+          top: clamp(1.5rem, 4vw, 2.5rem);
+          bottom: auto;
           left: clamp(1.5rem, 6vw, 4rem);
           right: auto;
-          gap: clamp(0.5rem, 1.5vw, 1.25rem);
+          gap: clamp(0.6rem, 1.2vw, 1rem);
           transform: none;
         }
-        .section-nav-docked .section-nav-item { padding: 6px 8px; margin: 0 -8px; gap: 0; }
+        .section-nav-docked .section-nav-item {
+          padding: 4px 6px;
+          margin: 0 -6px;
+          gap: 0;
+          font-size: 0.6rem;
+          letter-spacing: 0.16em;
+          min-height: 32px;
+          opacity: 0.55;
+        }
+        .section-nav-docked .section-nav-item:hover,
+        .section-nav-docked .section-nav-item:focus-visible { opacity: 1; }
 
-        /* Rail: vertical column pinned to the left edge, clear of the hero. */
+        /* Rail: small, tight, quiet vertical index pinned to the left edge. */
         .section-nav-rail {
           flex-direction: column;
           top: 50%;
-          left: clamp(1.25rem, 3.5vw, 2.5rem);
+          left: clamp(1.1rem, 2.5vw, 1.75rem);
           bottom: auto;
           right: auto;
           transform: translateY(-50%);
-          gap: 0.9rem;
+          gap: 0.45rem;
         }
-        .section-nav-rail .section-nav-item { padding: 7px 0; gap: 0.6rem; }
+        .section-nav-rail .section-nav-item {
+          padding: 3px 0;
+          gap: 0.45rem;
+          font-size: 0.58rem;
+          letter-spacing: 0.14em;
+          min-height: 28px;
+        }
 
         /* Mobile rail: dots only by default, label appears on tap or while active. */
         .section-nav-mobile.section-nav-rail {
-          left: 0.6rem;
-          gap: 0.7rem;
+          left: 0.5rem;
+          gap: 0.5rem;
         }
-        .section-nav-mobile.section-nav-rail .section-nav-item { min-width: 44px; }
+        .section-nav-mobile.section-nav-rail .section-nav-item { min-width: 32px; min-height: 32px; }
 
         .section-nav-reduced { transition: none; }
 
-        /* The rail needs the AI GTM Work / Builds section to leave it room on the left,
-           on every viewport where the rail can appear, mobile included: the dot rail sits
-           at left: 0.6rem with 44px-wide tap targets, so content needs matching clearance
-           or card text sits under the dots. */
-        #ai-gtm-work, #builds { padding-left: clamp(3.25rem, 14vw, 4rem); }
+        /* The rail needs the AI GTM Work / Builds section to leave it a little room on
+           the left. Now that the rail itself is much narrower, a small clearance suffices. */
+        #ai-gtm-work, #builds { padding-left: clamp(1.75rem, 6vw, 2.25rem); }
         @media (min-width: 721px) {
-          #ai-gtm-work, #builds { padding-left: clamp(2.5rem, 5vw, 4rem); }
+          #ai-gtm-work, #builds { padding-left: clamp(1.5rem, 3vw, 2.25rem); }
         }
       `}</style>
     </nav>
