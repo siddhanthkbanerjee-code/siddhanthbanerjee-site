@@ -91,6 +91,34 @@ export default async function WritingDetailPage({ params }: Props) {
         {/* Excerpt above is always visible; the full piece is collapsed behind
             this button so arrival is not a commitment to the whole read. */}
         <ExpandableBody html={entry.body} accent="#FF6B35" label="Read the full piece" bodyClassName="writing-body" />
+
+        {/* Notes sourced from LinkedIn link back to the original post, on-brand
+            card styling rather than an embedded screenshot. */}
+        {entry.sourceUrl && (
+          <div style={{ marginTop: '2.5rem' }}>
+            <a
+              href={entry.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: 'var(--font-jetbrains-mono), monospace',
+                fontSize: 12,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'rgba(244,239,230,0.5)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                minHeight: 44,
+                transition: 'color 200ms ease',
+              }}
+            >
+              <span>{entry.sourceLabel ?? 'Read on LinkedIn'}</span>
+              <span aria-hidden="true" style={{ fontSize: '0.9em' }}>&#8599;</span>
+            </a>
+          </div>
+        )}
       </div>
 
       <style>{`
