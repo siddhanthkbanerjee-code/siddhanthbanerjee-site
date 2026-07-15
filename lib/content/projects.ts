@@ -155,8 +155,8 @@ export const projects: Project[] = [
     slug: 'slurrp-farm',
     name: 'Slurrp Farm',
     kind: 'consulting',
-    oneLiner: 'Two pro bono AI bets for a D2C brand I used to market.',
-    liveUrl: 'https://slurrp-farm.vercel.app/index.html',
+    oneLiner: 'A consumer intelligence sprint for the makers of Slurrp Farm and Mille.',
+    liveUrl: null,
     logo: null,
     theme: {
       bg: '#F5F0E8',      // warm cream; earthy warmth for a food brand
@@ -167,11 +167,11 @@ export const projects: Project[] = [
     },
     sections: {
       context:
-        'Slurrp Farm is a children\'s millet-food brand Siddhanth worked at early on. Two pro bono AI proposals, both built specifically for SF, both pitched to former colleagues.',
+        'Wholsum Foods is the parent company of Slurrp Farm and Mille, founded by Shauravi Malik and Meghana Narayan, selling packaged food for kids and families across ecommerce, quick commerce, and D2C in India. Siddhanth worked at Slurrp Farm early in his career; this is a pro bono engagement pitched to the founders directly.',
       theThinking:
-        'Bet one is a Q-commerce co-pilot. The category manager is doing the job of three people across five-plus quick-commerce platforms, each with different rules, thin margins, and listing fees in the lakhs. Existing tools (agencies, analytics dashboards, AI listing tools) each miss the gap between the data and the Monday-morning decision. Bet two is a weekly listening system, a rebuild of the abandoned-cart customer calls Siddhanth used to do, scaled with AI. SF customers talk everywhere (hundreds of reviews per SKU, half a million Instagram followers, CS inbox, NPS, community groups) and nobody reads it systematically. The principle: AI for breadth, humans for depth.',
+        'Consumer signal at Wholsum Foods is scattered: reviews, search behaviour, social mentions, and competitor moves each sit in a different place and mostly get read reactively, if at all. There is no single view of what consumers are actually saying and doing that the team can act on week to week, so product, positioning, and marketing decisions end up running on instinct rather than a current read of the consumer.',
       whatIMade:
-        'For the co-pilot, a weekly digest built on SF\'s SKUs and competitors that tells the CM where they are losing share of search and why, what competitors changed, and what to do that week, with synthesis via Claude and judgment staying with the CM. For the listening system, a four-layer weekly loop (ingest customer voice from every surface, tag and cluster with Claude plus embeddings, synthesise a 500-word Friday brief, and surface twenty customers worth a real human call), anchored by a standing Friday-morning leadership ritual. Both scoped honestly as pro bono sprints with full handover and SF owning everything.',
+        'A v0 sprint: four to six weeks against one narrow data slice, producing two real Friday briefs before handover. Each brief synthesises public consumer signal, reviews, search trends, competitor activity, into a short, structured read the team can act on immediately. The engagement ends with a blueprint and a hiring spec, not a standing tool, deliberately proving the model works before Wholsum commits to running it long-term. If the two briefs change a decision, the blueprint makes it straightforward to hand the capability to someone internal; if they do not, the cost of finding that out is one sprint, not a hire.',
     },
   },
 
@@ -179,7 +179,7 @@ export const projects: Project[] = [
     slug: 'share-our-strength',
     name: 'Share Our Strength',
     kind: 'consulting',
-    oneLiner: 'A pro bono AI tool that surfaces a children\'s nutrition nonprofit\'s next donor every week.',
+    oneLiner: 'A donor intelligence engine for a fundraising NGO, live and password-protected.',
     liveUrl: 'https://sos-intelligence-mvp.vercel.app/',
     logo: null,
     theme: {
@@ -191,11 +191,35 @@ export const projects: Project[] = [
     },
     sections: {
       context:
-        'A pro bono AI tool proposed to Share Our Strength India, a children\'s-nutrition nonprofit. The mission rests on one thing, finding the next Indian donor, and the team doing that is small while the universe of prospects is large.',
+        'Share Our Strength India (SOS India) is a fundraising and grantmaking organisation led by Executive Director Rohit Choudhary. It runs no programs on the ground; its entire mandate is building a sustainable Indian donor pipeline, corporates, HNIs, family offices, and community networks, so that program partners can operate.',
       theThinking:
-        'Researching a single donor prospect manually takes hours, donor signals are time-sensitive, and the right people mostly never get reached, not for lack of intent but for lack of time. The system does the search work so the team keeps doing the human work.',
+        'Donor development ran on relationship memory and manual tracking: who is worth approaching, when their situation changes (a liquidity event, a CSR budget jump, a board appointment), and how to make the ask feel timely rather than cold. None of that was systematised, so opportunities were missed simply because nobody was watching continuously, and every existing tool in the market was built for sales pipelines, not philanthropic relationship intelligence.',
       whatIMade:
-        'A tool that delivers eight to ten fresh donor prospects every Monday, each researched, scored, and ready to act on in minutes. It builds a watch list of around 500 prospects from CSR filings, philanthropy data, funding databases, and existing donor history, scans business news and public signals every day, and lands the week\'s best moments in the inbox as one-page briefs with a draft outreach message. Pro bono, with Share Our Strength India owning all code and accounts from day one.',
+        'A donor intelligence dashboard structured as a weekly editorial briefing backed by a full watchlist engine. The Brief is the page Rohit opens every Monday: a written overview of what changed, a ranked "reach out now" list with an expandable, in-voice outreach draft for each name, and "keep tracking" and "upcoming opportunities" queues. Behind it sit five supporting views, people, organisations, media and events, professional networks, and city geography, each clickable through to a data-driven profile with hover-for-provenance on every claim (source and date, so nothing reads as asserted fact it cannot support) and relationships shown as confidence-rated hypotheses rather than claims ("likely knows" versus "possible overlap"), because a wrong introduction breaks trust instantly with a client like this. The design language is deliberately restrained, an editorial-luxury aesthetic, so it reads as a trusted instrument rather than a generic SaaS dashboard. Built pro bono, on a real running-cost budget SOS India can sustain after handover.',
+    },
+  },
+
+  {
+    slug: 'akanksha-foundation',
+    name: 'Akanksha Foundation',
+    kind: 'consulting',
+    oneLiner: 'A coverage cockpit that turns an operating NGO\'s fundraising into a CFO\'s forward-planning problem.',
+    liveUrl: 'https://akanksha-intelligence.vercel.app/',
+    logo: null,
+    theme: {
+      bg: '#F0F5F7',      // pale blue-teal wash; cool and precise, distinct from SF's green and SOS's coral
+      surface: '#FFFFFF',
+      text: '#0E0B12',    // --color-ink
+      accent: '#0F7C8C',  // teal; financial precision register, distinct from every other project accent
+    tileBg: 'linear-gradient(160deg, #d6ecef 0%, #e9f3f4 50%, #F0F5F7 100%)', // cool teal wash (new tints); ink text stays legible
+    },
+    sections: {
+      context:
+        'The Akanksha Foundation runs about 27 public-private-partnership schools across Mumbai, Pune, and Nagpur, roughly 14,600 children, free education for low-income communities. Unlike a grantmaker, Akanksha is an operating NGO: it must raise on the order of Rs 160 crore a year, every year, just to keep teachers and principals in those classrooms, funded mostly through restricted, time-limited grants across Indian corporate CSR, foundations, HNI donors, and a US diaspora fund.',
+      theThinking:
+        'The person who owns this risk is the CFO, not the development team, and her problem is different from a typical fundraising gap: forward revenue continuity against fixed, non-negotiable salary costs. She needs to know how much of next year\'s committed cost is already secured, where the gaps are, which multi-year grants are about to roll off with nothing lined up to replace them, and how concentrated the funding base has become on a handful of donors. None of that sits in one place today.',
+      whatIMade:
+        'A donor intelligence tool adapted for an operating NGO\'s CFO, anchored by a Coverage cockpit: forward funding coverage by year and school cluster, a cliff radar for grants ending soon with no replacement identified, and a concentration view showing reliance on top funders. Every funding gap it surfaces links straight into the People and Companies/CSR views with a matched, well-timed prospect and a credible way in, so the cockpit does not just flag the hole, it points at how to fill it. A second hero, the weekly Brief, serves the development team the same way the SOS engine does. A Government/PPP tab tracks municipal MoUs, renewal risk, and partial salary-reimbursement commitments, because in a PPP model the government is landlord, regulator, and funder at once. The anchor thread running through every tab is India\'s mandatory corporate CSR pool for education, about Rs 10,085 crore a year and legally refilling under the Companies Act. Every datapoint is tagged Public source or Illustrative, and no fabricated funding signal is ever attached to a real, named individual. Live and demoed, built as a real, warm-intro engagement rather than a portfolio exercise, with the next concrete step being to wire the Coverage cockpit to Akanksha\'s actual grant ledger.',
     },
   },
 ];

@@ -64,8 +64,14 @@ export function WorkShowcase() {
         }
         .showcase-consulting-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
+          /* Three AI GTM Work tiles read as a balanced row, not a 2+1 orphan */
+          grid-template-columns: repeat(3, 1fr);
           gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+        @media (max-width: 900px) {
+          .showcase-consulting-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
         @media (max-width: 480px) {
           .showcase-builds-grid,
