@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { Project } from '@/lib/content/projects'
 
@@ -107,6 +107,12 @@ function CardName({ project }: { project: Project }) {
 
 export function ProjectCard({ project }: { project: Project }) {
   const [hovered, setHovered] = useState(false)
+  // Touch devices never fire hover, so a hover-gated "view" affordance would sit
+  // permanently dimmed there with no tap feedback. Default it to fully visible on touch.
+  const [isTouch, setIsTouch] = useState(false)
+  useEffect(() => {
+    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
+  }, [])
 
   const borderAlpha = hovered ? '55' : '30'
   // Tile-only background if defined (keeps detail page untouched), else cardBg, else solid bg
@@ -161,7 +167,7 @@ export function ProjectCard({ project }: { project: Project }) {
         style={{
           alignSelf: 'flex-end',
           fontFamily: 'var(--font-jetbrains-mono), monospace',
-          fontSize: '0.52rem',
+          fontSize: 'clamp(0.6rem, 0.85vw, 0.68rem)',
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color: project.theme.accent,
@@ -196,11 +202,11 @@ export function ProjectCard({ project }: { project: Project }) {
             alignItems: 'center',
             gap: '0.3rem',
             fontFamily: 'var(--font-jetbrains-mono), monospace',
-            fontSize: '0.55rem',
+            fontSize: 'clamp(0.62rem, 0.85vw, 0.7rem)',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: project.theme.accent,
-            opacity: hovered ? 1 : 0.65,
+            opacity: isTouch || hovered ? 1 : 0.65,
             transition: 'opacity 180ms ease',
           }}
         >

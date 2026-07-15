@@ -155,7 +155,9 @@ export function SectionNav() {
         .section-nav-item:hover, .section-nav-item:focus-visible { color: var(--color-tangerine) !important; }
         .section-nav-dot { border-radius: 50%; flex-shrink: 0; transition: all 200ms ease; }
 
-        /* Docked: horizontal row, positioned exactly where the old hero quick-nav sat. */
+        /* Docked: horizontal row, positioned exactly where the old hero quick-nav sat.
+           Real horizontal padding here (not just min-height) so each label is a proper
+           tap target on touch, not just a bare glyph width. */
         .section-nav-docked {
           flex-direction: row;
           flex-wrap: wrap;
@@ -163,10 +165,10 @@ export function SectionNav() {
           bottom: clamp(3.5rem, 10vw, 6rem);
           left: clamp(1.5rem, 6vw, 4rem);
           right: auto;
-          gap: clamp(0.75rem, 2.5vw, 1.75rem);
+          gap: clamp(0.5rem, 1.5vw, 1.25rem);
           transform: none;
         }
-        .section-nav-docked .section-nav-item { padding: 6px 0; gap: 0; }
+        .section-nav-docked .section-nav-item { padding: 6px 8px; margin: 0 -8px; gap: 0; }
 
         /* Rail: vertical column pinned to the left edge, clear of the hero. */
         .section-nav-rail {
@@ -189,7 +191,11 @@ export function SectionNav() {
 
         .section-nav-reduced { transition: none; }
 
-        /* The rail needs the AI GTM Work / Builds section to leave it room on the left. */
+        /* The rail needs the AI GTM Work / Builds section to leave it room on the left,
+           on every viewport where the rail can appear, mobile included: the dot rail sits
+           at left: 0.6rem with 44px-wide tap targets, so content needs matching clearance
+           or card text sits under the dots. */
+        #ai-gtm-work, #builds { padding-left: clamp(3.25rem, 14vw, 4rem); }
         @media (min-width: 721px) {
           #ai-gtm-work, #builds { padding-left: clamp(2.5rem, 5vw, 4rem); }
         }

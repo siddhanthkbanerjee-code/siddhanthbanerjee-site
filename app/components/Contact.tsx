@@ -186,6 +186,8 @@ export function Contact() {
           alignItems: 'center',
           gap: 8,
           padding: 8,
+          minHeight: 44,
+          minWidth: 44,
         }}
       >
         <span

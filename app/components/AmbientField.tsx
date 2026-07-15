@@ -7,7 +7,9 @@ import { useEffect, useRef } from 'react'
 // section's own background), dim, and cursor-reactive: dots near the pointer are pulled toward
 // it and branch to it, echoing the hero constellation while staying a background whisper.
 // Canvas2D only, so it is cheap; paused when offscreen or when the tab is hidden, and a single
-// static frame under prefers-reduced-motion (no pointer reactivity then).
+// static frame under prefers-reduced-motion (no pointer reactivity then). On touch devices
+// there is no hover pointer to react to, so the pointer listeners are skipped entirely and
+// the particle count and DPR both drop, since touch is also the more battery-constrained case.
 export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -20,7 +22,8 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
     if (!ctx) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.2 : 1.5)
     let W = 1
     let H = 1
 
@@ -43,7 +46,9 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
     let glows: G[] = []
 
     function init() {
-      const n = Math.round(Math.min(70, (c!.width * c!.height) / (26000 * dpr)))
+      const cap = isTouch ? 40 : 70
+      const divisor = isTouch ? 34000 : 26000
+      const n = Math.round(Math.min(cap, (c!.width * c!.height) / (divisor * dpr)))
       parts = []
       for (let i = 0; i < n; i++) {
         parts.push({
@@ -60,7 +65,8 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
     size()
 
     // Listen on window (works despite pointer-events:none) and map into this field's local
-    // space. Outside the box, on=0 so the field just drifts.
+    // space. Outside the box, on=0 so the field just drifts. Skipped entirely on touch,
+    // where there is no hover pointer to track.
     const onMove = (e: PointerEvent) => {
       const r = wrap.getBoundingClientRect()
       const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom
@@ -147,8 +153,10 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
       return () => window.removeEventListener('resize', size)
     }
 
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('blur', onLeaveWin)
+    if (!isTouch) {
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('blur', onLeaveWin)
+    }
 
     const io = new IntersectionObserver((es) => {
       visible = es[0].isIntersecting
@@ -163,8 +171,10 @@ export function AmbientField({ opacity = 0.5 }: { opacity?: number }) {
       stop()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('blur', onLeaveWin)
+      if (!isTouch) {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('blur', onLeaveWin)
+      }
       window.removeEventListener('resize', size)
     }
   }, [])

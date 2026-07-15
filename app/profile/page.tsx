@@ -27,6 +27,11 @@ export default function ProfilePage() {
           color: var(--color-cream-muted);
           text-decoration: none;
           transition: color 200ms ease;
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
+          min-width: 44px;
+          padding: 8px 4px;
         }
         .profile-home:hover, .profile-home:focus-visible { color: var(--color-tangerine); }
       `}</style>

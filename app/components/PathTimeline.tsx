@@ -864,10 +864,23 @@ function PathTimelineStacked({ reduced }: { reduced: boolean }) {
 
 // ---- Root export ----
 export function PathTimeline() {
-  const [isMobile] = useState<boolean>(() => window.innerWidth < 768)
+  // Tracked in state and re-evaluated on resize/orientation change, not just at mount:
+  // a phone rotated to landscape, a foldable unfolded, or a resized split-screen window
+  // should reclassify rather than get stuck in whichever mode it started in.
+  const [isMobile, setIsMobile] = useState<boolean>(() => window.innerWidth < 768)
   const [reduced] = useState<boolean>(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
+    }
+  }, [])
 
   if (isMobile || reduced) {
     return <PathTimelineStacked reduced={reduced} />

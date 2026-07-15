@@ -7,8 +7,10 @@ export type HeroVariant = 'molten' | 'aurora' | 'constellation' | 'nebula' | 'au
 // Real-time fluid-light hero background. WebGL shader for the aurora/molten field,
 // canvas2D for the constellation/nebula. 'aurora-constellation' is constellation-forward:
 // a fine cursor-reactive network over a heavily dimmed, slow aurora that reads as a quiet
-// tonal wash, not a loud gradient. Perf-guarded: DPR capped, paused offscreen or when the
-// tab is hidden, single static frame under prefers-reduced-motion.
+// tonal wash, not a loud gradient. Perf-guarded: DPR capped (tighter on touch devices,
+// which also have no real pointer so mouse-reactivity listeners are skipped entirely
+// and the particle count drops), paused offscreen or when the tab is hidden, single
+// static frame under prefers-reduced-motion.
 export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?: HeroVariant }) {
   const glRef = useRef<HTMLCanvasElement | null>(null)
   const c2Ref = useRef<HTMLCanvasElement | null>(null)
@@ -21,7 +23,10 @@ export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?
     if (!wrap || !glc || !c2) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.6)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    // Touch devices get a tighter DPR cap: no pointer to react to, and lower-end
+    // phones are the most likely to be pushed here, so keep the fill-rate cheap.
+    const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.25 : 1.6)
     const mouse = { x: 0.5, y: 0.5, on: 0, tx: 0.5, ty: 0.5 }
     let W = 1
     let H = 1
@@ -50,8 +55,12 @@ export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?
       mouse.on = 1
     }
     const onLeave = () => { mouse.on = 0 }
-    wrap.addEventListener('pointermove', onMove)
-    wrap.addEventListener('pointerleave', onLeave)
+    // Touch devices have no hover pointer, so these listeners would just sit idle
+    // (or fire once per tap with no useful continuous motion). Skip entirely.
+    if (!isTouch) {
+      wrap.addEventListener('pointermove', onMove)
+      wrap.addEventListener('pointerleave', onLeave)
+    }
 
     glc.style.opacity = useGL ? '1' : '0'
     c2.style.opacity = use2D ? '1' : '0'
@@ -147,8 +156,12 @@ export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?
       if (ctx) {
         type P = { x: number; y: number; vx: number; vy: number }
         let parts: P[] = []
+        // Touch devices have no pointer to react to and are more likely to be
+        // lower-powered, so the network runs noticeably sparser there.
+        const capParts = isTouch ? 70 : 130
+        const divisor = isTouch ? 20000 : 14000
         const initParts = () => {
-          const n = Math.round(Math.min(130, (c2.width * c2.height) / (14000 * dpr)))
+          const n = Math.round(Math.min(capParts, (c2.width * c2.height) / (divisor * dpr)))
           parts = []
           for (let i = 0; i < n; i++) {
             parts.push({ x: Math.random() * c2.width, y: Math.random() * c2.height, vx: (Math.random() - 0.5) * 0.35 * dpr, vy: (Math.random() - 0.5) * 0.35 * dpr })
@@ -271,8 +284,10 @@ export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?
     if (reduced) {
       render(0)
       return () => {
-        wrap.removeEventListener('pointermove', onMove)
-        wrap.removeEventListener('pointerleave', onLeave)
+        if (!isTouch) {
+          wrap.removeEventListener('pointermove', onMove)
+          wrap.removeEventListener('pointerleave', onLeave)
+        }
         window.removeEventListener('resize', size)
       }
     }
@@ -290,8 +305,10 @@ export function HeroFluidCanvas({ variant = 'aurora-constellation' }: { variant?
       stop()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
-      wrap.removeEventListener('pointermove', onMove)
-      wrap.removeEventListener('pointerleave', onLeave)
+      if (!isTouch) {
+        wrap.removeEventListener('pointermove', onMove)
+        wrap.removeEventListener('pointerleave', onLeave)
+      }
       window.removeEventListener('resize', size)
     }
   }, [variant])
