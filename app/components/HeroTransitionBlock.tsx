@@ -4,15 +4,9 @@ import { useState } from 'react'
 import { HeroFluidCanvas } from './HeroFluidCanvas'
 
 // Sprint 10 hero: a single 100vh opener over the real-time aurora + constellation field
-// (HeroFluidCanvas). A quiet quick-nav lets a time-poor visitor jump straight to the section
-// they care about; a plain scroll cue hands off to the first section below. Labels only, no claims.
-const NAV: { label: string; target: string }[] = [
-  { label: 'profile', target: 'profile-section' },
-  { label: 'ai gtm work', target: 'ai-gtm-work' },
-  { label: 'builds', target: 'builds' },
-  { label: 'writing', target: 'writing-section' },
-]
-
+// (HeroFluidCanvas). The quick-nav that used to live here now lives in SectionNav (rendered
+// at the page level), which docks in this same spot at the top and flies into a vertical
+// rail once you scroll past the hero. A plain scroll cue hands off to the first section below.
 export function HeroTransitionBlock() {
   const [reduced] = useState<boolean>(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -74,7 +68,8 @@ export function HeroTransitionBlock() {
         who am i?
       </span>
 
-      {/* lower-left: the name, the answer, and quick-nav */}
+      {/* lower-left: the name and the answer. Quick-nav now renders via SectionNav,
+          docked in the space just below this block (see its "docked" CSS position). */}
       <div
         style={{
           position: 'absolute',
@@ -124,43 +119,6 @@ export function HeroTransitionBlock() {
         >
           Oxford MBA doing AI GTM. Five years across brand, product, strategy and sales.
         </p>
-
-        {/* quick-nav: quiet wayfinding for a time-poor visitor */}
-        <nav
-          aria-label="Jump to a section"
-          className="hero-rise hero-quicknav"
-          style={{
-            marginTop: 'clamp(1.5rem, 3.5vw, 2.25rem)',
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 'clamp(0.75rem, 2.5vw, 1.75rem)',
-            pointerEvents: 'auto',
-            animationDelay: '420ms',
-          }}
-        >
-          {NAV.map((item) => (
-            <button
-              key={item.target}
-              type="button"
-              onClick={() => scrollToId(item.target)}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: '6px 0',
-                minHeight: 44,
-                cursor: 'pointer',
-                fontFamily: 'var(--font-jetbrains-mono), monospace',
-                fontSize: '0.7rem',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--color-cream-muted)',
-                transition: 'color 200ms ease',
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
       </div>
 
       {/* lower-right: quiet scroll cue to the first section below */}
@@ -210,13 +168,6 @@ export function HeroTransitionBlock() {
       </button>
 
       {reduced && <p className="sr-only">Scroll down to the rest of the page</p>}
-
-      <style>{`
-        .hero-quicknav button:hover,
-        .hero-quicknav button:focus-visible {
-          color: var(--color-tangerine);
-        }
-      `}</style>
     </section>
   )
 }
