@@ -105,7 +105,9 @@ export function HeroTransitionBlock() {
           <br />
           Banerjee
         </h1>
-        {/* Copy applied 2026-07-09 (recruiter-POV pass in his paper register). His to veto. */}
+        {/* Copy tightened 2026-07-15: trims the skills list to the four that trace the
+            GTM arc (brand, product, strategy, sales); marketing/consumer insighting/client
+            pitching still live inside the role details on /profile, just not spelled out here. */}
         <p
           className="hero-rise"
           style={{
@@ -120,7 +122,7 @@ export function HeroTransitionBlock() {
             animationDelay: '280ms',
           }}
         >
-          I build AI products and put them in front of real people. Oxford MBA, five years across marketing, product and strategy before that.
+          Oxford MBA doing AI GTM. Five years across brand, product, strategy and sales.
         </p>
 
         {/* quick-nav: quiet wayfinding for a time-poor visitor */}
