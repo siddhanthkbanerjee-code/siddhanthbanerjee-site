@@ -66,9 +66,9 @@ export const projects: Project[] = [
       whatIsUnique:
         'The edge is the discovery intelligence layer, not inventory or ticketing. A three-layer taste engine: an LLM enriches each event with vibe tags and social context, a multi-dimensional taste vector is built from the quiz, and a transparent scoring formula ranks contextually. Every recommendation comes with a generated reason, which makes it feel less like a listings site and more like a knowledgeable friend with taste.',
       howItWasBuilt:
-        'Next.js, TypeScript, Tailwind. Pinecone vector search over roughly 800 events, OpenAI embeddings, Claude for the natural-language explanations. Event data enriched through an LLM pipeline. Deployed on Vercel.',
+        'Next.js, TypeScript, Tailwind. Pinecone vector search over roughly 800 events, OpenAI text-embedding-3-large embeddings, Claude for the natural-language explanations. Event data enriched through an LLM pipeline. Deployed on Vercel.',
       gtmAngle:
-        'The GTM lesson is trust design. An AI recommendation only gets adopted if the person believes the reason behind it, which is why every match ships with a generated explanation instead of a bare score: the explanation is the product, not a nice-to-have on top of it.',
+        'This is the full stack end to end, not a feature bolted onto someone else\'s product: embeddings, vector retrieval, and an LLM explanation layer, shipped live. That depth is what lets a GTM person scope a roadmap and talk credibly with engineering, not just market around the edges. The positioning itself is a GTM decision too, Spotify for live culture and a match score with a reason turns a capability into a story a user gets instantly. And the niche-event score multiplier, tuned so a big Ticketmaster listing does not drown out a more interesting small one, is the same judgment call GTM has to make on any AI product: when to tune for business intent, not just raw accuracy.',
     },
   },
 
@@ -94,7 +94,7 @@ export const projects: Project[] = [
       howItWasBuilt:
         'Next.js, TypeScript, Tailwind, Supabase, the Anthropic API, deployed on Vercel. Built with a two-agent workflow, Claude as planner and Claude Code as builder. Design language is Living Dark, a warm near-black base, two typographic voices, motion that feels like breath.',
       gtmAngle:
-        'The lesson is about restraint. Self-discovery products lose trust the moment they overclaim, so the harder design problem was building something that mirrors instead of diagnoses. It is also, honestly, the build with the least obvious buyer of the four, which is part of the lesson too: not every good build has a clean go-to-market, and knowing which is which is itself a GTM skill.',
+        'The rare thing here is full ownership across a stack that is usually split between people: prompt architecture, session design, the database, deployment, and the psychological frameworks that give the AI its structure. The prompts alone have gone through more than 20 build sessions, real product decisions each time on how much to infer versus invent and how to keep a long adaptive conversation coherent. The actual GTM lesson is trust and voice: a self-discovery tool lives or dies on whether the output feels genuinely personal rather than generic AI output, which is the same pitch any AI product has to make to a skeptical buyer. It is also, honestly, the build with the least obvious buyer of the four, and knowing which builds have a clean go-to-market and which do not is itself a GTM skill.',
     },
   },
 
