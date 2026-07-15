@@ -118,6 +118,7 @@ function BuildSpine({
       <SectionBlock label="what it is" body={sections.whatItIs} accent={accent} text={text} />
       <SectionBlock label="what is unique" body={sections.whatIsUnique} accent={accent} text={text} />
       <SectionBlock label="how it was built" body={sections.howItWasBuilt} accent={accent} text={text} />
+      <SectionBlock label="gtm angle" body={sections.gtmAngle} accent={accent} text={text} />
     </div>
   )
 }

@@ -11,6 +11,7 @@ export type BuildSections = {
   whatItIs: string;
   whatIsUnique: string;
   howItWasBuilt: string;
+  gtmAngle: string;
 };
 
 export type ConsultingSections = {
@@ -66,6 +67,8 @@ export const projects: Project[] = [
         'The edge is the discovery intelligence layer, not inventory or ticketing. A three-layer taste engine: an LLM enriches each event with vibe tags and social context, a multi-dimensional taste vector is built from the quiz, and a transparent scoring formula ranks contextually. Every recommendation comes with a generated reason, which makes it feel less like a listings site and more like a knowledgeable friend with taste.',
       howItWasBuilt:
         'Next.js, TypeScript, Tailwind. Pinecone vector search over roughly 800 events, OpenAI embeddings, Claude for the natural-language explanations. Event data enriched through an LLM pipeline. Deployed on Vercel.',
+      gtmAngle:
+        'The GTM lesson is trust design. An AI recommendation only gets adopted if the person believes the reason behind it, which is why every match ships with a generated explanation instead of a bare score: the explanation is the product, not a nice-to-have on top of it.',
     },
   },
 
@@ -90,6 +93,8 @@ export const projects: Project[] = [
         'The integration is the point. Most tools do one of these jobs. Prizerv insists on the full arc, each phase consuming the prior phase\'s output. It is AI-led, not assessment-led: no static question battery, the AI drives the session and adapts in real time. It mirrors rather than defines, reflecting patterns back tentatively rather than scoring you. Surfaces frameworks including Big Five, PERMA, positive psychology, and flow.',
       howItWasBuilt:
         'Next.js, TypeScript, Tailwind, Supabase, the Anthropic API, deployed on Vercel. Built with a two-agent workflow, Claude as planner and Claude Code as builder. Design language is Living Dark, a warm near-black base, two typographic voices, motion that feels like breath.',
+      gtmAngle:
+        'The lesson is about restraint. Self-discovery products lose trust the moment they overclaim, so the harder design problem was building something that mirrors instead of diagnoses. It is also, honestly, the build with the least obvious buyer of the four, which is part of the lesson too: not every good build has a clean go-to-market, and knowing which is which is itself a GTM skill.',
     },
   },
 
@@ -114,6 +119,8 @@ export const projects: Project[] = [
         'The entry point. Most AI-adoption tooling assumes the buyer already knows enough to ask build-versus-buy or which vendor. Lever starts a step earlier, at what AI can even do for this business, which is the highest-value, least-served gap. The tool never tries to give a final answer, it opens doors: the free tool surfaces opportunities, the ROI calculator creates urgency, the contact step captures qualified leads.',
       howItWasBuilt:
         'A clean single-page web app. The tonal job is credibility and clarity, output that reads like consulting work a business owner would trust enough to act on. Plain-language explanations over jargon, complexity and ROI presented soberly.',
+      gtmAngle:
+        'This is a GTM problem before it is a product. Most mid-market owners cannot yet ask build versus buy, so the wedge is a free, honest answer to what AI can even do for their business, a conversation most AI-adoption tools skip in favour of assuming the buyer is already further along than they are.',
     },
   },
 
@@ -138,6 +145,8 @@ export const projects: Project[] = [
         'It is a real multi-user product, not a personal script. Cloud sync runs on Supabase with Postgres, email magic-link auth, and row-level security, so each person only ever sees their own data, while the app still works fully offline on local storage and sync stays purely additive, never a dependency. Every target is transparent and editable rather than a black box: a Mifflin-St Jeor BMR, an activity factor for TDEE, a goal-and-pace adjustment, and macro targets set by grams per kilogram, each shown with its source. That is what turned it from a personal build into something real testers use daily, which generates the usage data to iterate on.',
       howItWasBuilt:
         'The entire app is a single index.html of vanilla JavaScript and inline CSS, with no framework and no build step, around 79KB in total. Supabase was added afterwards as a purely additive backend over an already-working offline-first localStorage app. Nutrition data comes from Open Food Facts, which is free, open, and carries no API cost. It installs to a phone home screen through a web manifest and service worker. It was built almost entirely through conversational AI-assisted development with Claude, by an MBA with no professional engineering background, which is part of the point.',
+      gtmAngle:
+        'The lesson is that shipping an AI-built product is the easy part. Daily use is the real test, and this is the one build where real people actually open it every day, which is a different and harder bar than getting something live.',
     },
   },
 
