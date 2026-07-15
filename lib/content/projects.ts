@@ -180,7 +180,9 @@ export const projects: Project[] = [
     name: 'Share Our Strength',
     kind: 'consulting',
     oneLiner: 'A relationship-intelligence engine for a fundraising NGO with no programs of its own.',
-    liveUrl: 'https://sos-intelligence-mvp.vercel.app/',
+    // Live link deliberately withheld: the deployed dashboard carries real donor and
+    // relationship data. Do not restore this without confirming with SOS India first.
+    liveUrl: null,
     logo: null,
     theme: {
       bg: '#FDF4EE',      // warm light; optimistic and open for a nonprofit
@@ -195,7 +197,7 @@ export const projects: Project[] = [
       theThinking:
         'Donor development ran on relationship memory and manual tracking: who is worth approaching, when their situation changes (a liquidity event, a CSR budget jump, a board appointment), and how to make the ask feel timely rather than cold. None of that was systematised, so opportunities were missed simply because nobody was watching continuously, and every existing tool in the market was built for sales pipelines, not philanthropic relationship intelligence.',
       whatIMade:
-        'An editorial briefing, not a dashboard: the Brief is the page Rohit opens every Monday, a written overview of what changed, a ranked "reach out now" list with an expandable, in-voice outreach draft for each name, and "keep tracking" and "upcoming opportunities" queues. Behind it sit five supporting views, people, organisations, media and events, professional networks, and city geography, each clickable through to a profile with hover-for-provenance on every claim (source and date, so nothing reads as asserted fact it cannot support) and relationships shown as confidence-rated hypotheses rather than claims ("likely knows" versus "possible overlap"), because a wrong introduction breaks trust instantly with a client whose entire mandate is relationships. The design language is deliberately restrained, an editorial-luxury aesthetic that reads as a trusted instrument rather than a generic SaaS dashboard, since the product here is judgement, not data volume. Built pro bono, on a real running-cost budget SOS India can sustain after handover.',
+        'An editorial briefing, not a dashboard: the Brief is the page Rohit opens every Monday, a written overview of what changed, a ranked "reach out now" list with an expandable, in-voice outreach draft for each name, and "keep tracking" and "upcoming opportunities" queues. Behind it sit five supporting views, people, organisations, media and events, professional networks, and city geography, each clickable through to a profile with hover-for-provenance on every claim (source and date, so nothing reads as asserted fact it cannot support) and relationships shown as confidence-rated hypotheses rather than claims ("likely knows" versus "possible overlap"), because a wrong introduction breaks trust instantly with a client whose entire mandate is relationships. The interface itself stays private to SOS India: real donor names, relationship notes, and outreach drafts sit inside it, so what is shown here is the thinking and the build, not a public walkthrough of someone else\'s contact book. The design language is deliberately restrained, an editorial-luxury aesthetic that reads as a trusted instrument rather than a generic SaaS dashboard, since the product here is judgement, not data volume. Built pro bono, on a real running-cost budget SOS India can sustain after handover.',
     },
   },
 
@@ -204,7 +206,9 @@ export const projects: Project[] = [
     name: 'Akanksha Foundation',
     kind: 'consulting',
     oneLiner: 'A financial coverage cockpit for the CFO of a 27-school operating NGO.',
-    liveUrl: 'https://akanksha-intelligence.vercel.app/',
+    // Live link deliberately withheld: the deployed dashboard carries real financial and
+    // grant data. Do not restore this without confirming with Akanksha first.
+    liveUrl: null,
     logo: null,
     theme: {
       bg: '#F0F5F7',      // pale blue-teal wash; cool and precise, distinct from SF's green and SOS's coral
@@ -219,7 +223,7 @@ export const projects: Project[] = [
       theThinking:
         'The person who owns this risk is the CFO, not the development team, and her problem is different from a typical fundraising gap: forward revenue continuity against fixed, non-negotiable salary costs. She needs to know how much of next year\'s committed cost is already secured, where the gaps are, which multi-year grants are about to roll off with nothing lined up to replace them, and how concentrated the funding base has become on a handful of donors. None of that sits in one place today.',
       whatIMade:
-        'The centrepiece is the Coverage cockpit: forward funding coverage by year and school cluster, a cliff radar for grants ending soon with no replacement identified, and a concentration view showing reliance on a handful of funders, the specific numbers a CFO needs before she can sign off on next year\'s hiring plan. Every gap the cockpit surfaces links straight into a matched, well-timed prospect with a credible way in, so it does not just flag the hole, it points at how to fill it. A Government/PPP tab tracks municipal MoUs, renewal risk, and partial salary-reimbursement commitments, because in a PPP model the government is landlord, regulator, and funder all at once, a layer no generic fundraising tool would think to include. The anchor thread running through every tab is India\'s mandatory corporate CSR pool for education, about Rs 10,085 crore a year and legally refilling under the Companies Act. Every datapoint is tagged Public source or Illustrative, and no fabricated funding signal is ever attached to a real, named individual. Live and demoed, built as a real, warm-intro engagement rather than a portfolio exercise, with the next concrete step being to wire the cockpit to Akanksha\'s actual grant ledger.',
+        'The centrepiece is the Coverage cockpit: forward funding coverage by year and school cluster, a cliff radar for grants ending soon with no replacement identified, and a concentration view showing reliance on a handful of funders, the specific numbers a CFO needs before she can sign off on next year\'s hiring plan. Every gap the cockpit surfaces links straight into a matched, well-timed prospect with a credible way in, so it does not just flag the hole, it points at how to fill it. A Government/PPP tab tracks municipal MoUs, renewal risk, and partial salary-reimbursement commitments, because in a PPP model the government is landlord, regulator, and funder all at once, a layer no generic fundraising tool would think to include. The anchor thread running through every tab is India\'s mandatory corporate CSR pool for education, about Rs 10,085 crore a year and legally refilling under the Companies Act. Every datapoint is tagged Public source or Illustrative, and no fabricated funding signal is ever attached to a real, named individual. The cockpit itself stays private to Akanksha, since it carries real school-level financial data, demoed directly to the CFO rather than published as a public walkthrough, with the next concrete step being to wire it to Akanksha\'s actual grant ledger.',
     },
   },
 ];
