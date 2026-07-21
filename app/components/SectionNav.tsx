@@ -50,13 +50,17 @@ export function SectionNav() {
 
     const evaluate = () => {
       const y = window.scrollY
-      // Flip to rail as soon as the hero's own bottom edge reaches the top of the
-      // viewport, i.e. the instant section 2 starts, not halfway through it.
+      const viewportBottom = y + window.innerHeight
+      // Flip to rail the instant section 2 starts entering the viewport from the
+      // bottom, i.e. as soon as the viewport's own lower edge reaches the hero's
+      // bottom edge, not when the whole hero has scrolled past the top. Waiting for
+      // the latter meant section 2's heading was already filling most of the screen,
+      // behind a still-docked (and now overlapping) horizontal nav.
       const heroBottom = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : window.innerHeight
       const contactTop = contactEl ? contactEl.offsetTop : Infinity
 
       let next: Mode = 'rail'
-      if (y < heroBottom - 1) next = 'docked'
+      if (viewportBottom < heroBottom + 1) next = 'docked'
       else if (y > contactTop - window.innerHeight * 0.6) next = 'hidden'
 
       if (next !== modeRef.current) setMode(next)
@@ -187,11 +191,13 @@ export function SectionNav() {
         .section-nav-docked .section-nav-item:focus-visible { opacity: 1; }
 
         /* Rail: small, tight, quiet vertical index pinned to the left edge. Active state
-           uses a muted tangerine, not the full-saturation accent, to stay subtle. */
+           uses a muted tangerine, not the full-saturation accent, to stay subtle. Sits
+           closer to the viewport edge than before, for real clearance from card content
+           sitting to its right. */
         .section-nav-rail {
           flex-direction: column;
           top: 50%;
-          left: clamp(1.1rem, 2.5vw, 1.75rem);
+          left: clamp(0.6rem, 1.5vw, 1.1rem);
           bottom: auto;
           right: auto;
           transform: translateY(-50%);
@@ -207,7 +213,7 @@ export function SectionNav() {
 
         /* Mobile rail: dots only by default, label appears on tap or while active. */
         .section-nav-mobile.section-nav-rail {
-          left: 0.5rem;
+          left: 0.4rem;
           gap: 0.5rem;
         }
         .section-nav-mobile.section-nav-rail .section-nav-item { min-width: 32px; min-height: 32px; }
