@@ -2,15 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-// Shared wayfinding nav for the home page. Renders once, in one fixed layer, and
-// morphs between two states as you scroll:
-//   - "docked": horizontal, sitting below the hero name and paragraph, small and quiet.
-//   - "rail": a tight vertical index on the left, active section lit, click to jump.
-// Flips to rail the instant section 2 begins (not partway through it), and flies
-// back to docked the moment you're back at the very top of the hero.
-// The rail hides entirely once Contact is reached, "back to top" is enough there.
-// Mobile collapses the rail to unlabeled dots that show their label briefly on tap
-// or while active.
+// Wayfinding nav for the home page, in two states:
+//   - "docked": a horizontal row sitting in the lower part of the hero (section 1).
+//     It is ABSOLUTELY positioned near the hero's bottom, so it scrolls away WITH the
+//     hero as you move down the page. Because it is not fixed, it can never sit on top
+//     of section 2 as that section rises into view.
+//   - "rail": a fixed vertical index on the left, active section lit, click to jump.
+//
+// The switch is dead simple and matches how it reads: stay horizontal until section 2
+// (the "profile / AI GTM wasn't a pivot" block) reaches the top of the viewport, then
+// show the vertical rail. The horizontal row has scrolled off the top by then, so there
+// is never a moment where both are visible or either overlaps live text.
+// Hidden once Contact is close. Mobile collapses the rail to unlabeled dots.
 const NAV: { label: string; target: string }[] = [
   { label: 'profile', target: 'profile-section' },
   { label: 'ai gtm work', target: 'ai-gtm-work' },
@@ -27,7 +30,6 @@ export function SectionNav() {
   const [isMobile, setIsMobile] = useState(false)
   const [reduced, setReduced] = useState(false)
   const modeRef = useRef<Mode>('docked')
-  const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 720)
@@ -41,45 +43,26 @@ export function SectionNav() {
     modeRef.current = mode
   }, [mode])
 
-  // Determine mode, opacity and active section from scroll position.
-  //
-  // Why a fade hand-off rather than a straight morph: the hero name is bottom-anchored,
-  // so as you scroll it rises up THROUGH the vertical rail's band (the rail would cut
-  // into the name). Meanwhile section 2's heading rises from the bottom INTO the docked
-  // horizontal nav. Those two danger zones overlap in scroll space, so there is no single
-  // instant where flipping horizontal-to-vertical is clean. Instead we hand off: the
-  // horizontal nav fades out over the first stretch of scroll (gone before section 2
-  // reaches it), a brief gap, then the vertical rail fades in only once the hero has
-  // cleared (so it never sits on the name). Hidden once Contact is close.
+  // Mode + active section from scroll position. Horizontal while section 2 has not yet
+  // reached the top of the viewport; vertical rail once it has; hidden near Contact.
   useEffect(() => {
+    const section2 = document.getElementById('profile-section')
     const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
     const sectionEls = NAV.map((n) => document.getElementById(n.target)).filter(Boolean) as HTMLElement[]
 
     const evaluate = () => {
       const y = window.scrollY
       const vh = window.innerHeight
+      // Section 2's top edge relative to the viewport top. Positive = still below the
+      // top (we are in the hero), <= 0 = it has reached or passed the top.
+      const s2top = section2 ? section2.getBoundingClientRect().top : Infinity
       const contactTop = contactEl ? contactEl.getBoundingClientRect().top + y : Infinity
 
-      // Hand-off geometry, all relative to viewport height so it scales across devices.
-      const fadeOutEnd = vh * 0.16    // horizontal fully faded by here (before section 2 arrives)
-      const railFadeStart = vh * 0.44 // rail begins to appear here (hero has cleared the band)
-      const railFadeEnd = vh * 0.56   // rail fully in by here
-
-      let next: Mode = 'rail'
-      if (y < railFadeStart) next = 'docked'
-      else if (y > contactTop - vh * 0.6) next = 'hidden'
-
-      if (next !== modeRef.current) setMode(next)
-
-      // Scroll-linked opacity for the hand-off. Set directly on the node so scrolling
-      // does not trigger a React re-render on every frame.
-      if (navRef.current) {
-        let op = 1
-        if (next === 'docked') op = Math.max(0, 1 - y / fadeOutEnd)
-        else if (next === 'rail') op = Math.min(1, (y - railFadeStart) / (railFadeEnd - railFadeStart))
-        else op = 0
-        navRef.current.style.opacity = String(op)
+      let next: Mode = 'docked'
+      if (s2top <= 4) {
+        next = y > contactTop - vh * 0.6 ? 'hidden' : 'rail'
       }
+      if (next !== modeRef.current) setMode(next)
 
       // Active section: the last one whose top has scrolled past the viewport's upper third.
       let activeIdx = 0
@@ -113,7 +96,6 @@ export function SectionNav() {
 
   return (
     <nav
-      ref={navRef}
       aria-label="Jump to a section"
       className={`section-nav ${docked ? 'section-nav-docked' : 'section-nav-rail'} ${isMobile ? 'section-nav-mobile' : ''} ${reduced ? 'section-nav-reduced' : ''}`}
     >
@@ -158,12 +140,8 @@ export function SectionNav() {
 
       <style>{`
         .section-nav {
-          position: fixed;
           z-index: 30;
           display: flex;
-          transition: top 650ms cubic-bezier(0.22, 1, 0.36, 1), left 650ms cubic-bezier(0.22, 1, 0.36, 1),
-            right 650ms cubic-bezier(0.22, 1, 0.36, 1), bottom 650ms cubic-bezier(0.22, 1, 0.36, 1),
-            transform 650ms cubic-bezier(0.22, 1, 0.36, 1), flex-direction 0ms 325ms;
         }
         .section-nav-item {
           background: none;
@@ -181,19 +159,17 @@ export function SectionNav() {
         .section-nav-item:hover, .section-nav-item:focus-visible { color: rgba(255,107,53,0.85) !important; }
         .section-nav-dot { border-radius: 50%; flex-shrink: 0; transition: all 200ms ease; }
 
-        /* Docked: horizontal row, sitting below the hero name and paragraph (which is
-           itself bottom-anchored at padding-bottom clamp(3.5rem, 10vw, 6rem)). A smaller
-           bottom offset than that puts the nav lower on screen, i.e. under the paragraph,
-           not sharing its baseline. */
+        /* Docked: horizontal row, ABSOLUTELY positioned near the hero's bottom so it
+           scrolls away with the hero. top is measured from the document origin, which
+           for the first viewport equals the hero (100vh tall). Sits just below the hero
+           paragraph, matching where it read well before. */
         .section-nav-docked {
+          position: absolute;
           flex-direction: row;
           flex-wrap: wrap;
-          top: auto;
-          bottom: calc(clamp(3.5rem, 10vw, 6rem) - 2.75rem);
+          top: calc(100vh - 5.25rem);
           left: clamp(1.5rem, 6vw, 4rem);
-          right: auto;
           gap: clamp(0.6rem, 1.2vw, 1rem);
-          transform: none;
         }
         .section-nav-docked .section-nav-item {
           padding: 4px 6px;
@@ -207,18 +183,20 @@ export function SectionNav() {
         .section-nav-docked .section-nav-item:hover,
         .section-nav-docked .section-nav-item:focus-visible { opacity: 1; }
 
-        /* Rail: small, tight, quiet vertical index pinned to the left edge. Active state
-           uses a muted tangerine, not the full-saturation accent, to stay subtle. Sits
-           closer to the viewport edge than before, for real clearance from card content
-           sitting to its right. */
+        /* Rail: fixed, small, tight, quiet vertical index pinned to the left edge. Fades
+           in when it takes over from the horizontal row. */
         .section-nav-rail {
+          position: fixed;
           flex-direction: column;
           top: 50%;
           left: clamp(0.6rem, 1.5vw, 1.1rem);
-          bottom: auto;
-          right: auto;
           transform: translateY(-50%);
           gap: 0.45rem;
+          animation: sectionNavRailIn 300ms ease both;
+        }
+        @keyframes sectionNavRailIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         .section-nav-rail .section-nav-item {
           padding: 3px 0;
@@ -235,11 +213,10 @@ export function SectionNav() {
         }
         .section-nav-mobile.section-nav-rail .section-nav-item { min-width: 32px; min-height: 32px; }
 
-        .section-nav-reduced { transition: none; }
+        .section-nav-reduced.section-nav-rail { animation: none; }
 
-        /* Profile, AI GTM Work, and Builds all need to leave the rail room on the left.
-           Shifts the section content right rather than shrinking the rail, which stays
-           at its current size and position. */
+        /* Profile, AI GTM Work, and Builds all leave the rail room on the left. Shifts
+           the section content right rather than shrinking the rail. */
         #profile-section, #ai-gtm-work, #builds { padding-left: clamp(2.5rem, 7vw, 3.5rem); }
         @media (min-width: 721px) {
           #profile-section, #ai-gtm-work, #builds { padding-left: clamp(2.75rem, 5vw, 3.75rem); }
