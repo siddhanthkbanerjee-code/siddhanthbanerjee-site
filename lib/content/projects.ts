@@ -68,7 +68,7 @@ export const projects: Project[] = [
       howItWasBuilt:
         'Next.js, TypeScript, Tailwind. Pinecone vector search over roughly 800 events, OpenAI text-embedding-3-large embeddings, Claude for the natural-language explanations. Event data enriched through an LLM pipeline. Deployed on Vercel.',
       gtmAngle:
-        'This is the full stack end to end, not a feature bolted onto someone else\'s product: embeddings, vector retrieval, and an LLM explanation layer, shipped live. That depth is what lets a GTM person scope a roadmap and talk credibly with engineering, not just market around the edges. The positioning itself is a GTM decision too, Spotify for live culture and a match score with a reason turns a capability into a story a user gets instantly. And the niche-event score multiplier, tuned so a big Ticketmaster listing does not drown out a more interesting small one, is the same judgment call GTM has to make on any AI product: when to tune for business intent, not just raw accuracy.',
+        'This is the full stack end to end, not a feature bolted onto someone else\'s product: embeddings, vector retrieval, and an LLM explanation layer, shipped live. That depth is what lets a GTM person scope a roadmap and talk credibly with engineering rather than just market around the edges. The sharper GTM call sits in the ranking. The niche-event score multiplier, tuned so a big Ticketmaster listing does not drown out a more interesting small one, is the judgment every AI product forces: when to tune for business intent, not just raw accuracy.',
     },
   },
 
@@ -88,13 +88,13 @@ export const projects: Project[] = [
     },
     sections: {
       whatItIs:
-        'An AI-powered self-discovery platform. Not therapy, not a personality test. A structured mirror that helps people understand who they are, how they are currently living, and how to close the gap. Runs on a fixed three-phase arc: Being, Doing, Becoming.',
+        'The most ambitious of these builds: an AI-powered self-discovery platform. Not therapy, not a personality test, but a structured mirror that walks you through a full arc, who you are, how you are actually living, and how to close the gap between the two. Three phases, Being, Doing, Becoming, each one built on the last.',
       whatIsUnique:
-        'The integration is the point. Most tools do one of these jobs. Prizerv insists on the full arc, each phase consuming the prior phase\'s output. It is AI-led, not assessment-led: no static question battery, the AI drives the session and adapts in real time. It mirrors rather than defines, reflecting patterns back tentatively rather than scoring you. Surfaces frameworks including Big Five, PERMA, positive psychology, and flow.',
+        'The ambition is the integration. Most tools do one of these jobs; Prizerv attempts the entire arc in a single adaptive session, each phase consuming the last one\'s output. It is AI-led, not assessment-led: no static question battery, the AI runs the conversation and adapts in real time, drawing on Big Five, PERMA, positive psychology, and flow. And it mirrors rather than defines, reflecting patterns back tentatively instead of scoring you, which is far harder to hold together than a quiz.',
       howItWasBuilt:
         'Next.js, TypeScript, Tailwind, Supabase, the Anthropic API, deployed on Vercel. Built with a two-agent workflow, Claude as planner and Claude Code as builder. Design language is Living Dark, a warm near-black base, two typographic voices, motion that feels like breath.',
       gtmAngle:
-        'The rare thing here is full ownership across a stack that is usually split between people: prompt architecture, session design, the database, deployment, and the psychological frameworks that give the AI its structure. The prompts alone have gone through more than 20 build sessions, real product decisions each time on how much to infer versus invent and how to keep a long adaptive conversation coherent. The actual GTM lesson is trust and voice: a self-discovery tool lives or dies on whether the output feels genuinely personal rather than generic AI output, which is the same pitch any AI product has to make to a skeptical buyer. It is also, honestly, the build with the least obvious buyer of the four, and knowing which builds have a clean go-to-market and which do not is itself a GTM skill.',
+        'Prizerv is a full-ownership build: prompt architecture, session design, the database, deployment. The prompts went through more than twenty iterations, and each one was the same product decision, how much to infer versus invent, and how to keep a long adaptive conversation coherent. The GTM lesson is trust and voice. A self-discovery tool lives or dies on whether the output feels genuinely personal rather than generic AI output, which is the pitch any AI product has to make to a skeptical buyer. It is also, honestly, the build with the least obvious buyer of the four, and knowing which builds have a clean go-to-market and which do not is itself a GTM skill.',
     },
   },
 
@@ -120,7 +120,7 @@ export const projects: Project[] = [
       howItWasBuilt:
         'A clean single-page web app. The tonal job is credibility and clarity, output that reads like consulting work a business owner would trust enough to act on. Plain-language explanations over jargon, complexity and ROI presented soberly.',
       gtmAngle:
-        'This is a GTM problem before it is a product. Most mid-market owners cannot yet ask build versus buy, so the wedge is a free, honest answer to what AI can even do for their business, a conversation most AI-adoption tools skip in favour of assuming the buyer is already further along than they are.',
+        'This is a GTM problem before it is a product. Most mid-market owners cannot yet ask build versus buy, so the wedge is deliberately upstream of the sale: a free, plain diagnostic of what AI can actually do for their business, with complexity and ROI attached so the answer is usable rather than flattering. The bet is that meeting owners at the question they can actually ask, rather than the one a vendor wishes they were asking, is where trust in this market starts.',
     },
   },
 
@@ -140,13 +140,13 @@ export const projects: Project[] = [
     },
     sections: {
       whatItIs:
-        'A mobile-first fitness tracking web app, installable as a PWA, for logging food, weight, steps, and workouts. First run sets a profile and a goal (cut, maintain, or bulk) with a pace, then the Today tab shows calorie, macro, and fibre rings alongside the food log for that day and a morning weight entry. Food is logged three ways: rear-camera barcode scanning, manual barcode entry, or name search over Open Food Facts. A Train tab offers a structured push, pull, and legs split plus a free-log mode that surfaces your last session for each exercise so you can beat it, and Calendar, Trends, and an in-app diet Plan round it out. It is deliberately a tracker, not a coach: it logs and visualises, and you set and edit your own targets.',
+        'A mobile-first fitness tracker, installable to your phone like an app, for logging food, weight, and workouts. Pick a goal and the Today tab shows your calorie, macro, and fibre rings against what you have eaten. Log food by scanning a barcode or searching Open Food Facts. A Train tab runs a push, pull, and legs split and shows your last session for each lift so you can beat it. It tracks and visualises; you set the targets, not a coach.',
       whatIsUnique:
-        'It is a real multi-user product, not a personal script. Cloud sync runs on Supabase with Postgres, email magic-link auth, and row-level security, so each person only ever sees their own data, while the app still works fully offline on local storage and sync stays purely additive, never a dependency. Every target is transparent and editable rather than a black box: a Mifflin-St Jeor BMR, an activity factor for TDEE, a goal-and-pace adjustment, and macro targets set by grams per kilogram, each shown with its source. That is what turned it from a personal build into something real testers use daily, which generates the usage data to iterate on.',
+        'It is a real product, not a personal script. Full multi-user cloud sync on Supabase, with row-level security so each person only sees their own data, yet it still works completely offline. And every target is transparent and editable, not a black box: the calorie and macro numbers use standard sports-science formulas, each shown with its source. That is what took it from a weekend build to something real testers open every day.',
       howItWasBuilt:
-        'The entire app is a single index.html of vanilla JavaScript and inline CSS, with no framework and no build step, around 79KB in total. Supabase was added afterwards as a purely additive backend over an already-working offline-first localStorage app. Nutrition data comes from Open Food Facts, which is free, open, and carries no API cost. It installs to a phone home screen through a web manifest and service worker. It was built almost entirely through conversational AI-assisted development with Claude, by an MBA with no professional engineering background, which is part of the point.',
+        'The whole app is a single 79KB index.html of vanilla JavaScript, no framework and no build step. Supabase was added later as a purely additive backend over an already-working offline app, so sync is a bonus, never a dependency. Nutrition data is free from Open Food Facts. It installs to a phone through a web manifest and service worker. Built almost entirely through conversational development with Claude, by an MBA with no engineering background, which is the point.',
       gtmAngle:
-        'The lesson is that shipping an AI-built product is the easy part. Daily use is the real test, and this is the one build where real people actually open it every day, which is a different and harder bar than getting something live.',
+        'Shipping an AI-built product is the easy part. Daily use is the real test, and this is the one build where real people actually open it every day. That is the bar GTM is ultimately judged on, not launch but return, and it is a harder one to clear than getting something live.',
     },
   },
 
