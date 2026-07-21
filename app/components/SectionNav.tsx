@@ -27,6 +27,7 @@ export function SectionNav() {
   const [isMobile, setIsMobile] = useState(false)
   const [reduced, setReduced] = useState(false)
   const modeRef = useRef<Mode>('docked')
+  const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 720)
@@ -40,33 +41,49 @@ export function SectionNav() {
     modeRef.current = mode
   }, [mode])
 
-  // Determine mode + active section from scroll position. The docked horizontal row
-  // is only shown while the user is at the very top (section 1 fully in view). The
-  // moment they scroll away from the top at all, it flips to the vertical rail. This
-  // deliberately keys off raw scroll position rather than any hero-height measurement,
-  // which was unreliable (offsetTop depends on positioned ancestors) and left the
-  // horizontal nav overlapping section 2's heading. Hidden once Contact is close.
+  // Determine mode, opacity and active section from scroll position.
+  //
+  // Why a fade hand-off rather than a straight morph: the hero name is bottom-anchored,
+  // so as you scroll it rises up THROUGH the vertical rail's band (the rail would cut
+  // into the name). Meanwhile section 2's heading rises from the bottom INTO the docked
+  // horizontal nav. Those two danger zones overlap in scroll space, so there is no single
+  // instant where flipping horizontal-to-vertical is clean. Instead we hand off: the
+  // horizontal nav fades out over the first stretch of scroll (gone before section 2
+  // reaches it), a brief gap, then the vertical rail fades in only once the hero has
+  // cleared (so it never sits on the name). Hidden once Contact is close.
   useEffect(() => {
     const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
     const sectionEls = NAV.map((n) => document.getElementById(n.target)).filter(Boolean) as HTMLElement[]
 
-    // Small tolerance so being a pixel or two off the top (momentum, bounce) still
-    // counts as "at the top", but any real scroll flips to the rail immediately.
-    const TOP_THRESHOLD = 12
-
     const evaluate = () => {
       const y = window.scrollY
+      const vh = window.innerHeight
       const contactTop = contactEl ? contactEl.getBoundingClientRect().top + y : Infinity
 
+      // Hand-off geometry, all relative to viewport height so it scales across devices.
+      const fadeOutEnd = vh * 0.16    // horizontal fully faded by here (before section 2 arrives)
+      const railFadeStart = vh * 0.44 // rail begins to appear here (hero has cleared the band)
+      const railFadeEnd = vh * 0.56   // rail fully in by here
+
       let next: Mode = 'rail'
-      if (y <= TOP_THRESHOLD) next = 'docked'
-      else if (y > contactTop - window.innerHeight * 0.6) next = 'hidden'
+      if (y < railFadeStart) next = 'docked'
+      else if (y > contactTop - vh * 0.6) next = 'hidden'
 
       if (next !== modeRef.current) setMode(next)
 
+      // Scroll-linked opacity for the hand-off. Set directly on the node so scrolling
+      // does not trigger a React re-render on every frame.
+      if (navRef.current) {
+        let op = 1
+        if (next === 'docked') op = Math.max(0, 1 - y / fadeOutEnd)
+        else if (next === 'rail') op = Math.min(1, (y - railFadeStart) / (railFadeEnd - railFadeStart))
+        else op = 0
+        navRef.current.style.opacity = String(op)
+      }
+
       // Active section: the last one whose top has scrolled past the viewport's upper third.
       let activeIdx = 0
-      const probe = y + window.innerHeight * 0.35
+      const probe = y + vh * 0.35
       sectionEls.forEach((el, i) => {
         if (el.getBoundingClientRect().top + y <= probe) activeIdx = i
       })
@@ -96,6 +113,7 @@ export function SectionNav() {
 
   return (
     <nav
+      ref={navRef}
       aria-label="Jump to a section"
       className={`section-nav ${docked ? 'section-nav-docked' : 'section-nav-rail'} ${isMobile ? 'section-nav-mobile' : ''} ${reduced ? 'section-nav-reduced' : ''}`}
     >
