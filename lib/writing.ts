@@ -38,7 +38,7 @@ export const writing: WritingEntry[] = [
 <p>Chances are, whoever loses these races will end up getting advised by whoever wins them.</p>
 `,
     sourceUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7467968570077974528/',
-    image: '/opinion/the-technology-is-not-the-bottleneck.png',
+    image: '/opinion/the-technology-is-not-the-bottleneck.jpg',
   },
   {
     id: 2,
@@ -65,6 +65,6 @@ export const writing: WritingEntry[] = [
 <p>The people telling you to hurry are mostly building in Windows 1 and 2, where speed is the whole game. If your edge is operational depth in a category Silicon Valley finds boring, their urgency is not your urgency.</p>
 `,
     sourceUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7456266241176113152/',
-    image: '/opinion/the-three-ai-windows.png',
+    image: '/opinion/the-three-ai-windows.jpg',
   },
 ]
