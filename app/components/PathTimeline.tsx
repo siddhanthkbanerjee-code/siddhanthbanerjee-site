@@ -396,7 +396,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 8vw, 9rem)',
+        padding: 'clamp(3rem, 6vw, 6rem) clamp(2rem, 7vw, 8rem)',
         background: 'radial-gradient(120% 120% at 14% 42%, rgba(255,107,53,0.16) 0%, rgba(24,8,0,0.55) 34%, transparent 72%)',
         position: 'relative',
         boxSizing: 'border-box',
@@ -406,7 +406,7 @@ function PayoffPanel({ contentRef }: { contentRef: ContentRefSetter }) {
         style={{
           position: 'absolute',
           top: 'clamp(2rem, 4vw, 4rem)',
-          left: 'clamp(2rem, 8vw, 9rem)',
+          left: 'clamp(2rem, 7vw, 8rem)',
           fontFamily: 'var(--font-jetbrains-mono), monospace',
           fontSize: '0.65rem',
           letterSpacing: '0.22em',

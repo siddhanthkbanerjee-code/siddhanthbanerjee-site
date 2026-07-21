@@ -172,6 +172,7 @@ export function WritingSection() {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: clamp(1rem, 2.5vw, 1.75rem);
+          align-items: start;
         }
         @media (max-width: 640px) {
           .opinion-grid { grid-template-columns: 1fr; }
@@ -227,6 +228,9 @@ export function WritingSection() {
           font-size: clamp(15px, 1.9vw, 19px);
           line-height: 1.2;
           margin: 0;
+          /* Reserve two lines so a one-line title and a two-line title produce feet of
+             equal height, keeping the two cards the same size and aligned. */
+          min-height: 2.4em;
         }
         .opinion-card-cta {
           flex-shrink: 0;

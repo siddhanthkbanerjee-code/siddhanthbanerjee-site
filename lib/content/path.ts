@@ -32,7 +32,7 @@ export const pathStations: PathStation[] = [
     companyDescriptor: "A children's food brand making millet-based food for Indian families.",
     did: "Founded the consumer insights function, individually spoke to 20+ customers a day, reporting findings to the founders daily.",
     learnt: "How to speak and emote with customers such that they really open up, and drop nuggets of gold information and insights.",
-    gtmTie: "The same skill finds the job a customer is hiring an AI product to do, underneath the stated ask.",
+    gtmTie: "The same skill reveals what a customer really wants from an AI product, not just what they say.",
     tint: "#6B9E6B", // muted sage -- carried from prior path.ts; organic, earthy, distinct from warm anchors
   },
   {

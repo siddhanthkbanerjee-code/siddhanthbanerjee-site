@@ -358,7 +358,7 @@ export function ProfileConvergence() {
             margin: 0,
           }}
         >
-          AI GTM wasn&rsquo;t a pivot for me. I&rsquo;d spent five years doing the pieces.
+          AI GTM was a natural progression of my work experience.
         </h2>
       </div>
 

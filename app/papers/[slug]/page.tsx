@@ -137,7 +137,7 @@ export default async function PaperPage({
 
         {/* Abstract above is always visible; the full assignment is collapsed
             behind this button so arrival is not a commitment to the whole read. */}
-        <ExpandableBody html={paper.body} accent="#FF6B35" label="Read the full assignment" bodyClassName="paper-body" />
+        <ExpandableBody html={paper.body} accent="#FF6B35" label="Read full" bodyClassName="paper-body" />
       </div>
 
       <style>{`

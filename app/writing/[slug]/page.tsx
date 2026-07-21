@@ -90,7 +90,7 @@ export default async function WritingDetailPage({ params }: Props) {
 
         {/* Excerpt above is always visible; the full piece is collapsed behind
             this button so arrival is not a commitment to the whole read. */}
-        <ExpandableBody html={entry.body} accent="#FF6B35" label="Read the full piece" bodyClassName="writing-body" />
+        <ExpandableBody html={entry.body} accent="#FF6B35" label="Read full" bodyClassName="writing-body" />
 
         {/* Notes sourced from LinkedIn link back to the original post, on-brand
             card styling rather than an embedded screenshot. */}
