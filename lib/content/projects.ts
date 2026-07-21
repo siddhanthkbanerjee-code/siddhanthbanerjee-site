@@ -82,7 +82,9 @@ export const projects: Project[] = [
     name: 'Prizerv',
     kind: 'build',
     oneLiner: 'AI self-discovery in three phases. A structured mirror, not a personality test.',
-    liveUrl: 'https://prizerv-mvp-pivot.vercel.app',
+    // Live link deliberately withheld at Siddhanth's request: Prizerv is not open for
+    // public use. Kairos, Lever and Fuel stay linked; Prizerv is described only.
+    liveUrl: null,
     logo: null,
     theme: {
       bg: '#FAF6F0',      // warm cream base; light-mode entry for Prizerv
