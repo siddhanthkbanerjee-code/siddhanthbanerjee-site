@@ -24,6 +24,10 @@ export type BuildProject = {
   slug: string;
   name: string;
   kind: 'build';
+  // Optional display label shown on the card in place of `kind`. `kind` still drives
+  // the Builds vs AI GTM Work split; `badge` is purely cosmetic (e.g. an engagement
+  // status like "live" or "proposed").
+  badge?: string;
   oneLiner: string;
   liveUrl: string | null;
   theme: ProjectTheme;
@@ -35,6 +39,7 @@ export type ConsultingProject = {
   slug: string;
   name: string;
   kind: 'consulting';
+  badge?: string; // display label shown on the card in place of "consulting" (e.g. engagement status)
   oneLiner: string;
   liveUrl: string | null;
   theme: ProjectTheme;
@@ -155,6 +160,7 @@ export const projects: Project[] = [
     slug: 'slurrp-farm',
     name: 'Slurrp Farm',
     kind: 'consulting',
+    badge: 'live',
     oneLiner: 'A consumer intelligence sprint for the makers of Slurrp Farm and Mille.',
     liveUrl: null,
     logo: null,
@@ -179,6 +185,7 @@ export const projects: Project[] = [
     slug: 'share-our-strength',
     name: 'Share Our Strength',
     kind: 'consulting',
+    badge: 'in development',
     oneLiner: 'A relationship-intelligence engine for a fundraising NGO with no programs of its own.',
     // Live link deliberately withheld: the deployed dashboard carries real donor and
     // relationship data. Do not restore this without confirming with SOS India first.
@@ -205,6 +212,7 @@ export const projects: Project[] = [
     slug: 'akanksha-foundation',
     name: 'Akanksha Foundation',
     kind: 'consulting',
+    badge: 'proposed',
     oneLiner: 'A financial coverage cockpit for the CFO of a 27-school operating NGO.',
     // Live link deliberately withheld: the deployed dashboard carries real financial and
     // grant data. Do not restore this without confirming with Akanksha first.

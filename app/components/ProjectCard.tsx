@@ -172,9 +172,10 @@ export function ProjectCard({ project }: { project: Project }) {
           textTransform: 'uppercase',
           color: project.theme.accent,
           opacity: 0.7,
+          whiteSpace: 'nowrap',
         }}
       >
-        {project.kind}
+        {project.badge ?? project.kind}
       </span>
 
       {/* Name + descriptor */}
