@@ -40,27 +40,26 @@ export function SectionNav() {
     modeRef.current = mode
   }, [mode])
 
-  // Determine mode + active section from scroll position. Docked only while section 1
-  // (the hero) is on screen, flips to rail the moment section 2 starts entering the
-  // viewport, hidden once Contact is close.
+  // Determine mode + active section from scroll position. The docked horizontal row
+  // is only shown while the user is at the very top (section 1 fully in view). The
+  // moment they scroll away from the top at all, it flips to the vertical rail. This
+  // deliberately keys off raw scroll position rather than any hero-height measurement,
+  // which was unreliable (offsetTop depends on positioned ancestors) and left the
+  // horizontal nav overlapping section 2's heading. Hidden once Contact is close.
   useEffect(() => {
-    const heroEl = document.querySelector('main > section') as HTMLElement | null
     const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
     const sectionEls = NAV.map((n) => document.getElementById(n.target)).filter(Boolean) as HTMLElement[]
 
+    // Small tolerance so being a pixel or two off the top (momentum, bounce) still
+    // counts as "at the top", but any real scroll flips to the rail immediately.
+    const TOP_THRESHOLD = 12
+
     const evaluate = () => {
       const y = window.scrollY
-      const viewportBottom = y + window.innerHeight
-      // Flip to rail the instant section 2 starts entering the viewport from the
-      // bottom, i.e. as soon as the viewport's own lower edge reaches the hero's
-      // bottom edge, not when the whole hero has scrolled past the top. Waiting for
-      // the latter meant section 2's heading was already filling most of the screen,
-      // behind a still-docked (and now overlapping) horizontal nav.
-      const heroBottom = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : window.innerHeight
-      const contactTop = contactEl ? contactEl.offsetTop : Infinity
+      const contactTop = contactEl ? contactEl.getBoundingClientRect().top + y : Infinity
 
       let next: Mode = 'rail'
-      if (viewportBottom < heroBottom + 1) next = 'docked'
+      if (y <= TOP_THRESHOLD) next = 'docked'
       else if (y > contactTop - window.innerHeight * 0.6) next = 'hidden'
 
       if (next !== modeRef.current) setMode(next)
@@ -69,7 +68,7 @@ export function SectionNav() {
       let activeIdx = 0
       const probe = y + window.innerHeight * 0.35
       sectionEls.forEach((el, i) => {
-        if (el.offsetTop <= probe) activeIdx = i
+        if (el.getBoundingClientRect().top + y <= probe) activeIdx = i
       })
       setActive(activeIdx)
     }
