@@ -77,13 +77,14 @@ export default async function PaperPage({
           style={{
             fontFamily: 'var(--font-jetbrains-mono), monospace',
             fontSize: 11,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
+            // Sentence case, not the usual all-caps label treatment: this line is a full
+            // phrase rather than a tag, and all-caps at 0.2em would sprawl onto two lines.
+            letterSpacing: '0.12em',
             color: 'rgba(244,239,230,0.35)',
             marginBottom: 16,
           }}
         >
-          {paper.module}
+          Written for my Oxford elective: {paper.module}
         </p>
 
         <Reveal mask>
