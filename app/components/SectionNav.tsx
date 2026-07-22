@@ -45,21 +45,31 @@ export function SectionNav() {
 
   // Mode + active section from scroll position. Horizontal while section 2 has not yet
   // reached the top of the viewport; vertical rail once it has; hidden near Contact.
+  //
+  // Important: the hero is loaded via dynamic(..., { ssr: false }), so on first paint it
+  // is NOT in the DOM and #profile-section sits at the very top of the document. A
+  // one-shot measurement on mount therefore reads "section 2 is at the top" and latches
+  // the rail on, and because no scroll or resize fires when the hero finally mounts and
+  // pushes the page down by 100vh, it would stay stuck there. So elements are looked up
+  // per evaluation (never cached across a layout change) and we re-evaluate on document
+  // resize and window load, not just on scroll.
   useEffect(() => {
-    const section2 = document.getElementById('profile-section')
-    const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
-    const sectionEls = NAV.map((n) => document.getElementById(n.target)).filter(Boolean) as HTMLElement[]
-
     const evaluate = () => {
       const y = window.scrollY
       const vh = window.innerHeight
+      const section2 = document.getElementById('profile-section')
+      const contactEl = document.querySelector('#writing-section')?.nextElementSibling as HTMLElement | null
+
       // Section 2's top edge relative to the viewport top. Positive = still below the
       // top (we are in the hero), <= 0 = it has reached or passed the top.
       const s2top = section2 ? section2.getBoundingClientRect().top : Infinity
       const contactTop = contactEl ? contactEl.getBoundingClientRect().top + y : Infinity
 
       let next: Mode = 'docked'
-      if (s2top <= 4) {
+      // At the very top the hero fills the viewport, so it is always the horizontal row.
+      // The y > 0 guard also covers first paint, when the not-yet-mounted hero would
+      // otherwise make section 2 measure as already being at the top.
+      if (y > 0 && s2top <= 4) {
         next = y > contactTop - vh * 0.6 ? 'hidden' : 'rail'
       }
       if (next !== modeRef.current) setMode(next)
@@ -67,8 +77,9 @@ export function SectionNav() {
       // Active section: the last one whose top has scrolled past the viewport's upper third.
       let activeIdx = 0
       const probe = y + vh * 0.35
-      sectionEls.forEach((el, i) => {
-        if (el.getBoundingClientRect().top + y <= probe) activeIdx = i
+      NAV.forEach((n, i) => {
+        const el = document.getElementById(n.target)
+        if (el && el.getBoundingClientRect().top + y <= probe) activeIdx = i
       })
       setActive(activeIdx)
     }
@@ -76,9 +87,16 @@ export function SectionNav() {
     evaluate()
     window.addEventListener('scroll', evaluate, { passive: true })
     window.addEventListener('resize', evaluate)
+    window.addEventListener('load', evaluate)
+    // Catches the hero mounting late (and any other layout shift that changes page height).
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(evaluate) : null
+    ro?.observe(document.body)
+
     return () => {
       window.removeEventListener('scroll', evaluate)
       window.removeEventListener('resize', evaluate)
+      window.removeEventListener('load', evaluate)
+      ro?.disconnect()
     }
   }, [])
 
