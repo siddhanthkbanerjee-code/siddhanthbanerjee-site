@@ -7,6 +7,11 @@ export type ProjectTheme = {
   tileBg?: string; // optional CSS background for the home tile ONLY (not the detail page); lets a tile carry more brand color
 };
 
+export type ProjectScreenshot = {
+  src: string; // path under /public, e.g. /screenshots/<slug>/01-home.jpg
+  caption: string;
+};
+
 export type BuildSections = {
   whatItIs: string;
   whatIsUnique: string;
@@ -33,6 +38,7 @@ export type BuildProject = {
   theme: ProjectTheme;
   logo: null;
   sections: BuildSections;
+  screenshots?: ProjectScreenshot[]; // optional in-page product screenshots, sanitised, shown on the detail page
 };
 
 export type ConsultingProject = {
@@ -45,6 +51,7 @@ export type ConsultingProject = {
   theme: ProjectTheme;
   logo: null;
   sections: ConsultingSections;
+  screenshots?: ProjectScreenshot[]; // optional in-page product screenshots, sanitised, shown on the detail page
 };
 
 export type Project = BuildProject | ConsultingProject;
@@ -103,6 +110,12 @@ export const projects: Project[] = [
       gtmAngle:
         'Prizerv is a full-ownership build: prompt architecture, session design, the database, deployment. The prompts went through more than twenty iterations, and each one was the same product decision, how much to infer versus invent, and how to keep a long adaptive conversation coherent. The GTM lesson is trust and voice. A self-discovery tool lives or dies on whether the output feels genuinely personal rather than generic AI output, which is the pitch any AI product has to make to a skeptical buyer. It is also, honestly, the build with the least obvious buyer of the four, and knowing which builds have a clean go-to-market and which do not is itself a GTM skill.',
     },
+    screenshots: [
+      { src: '/screenshots/prizerv/01-landing-hero.jpg', caption: 'The pitch: a structured, personalised journey to rediscover direction, without the fluff.' },
+      { src: '/screenshots/prizerv/02-problem-framing.jpg', caption: 'Who it is for: feeling stuck, uncertain about what is next, misaligned with your work, or losing relevance.' },
+      { src: '/screenshots/prizerv/03-three-stages.jpg', caption: 'Being, Doing, Becoming: the three-phase arc, each phase built on the last.' },
+      { src: '/screenshots/prizerv/04-journey-overview-sanitised.jpg', caption: 'A real completed journey (name and initial changed): all three portraits written, with concrete experiments queued up next.' },
+    ],
   },
 
   {
@@ -181,6 +194,11 @@ export const projects: Project[] = [
       whatIMade:
         'A v0 sprint: four to six weeks against one narrow data slice, producing two real Friday briefs before handover. Each brief synthesises public consumer signal, reviews, search trends, competitor activity, into a short, structured read the team can act on immediately. The engagement ends with a blueprint and a hiring spec, not a standing tool, deliberately proving the model works before Wholsum commits to running it long-term. If the two briefs change a decision, the blueprint makes it straightforward to hand the capability to someone internal; if they do not, the cost of finding that out is one sprint, not a hire.',
     },
+    screenshots: [
+      { src: '/screenshots/slurrp-farm/01-home-overview.jpg', caption: 'Two years of consumer voice, read across every channel, in one place. Individual source counts held back at Wholsum\'s request.' },
+      { src: '/screenshots/slurrp-farm/02-category-market-intel.jpg', caption: 'A separate monthly market feed: competitor moves, and where the category is genuinely shifting.' },
+      { src: '/screenshots/slurrp-farm/03-analysis-review-trace.jpg', caption: 'Every claim resolves to the exact customer sentence behind it, filterable by source, sentiment, and product.' },
+    ],
   },
 
   {
@@ -208,6 +226,12 @@ export const projects: Project[] = [
       whatIMade:
         'An editorial briefing, not a dashboard: the Brief is the page Rohit opens every Monday, a written overview of what changed, a ranked "reach out now" list with an expandable, in-voice outreach draft for each name, and "keep tracking" and "upcoming opportunities" queues. Behind it sit five supporting views, people, organisations, media and events, professional networks, and city geography, each clickable through to a profile with hover-for-provenance on every claim (source and date, so nothing reads as asserted fact it cannot support) and relationships shown as confidence-rated hypotheses rather than claims ("likely knows" versus "possible overlap"), because a wrong introduction breaks trust instantly with a client whose entire mandate is relationships. The interface itself stays private to SOS India: real donor names, relationship notes, and outreach drafts sit inside it, so what is shown here is the thinking and the build, not a public walkthrough of someone else\'s contact book. The design language is deliberately restrained, an editorial-luxury aesthetic that reads as a trusted instrument rather than a generic SaaS dashboard, since the product here is judgement, not data volume. Built pro bono, on a real running-cost budget SOS India can sustain after handover.',
     },
+    screenshots: [
+      { src: '/screenshots/share-our-strength/01-home-overview-sanitised.jpg', caption: 'The donor pipeline, live: what changed since the last look, in one page. All names sanitised.' },
+      { src: '/screenshots/share-our-strength/02-brief-reach-out-now-sanitised.jpg', caption: 'The Monday brief: a ranked reach-out-now list, each with the warm way in and a drafted opener. Names sanitised, structure real.' },
+      { src: '/screenshots/share-our-strength/03-donors-table-sanitised.jpg', caption: 'The full donor universe, 60 people and 18 organisations, filterable by capacity, heat, and status. Names blurred.' },
+      { src: '/screenshots/share-our-strength/04-geography-mumbai-sanitised.jpg', caption: 'Every city as one view: people and organisations together, with an honest read on whether to activate. Names blurred.' },
+    ],
   },
 
   {
@@ -235,5 +259,12 @@ export const projects: Project[] = [
       whatIMade:
         'The centrepiece is the Coverage cockpit: forward funding coverage by year and school cluster, a cliff radar for grants ending soon with no replacement identified, and a concentration view showing reliance on a handful of funders, the specific numbers a CFO needs before she can sign off on next year\'s hiring plan. Every gap the cockpit surfaces links straight into a matched, well-timed prospect with a credible way in, so it does not just flag the hole, it points at how to fill it. A Government/PPP tab tracks municipal MoUs, renewal risk, and partial salary-reimbursement commitments, because in a PPP model the government is landlord, regulator, and funder all at once, a layer no generic fundraising tool would think to include. The anchor thread running through every tab is India\'s mandatory corporate CSR pool for education, about Rs 10,085 crore a year and legally refilling under the Companies Act. Every datapoint is tagged Public source or Illustrative, and no fabricated funding signal is ever attached to a real, named individual. The cockpit itself stays private to Akanksha, since it carries real school-level financial data, demoed directly to the CFO rather than published as a public walkthrough, with the next concrete step being to wire it to Akanksha\'s actual grant ledger.',
     },
+    screenshots: [
+      { src: '/screenshots/akanksha-foundation/01-home-overview.jpg', caption: 'The public starting point: footprint, annual raise, and the US diaspora fund, before the tool goes deeper.' },
+      { src: '/screenshots/akanksha-foundation/02-coverage-top.jpg', caption: 'The CFO cockpit: forward funding coverage by year and school cluster, at a glance.' },
+      { src: '/screenshots/akanksha-foundation/03-coverage-cliff-concentration.jpg', caption: 'The cliff radar for grants ending soon, and how concentrated the funding base has become on a handful of funders.' },
+      { src: '/screenshots/akanksha-foundation/04-coverage-government-partners.jpg', caption: 'The government and PPP layer: municipal MoU status and renewal risk for every school cluster.' },
+      { src: '/screenshots/akanksha-foundation/05-peers-landscape.jpg', caption: 'Who else is in the room: peer NGOs mapped by shared funders, not just by cause.' },
+    ],
   },
 ];

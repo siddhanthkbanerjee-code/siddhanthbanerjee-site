@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { projects, type BuildSections, type ConsultingSections } from '@/lib/content/projects'
+import { projects, type BuildSections, type ConsultingSections, type ProjectScreenshot } from '@/lib/content/projects'
 import { notFound } from 'next/navigation'
 import { BackLink } from '@/app/components/BackLink'
 
@@ -137,6 +137,76 @@ function ConsultingSpine({
       <SectionBlock label="context" body={sections.context} accent={accent} text={text} />
       <SectionBlock label="the thinking" body={sections.theThinking} accent={accent} text={text} />
       <SectionBlock label="what i made" body={sections.whatIMade} accent={accent} text={text} />
+    </div>
+  )
+}
+
+// Product screenshots gallery: real, sanitised captures from the live build,
+// each paired with a one-line caption tying it back to the claim above. Only
+// renders when a project has screenshots defined.
+function Screenshots({
+  items,
+  accent,
+  text,
+}: {
+  items: ProjectScreenshot[]
+  accent: string
+  text: string
+}) {
+  return (
+    <div
+      style={{
+        paddingTop: 'clamp(2rem, 4vw, 3rem)',
+        borderTop: `1px solid ${accent}20`,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontSize: '0.6rem',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: accent,
+          margin: '0 0 1.5rem',
+        }}
+      >
+        from the live build
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem, 4vw, 2.75rem)' }}>
+        {items.map((shot) => (
+          <figure key={shot.src} style={{ margin: 0 }}>
+            <div
+              style={{
+                borderRadius: 10,
+                overflow: 'hidden',
+                border: `1px solid ${accent}30`,
+                boxShadow: '0 24px 60px -32px rgba(0,0,0,0.45)',
+                background: '#fff',
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={shot.src}
+                alt={shot.caption}
+                loading="lazy"
+                style={{ display: 'block', width: '100%', height: 'auto' }}
+              />
+            </div>
+            <figcaption
+              style={{
+                fontFamily: 'var(--font-inter), sans-serif',
+                fontSize: '0.85rem',
+                lineHeight: 1.5,
+                color: `${text}90`,
+                margin: '0.85rem 0 0',
+                maxWidth: 640,
+              }}
+            >
+              {shot.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </div>
   )
 }
@@ -355,6 +425,11 @@ export default async function WorkProjectPage({
               accent={theme.accent}
               text={theme.text}
             />
+          )}
+
+          {/* screenshots: real, sanitised captures from the live build */}
+          {project.screenshots && project.screenshots.length > 0 && (
+            <Screenshots items={project.screenshots} accent={theme.accent} text={theme.text} />
           )}
 
           {/* foot: live site link */}
