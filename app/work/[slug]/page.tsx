@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { projects, type BuildSections, type ConsultingSections, type ProjectScreenshot } from '@/lib/content/projects'
 import { notFound } from 'next/navigation'
 import { BackLink } from '@/app/components/BackLink'
+import { Reveal } from '@/app/components/Reveal'
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }))
@@ -142,8 +143,11 @@ function ConsultingSpine({
 }
 
 // Product screenshots gallery: real, sanitised captures from the live build,
-// each paired with a one-line caption tying it back to the claim above. Only
-// renders when a project has screenshots defined.
+// laid out as alternating rows -- caption beside the image, side flipping each
+// row -- so the reader takes in text and proof together rather than scrolling
+// past a stack of images with captions underneath. Breaks out past the page's
+// 800px reading column since a screenshot beside its caption needs more room
+// than a paragraph does; everything else on the page stays narrow on purpose.
 function Screenshots({
   items,
   accent,
@@ -158,55 +162,109 @@ function Screenshots({
       style={{
         paddingTop: 'clamp(2rem, 4vw, 3rem)',
         borderTop: `1px solid ${accent}20`,
+        position: 'relative',
+        left: '50%',
+        marginLeft: '-50vw',
+        width: '100vw',
       }}
     >
-      <p
-        style={{
-          fontFamily: 'var(--font-jetbrains-mono), monospace',
-          fontSize: '0.6rem',
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color: accent,
-          margin: '0 0 1.5rem',
-        }}
-      >
-        from the live build
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem, 4vw, 2.75rem)' }}>
-        {items.map((shot) => (
-          <figure key={shot.src} style={{ margin: 0 }}>
-            <div
-              style={{
-                borderRadius: 10,
-                overflow: 'hidden',
-                border: `1px solid ${accent}30`,
-                boxShadow: '0 24px 60px -32px rgba(0,0,0,0.45)',
-                background: '#fff',
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={shot.src}
-                alt={shot.caption}
-                loading="lazy"
-                style={{ display: 'block', width: '100%', height: 'auto' }}
-              />
-            </div>
-            <figcaption
-              style={{
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: '0.85rem',
-                lineHeight: 1.5,
-                color: `${text}90`,
-                margin: '0.85rem 0 0',
-                maxWidth: 640,
-              }}
-            >
-              {shot.caption}
-            </figcaption>
-          </figure>
-        ))}
+      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 clamp(1.5rem, 6vw, 4rem)' }}>
+        <p
+          style={{
+            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontSize: '0.6rem',
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: accent,
+            margin: '0 0 clamp(2rem, 4vw, 3rem)',
+          }}
+        >
+          from the live build
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(3.5rem, 7vw, 5.5rem)' }}>
+          {items.map((shot, i) => (
+            <Reveal key={shot.src}>
+              <div
+                className="shot-row"
+                style={{
+                  display: 'flex',
+                  flexDirection: i % 2 === 1 ? 'row-reverse' : 'row',
+                  alignItems: 'center',
+                  gap: 'clamp(2rem, 4vw, 3.5rem)',
+                }}
+              >
+                <div className="shot-row-image" style={{ flex: '1 1 56%', minWidth: 0 }}>
+                  <div
+                    className="shot-frame"
+                    style={{
+                      borderRadius: 10,
+                      overflow: 'hidden',
+                      border: `1px solid ${accent}30`,
+                      boxShadow: '0 24px 60px -32px rgba(0,0,0,0.45)',
+                      background: '#fff',
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={shot.src}
+                      alt={shot.caption}
+                      loading="lazy"
+                      style={{ display: 'block', width: '100%', height: 'auto' }}
+                    />
+                  </div>
+                </div>
+
+                <div className="shot-row-text" style={{ flex: '1 1 44%', minWidth: 0 }}>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-jetbrains-mono), monospace',
+                      fontSize: '0.6rem',
+                      letterSpacing: '0.2em',
+                      color: accent,
+                      opacity: 0.7,
+                      margin: '0 0 0.75rem',
+                    }}
+                  >
+                    {String(i + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-fraunces), serif',
+                      fontWeight: 300,
+                      fontSize: 'clamp(1.05rem, 1.7vw, 1.3rem)',
+                      lineHeight: 1.55,
+                      color: text,
+                      margin: 0,
+                    }}
+                  >
+                    {shot.caption}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
+
+      <style>{`
+        .shot-frame {
+          transition: transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
+        }
+        .shot-frame:hover {
+          transform: translateY(-4px);
+        }
+        @media (max-width: 760px) {
+          .shot-row {
+            flex-direction: column !important;
+          }
+          .shot-row-image,
+          .shot-row-text {
+            flex: 1 1 auto !important;
+            width: 100%;
+          }
+        }
+      `}</style>
     </div>
   )
 }
