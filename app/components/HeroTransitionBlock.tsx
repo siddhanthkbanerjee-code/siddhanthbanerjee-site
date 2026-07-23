@@ -71,6 +71,7 @@ export function HeroTransitionBlock() {
       {/* lower-left: the name and the answer. Quick-nav now renders via SectionNav,
           docked in the space just below this block (see its "docked" CSS position). */}
       <div
+        className="hero-content"
         style={{
           position: 'absolute',
           inset: 0,
@@ -168,6 +169,19 @@ export function HeroTransitionBlock() {
       </button>
 
       {reduced && <p className="sr-only">Scroll down to the rest of the page</p>}
+
+      {/* On mobile the 100vh hero left a large empty band above the name, which sat pinned
+          to the bottom. Pull the name block toward the vertical centre and lift it off the
+          floor so the opener reads as filled rather than bottom-heavy. Desktop keeps the
+          original bottom-anchored composition. */}
+      <style>{`
+        @media (max-width: 720px) {
+          .hero-content {
+            justify-content: center !important;
+            padding-bottom: clamp(5rem, 22vw, 9rem) !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

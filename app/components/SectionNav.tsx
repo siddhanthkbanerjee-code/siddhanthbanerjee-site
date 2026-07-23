@@ -109,6 +109,10 @@ export function SectionNav() {
   }
 
   if (mode === 'hidden') return null
+  // On mobile the section index (both the docked row and the vertical rail) is
+  // removed entirely: it crowds a small screen, and the hero scroll cue plus normal
+  // scrolling already cover wayfinding there.
+  if (isMobile) return null
 
   const docked = mode === 'docked'
 
