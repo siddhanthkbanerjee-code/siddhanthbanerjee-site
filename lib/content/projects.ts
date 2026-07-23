@@ -176,7 +176,7 @@ export const projects: Project[] = [
     name: 'Slurrp Farm',
     kind: 'consulting',
     badge: 'live',
-    oneLiner: 'A consumer intelligence sprint for the makers of Slurrp Farm and Mille.',
+    oneLiner: 'A consumer intelligence system for the makers of Slurrp Farm and Mille: one shared corpus, three purpose-built tools.',
     liveUrl: null,
     logo: null,
     theme: {
@@ -190,14 +190,14 @@ export const projects: Project[] = [
       context:
         'Wholsum Foods is the parent company of Slurrp Farm and Mille, founded by Shauravi Malik and Meghana Narayan, selling packaged food for kids and families across ecommerce, quick commerce, and D2C in India. Siddhanth worked at Slurrp Farm early in his career; this is a pro bono engagement pitched to the founders directly.',
       theThinking:
-        'Consumer signal at Wholsum Foods is scattered: reviews, search behaviour, social mentions, and competitor moves each sit in a different place and mostly get read reactively, if at all. There is no single view of what consumers are actually saying and doing that the team can act on week to week, so product, positioning, and marketing decisions end up running on instinct rather than a current read of the consumer.',
+        'Consumer signal at Wholsum Foods is scattered: reviews, search behaviour, social mentions, and competitor moves each sit in a different place and mostly get read reactively, if at all. The first build closed that gap with a single listening tool, but one tool trying to serve every job risks the opposite failure: information overload, where everyone reads the same dashboard through their own bias and nobody acts. The fix was not more data but fewer, sharper claims, and a separate tool for each real job: the founder listening to the market, the care team resolving it day to day, and the brand team testing a new idea before spending against it.',
       whatIMade:
-        'A v0 sprint: four to six weeks against one narrow data slice, producing two real Friday briefs before handover. Each brief synthesises public consumer signal, reviews, search trends, competitor activity, into a short, structured read the team can act on immediately. The engagement ends with a blueprint and a hiring spec, not a standing tool, deliberately proving the model works before Wholsum commits to running it long-term. If the two briefs change a decision, the blueprint makes it straightforward to hand the capability to someone internal; if they do not, the cost of finding that out is one sprint, not a hire.',
+        'What started as a v0 sprint is now three tools on one shared corpus of 15,000-plus customer verbatims. Mill is the standing listening tool: a monthly read on the categories that matter, every claim traceable to the customer sentence behind it. Care turns the same data into an intelligence layer for the support team, drafting context-aware replies across email and WhatsApp so a conversation becomes retention, not just a closed ticket. Kernel is the newest: a product idea goes in, and what comes back is a sourced case for and against it, built only from what real customers have actually said, plus a confidence-rated recommendation. None of the three decides for you, and each refuses to do the others\' job.',
     },
     screenshots: [
-      { src: '/screenshots/slurrp-farm/01-home-overview.jpg', caption: 'Two years of consumer voice, read across every channel, in one place. Individual source counts held back at Wholsum\'s request.' },
-      { src: '/screenshots/slurrp-farm/02-category-market-intel.jpg', caption: 'A separate monthly market feed: competitor moves, and where the category is genuinely shifting.' },
-      { src: '/screenshots/slurrp-farm/03-analysis-review-trace.jpg', caption: 'Every claim resolves to the exact customer sentence behind it, filterable by source, sentiment, and product.' },
+      { src: '/screenshots/slurrp-farm/01-home-overview.jpg', caption: 'Mill: two years of consumer voice, read across every channel, in one place. Individual source counts held back at Wholsum\'s request.' },
+      { src: '/screenshots/slurrp-farm/02-category-market-intel.jpg', caption: 'Mill\'s category view: a separate monthly market feed of competitor moves, and where the category is genuinely shifting.' },
+      { src: '/screenshots/slurrp-farm/03-analysis-review-trace.jpg', caption: 'Mill traces every claim to the exact customer sentence behind it, filterable by source, sentiment, and product.' },
     ],
   },
 
